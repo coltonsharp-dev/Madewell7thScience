@@ -246,7 +246,7 @@ h2{font-family:var(--font-d);font-size:clamp(1.8rem,4.5vw,3.5rem);line-height:.9
       <div class="bsc" data-r="2"></div><div class="bsc" data-r="2"></div><div class="bsc" data-r="2"></div>
       <div class="bsc" data-r="3"></div><div class="bsc" data-r="3"></div><div class="bsc" data-r="3"></div>
     </div>
-    <div class="hdr-name">Stratosyn &nbsp;<span id="hdr-name-display">—</span></div>
+    <div class="hdr-name">Stratosyn · Ms. Madewell &nbsp;<span id="hdr-name-display">—</span></div>
   </div>
   <div class="hdr-mid">
     <div class="hdr-prog-lbl">Progress — <span id="hdr-prog-pct">0%</span></div>
@@ -586,9 +586,13 @@ h2{font-family:var(--font-d);font-size:clamp(1.8rem,4.5vw,3.5rem);line-height:.9
       <div class="chk-row" id="chk-eq"><div class="chk-dot" id="dot-eq"></div><span class="chk-label">Essential question — <span id="eq-wc">0</span> words</span></div>
     </div>
 
-    <button class="copy-btn" id="copy-btn" onclick="copyWork()">
-      Copy Completed Work to Clipboard
-      <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="9" height="10" rx="1"/><path d="M3 11H2a1 1 0 01-1-1V2a1 1 0 011-1h8a1 1 0 011 1v1"/></svg>
+    <!-- Copy readiness status -->
+    <div id="copy-status" style="display:none;font-family:var(--font-m);font-size:.62rem;line-height:1.75;border:var(--hr) solid rgba(255,255,255,.09);background:rgba(255,255,255,.025);padding:.85rem 1rem;margin-bottom:.75rem;"></div>
+
+    <button class="copy-btn" id="copy-btn" onclick="copyWork()" disabled
+      style="opacity:.28;cursor:not-allowed;background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12);color:var(--tx3);">
+      Finish all sections to unlock copy
+      <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1a3 3 0 0 0-3 3v2H4a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-1V4a3 3 0 0 0-3-3zm0 1.5A1.5 1.5 0 0 1 9.5 4v2h-3V4A1.5 1.5 0 0 1 8 2.5z"/></svg>
     </button>
     <div class="copy-notice" id="copy-notice">Copied — paste into Canvas now and click Submit</div>
 
@@ -745,13 +749,13 @@ function updateProgress(){
   const pctEl=document.getElementById('hdr-prog-pct');
   if(fill)fill.style.width=pct+'%';
   if(pctEl)pctEl.textContent=pct+'%';
-  // Update name in header
   const nm=document.getElementById('hdr-name-display');
   if(nm){
     const n=(ST.firstName||'')+(ST.lastName?' '+ST.lastName:'');
     nm.textContent=n||'—';
   }
   updateChecklist();
+  updateCopyBtn();
 }
 
 function updateChecklist(){
@@ -781,6 +785,49 @@ function updateChecklist(){
 function setChk(id,done){
   const dot=document.getElementById('dot-'+id);
   if(dot)dot.classList.toggle('done',done);
+}
+
+/* ════════════════════════════════════════════════════════
+   COPY VALIDATION — all fields required before unlock
+════════════════════════════════════════════════════════ */
+function checkCopyReady(){
+  const missing=[];
+  if(!ST.firstName.trim()||!ST.lastName.trim()) missing.push('Your full name (first + last)');
+  if(!ST.period) missing.push('Your class period');
+  const unanswered=['q1','q2','q3','q4','q5','q6','q7','q8'].filter(q=>!ST.answers[q]);
+  if(unanswered.length>0) missing.push(`${unanswered.length} unanswered question${unanswered.length>1?'s':''}: ${unanswered.map(q=>q.toUpperCase()).join(', ')}`);
+  const g1d=Object.values(ST.g1).filter(v=>v.p).length;
+  const g2d=Object.values(ST.g2).filter(v=>v.p).length;
+  const g3d=Object.values(ST.g3).filter(v=>v.p).length;
+  const gTot=g1d+g2d+g3d;
+  if(gTot<18) missing.push(`Element placement challenges (${gTot} / 18 placed)`);
+  const wc=ST.eq.trim().split(/\s+/).filter(Boolean).length;
+  if(wc<15) missing.push(`Essential question response (${wc} / 15+ words)`);
+  return missing;
+}
+
+function updateCopyBtn(){
+  const missing=checkCopyReady();
+  const btn=document.getElementById('copy-btn');
+  const status=document.getElementById('copy-status');
+  if(!btn)return;
+  const ready=missing.length===0;
+  btn.disabled=!ready;
+  if(ready){
+    btn.style.opacity='1';btn.style.cursor='pointer';
+    btn.style.background='var(--accent)';btn.style.borderColor='var(--accent)';btn.style.color='var(--void)';
+    btn.innerHTML='Copy Completed Work to Clipboard <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="9" height="10" rx="1"/><path d="M3 11H2a1 1 0 01-1-1V2a1 1 0 011-1h8a1 1 0 011 1v1"/></svg>';
+    if(status){status.innerHTML='<span style="color:var(--green);">✓ All sections complete — ready to copy and submit</span>';status.style.display='block';}
+  }else{
+    btn.style.opacity='0.28';btn.style.cursor='not-allowed';
+    btn.style.background='rgba(255,255,255,.06)';btn.style.borderColor='rgba(255,255,255,.12)';btn.style.color='var(--tx3)';
+    btn.innerHTML='Finish all sections to unlock copy <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1a3 3 0 0 0-3 3v2H4a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-1V4a3 3 0 0 0-3-3zm0 1.5A1.5 1.5 0 0 1 9.5 4v2h-3V4A1.5 1.5 0 0 1 8 2.5z"/></svg>';
+    if(status){
+      status.style.display='block';
+      status.innerHTML='<div style="color:var(--red);letter-spacing:.12em;text-transform:uppercase;font-size:.52rem;margin-bottom:.5rem;">Still needed before copy unlocks:</div>'+
+        missing.map(m=>`<div style="color:rgba(248,113,113,.75);padding:.1rem 0;">· ${m}</div>`).join('');
+    }
+  }
 }
 
 /* ════════════════════════════════════════════════════════
@@ -1155,6 +1202,8 @@ function gameResult(state, order, answer){
 
 function copyWork(){
   ensureTimer();
+  const missing=checkCopyReady();
+  if(missing.length>0){updateCopyBtn();return;}
   ST.submitTime=Date.now();saveState();
   const firstName=(ST.firstName||'').trim()||'[First name not entered]';
   const lastName=(ST.lastName||'').trim()||'[Last name not entered]';
@@ -1166,9 +1215,9 @@ function copyWork(){
   const dash='─'.repeat(44);
 
   let out='';
-  out+=`To: Mr. Sharp — coltonsharp@alaschools.org\n`;
+  out+=`To: Ms. Madewell — chasity.madewell@alaschools.org\n`;
   out+=`Subject: Day 1 · Periodic Table · Worksheet · ${fullName}\n\n`;
-  out+=`Mr. Sharp,\n\nPlease find my completed Day 1 worksheet below.\n\n`;
+  out+=`Ms. Madewell,\n\nPlease find my completed Day 1 worksheet below.\n\n`;
   out+=line+'\n';
   out+=`STUDENT : ${fullName}\n`;
   out+=`CLASS   : ${period}\n`;
@@ -1251,7 +1300,7 @@ function copyWork(){
   }
 
   out+='\n'+line+'\n';
-  out+=`Sent via Stratosyn · Day 1 · Periodic Table · ALA Room 501 · Mr. Sharp`;
+  out+=`Sent via Stratosyn · Day 1 · Periodic Table · ALA Room 501 · Ms. Madewell`;
 
   navigator.clipboard.writeText(out).then(()=>{
     const btn=$('copy-btn');const notice=$('copy-notice');
