@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Stratosyn · Day 1 · Periodic Table · Classroom Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   STRATOSYN CLASSROOM BOARD v2 — Day 1 Periodic Table
+   Interactive: Flip cards · Full PT · Category filters ·
+   Element info panel · Interactive callouts · 3 games
+   Responsive: mobile / tablet / desktop / projector
+   ============================================================ */
+
+/* ── RESET ─────────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{color-scheme:dark;}
+html,body{height:100%;overflow:hidden;background:#06080f;color:#dde6f5;font-family:"DM Mono",ui-monospace,monospace;}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(60% 55% at 50% 45%,rgba(245,200,66,.05) 0%,transparent 65%),radial-gradient(50% 40% at 80% 80%,rgba(56,189,248,.03) 0%,transparent 60%);z-index:0;pointer-events:none;}
+::selection{background:#f5c842;color:#06080f;}
+
+/* ── TOKENS ─────────────────────────────────────────────────── */
+:root{
+  --void:#06080f; --d1:#0b0f1e; --tx:#dde6f5; --tx2:#8898b8; --tx3:#4a5570;
+  --accent:#f5c842; --accent-soft:rgba(245,200,66,.10); --accent-line:rgba(245,200,66,.22); --accent-glow:rgba(245,200,66,.45);
+  --green:#3effa0; --blue:#38bdf8; --red:#f87171; --purple:#c084fc;
+  --hr:.0625rem;
+  --font-d:"Bebas Neue","Impact",sans-serif;
+  --font-b:"Syne",sans-serif;
+  --font-m:"DM Mono",ui-monospace,monospace;
+  /* zperiod.app category colors */
+  --c-alkali:#ef4444; --c-alkaline:#f97316; --c-transition:#eab308; --c-post:#22c55e;
+  --c-metalloid:#14b8a6; --c-nonmetal:#3b82f6; --c-halogen:#8b5cf6; --c-noble:#a855f7;
+  --c-lanthanide:#ec4899; --c-actinide:#f43f5e; --c-unknown:#64748b;
+  /* Fluid layout */
+  --px:clamp(.9rem,4vw,4.5rem); --pt:clamp(3.2rem,6vh,5rem); --pb:clamp(3.2rem,6vh,4.5rem);
+  --gap:clamp(.5rem,1.2vw,1rem); --gap2:clamp(.8rem,2vw,1.6rem);
+  --z-ui:10;
+}
+
+/* ── SLIDES ─────────────────────────────────────────────────── */
+#slides{position:fixed;inset:0;z-index:1;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:var(--pt) var(--px) var(--pb);overflow-y:auto;overflow-x:hidden;scrollbar-width:none;opacity:0;pointer-events:none;transition:opacity .32s ease,transform .32s ease;transform:translateX(28px);}
+.slide::-webkit-scrollbar{display:none;}
+.slide.active{opacity:1;pointer-events:all;transform:translateX(0);}
+.slide.exit-l{opacity:0;transform:translateX(-28px);}
+.slide.exit-r{opacity:0;transform:translateX(28px);}
+.sg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:min(55vw,52vh);color:var(--accent);opacity:.025;pointer-events:none;user-select:none;line-height:1;z-index:0;}
+.si{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;min-height:0;}
+
+/* ── UI: HUD, DOTS, NAV, BRAND ──────────────────────────────── */
+#hud{position:fixed;top:.9rem;right:clamp(.9rem,3vw,1.8rem);z-index:var(--z-ui);text-align:right;font-family:var(--font-m);font-size:clamp(.5rem,1vw,.62rem);letter-spacing:.2em;color:var(--tx3);text-transform:uppercase;display:flex;flex-direction:column;align-items:flex-end;gap:.35rem;}
+#hud-sl{color:var(--accent);}
+.pb{width:clamp(4.5rem,9vw,7.5rem);height:var(--hr);background:rgba(255,255,255,.07);overflow:hidden;}
+.pf{height:100%;background:var(--accent);transition:width .32s ease;}
+#scene-strip{position:fixed;left:clamp(.8rem,1.8vw,1.4rem);top:50%;translate:-50% -50%;z-index:var(--z-ui);display:flex;flex-direction:column;gap:clamp(.5rem,1.1vh,.8rem);}
+.sdot{display:block;width:.25rem;height:.25rem;border-radius:50%;background:rgba(255,255,255,.18);cursor:pointer;transition:background .3s,scale .3s;position:relative;}
+.sdot::before{content:"";position:absolute;inset:-.35rem;}
+.sdot.act{background:var(--accent);scale:1.9;}
+#nav{position:fixed;bottom:clamp(.65rem,1.8vh,1.1rem);left:50%;translate:-50% 0;z-index:var(--z-ui);display:flex;align-items:center;gap:clamp(.55rem,1.8vw,1.1rem);}
+.nb{display:inline-flex;align-items:center;gap:.4rem;padding:clamp(.42rem,.9vh,.6rem) clamp(.7rem,1.8vw,1.1rem);border:var(--hr) solid rgba(255,255,255,.1);background:rgba(11,15,30,.9);backdrop-filter:blur(10px);color:var(--tx2);font-family:var(--font-m);font-size:clamp(.48rem,.9vw,.6rem);letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:border-color .2s,color .2s;}
+.nb:hover:not(:disabled){border-color:var(--accent-line);color:var(--accent);}
+.nb:disabled{opacity:.18;cursor:default;}
+.nb.prime{border-color:var(--accent);color:var(--accent);background:rgba(245,200,66,.06);}
+.nb svg{width:.6rem;height:.6rem;}
+#sl-ctr{font-family:var(--font-m);font-size:clamp(.48rem,.85vw,.58rem);letter-spacing:.22em;color:var(--tx3);}
+#brand{position:fixed;top:clamp(.65rem,1.3vh,1rem);left:clamp(.9rem,2.2vw,1.6rem);z-index:var(--z-ui);display:flex;align-items:center;gap:.5rem;}
+.bm{display:grid;grid-template-columns:repeat(3,7px);grid-template-rows:repeat(3,7px);gap:1px;transform-style:preserve-3d;animation:bfloat 14s ease-in-out infinite;flex-shrink:0;}
+@keyframes bfloat{0%{transform:rotateY(0deg) rotateX(2.5deg);}33%{transform:rotateY(6deg) rotateX(-1.5deg);}66%{transform:rotateY(-5deg) rotateX(3deg);}100%{transform:rotateY(0deg) rotateX(2.5deg);}}
+.bsc{background:rgba(221,230,245,.12);}
+.bsc[data-r="2"]{background:var(--accent);box-shadow:0 0 5px var(--accent-glow);animation:scidle 2.8s ease-in-out infinite;}
+@keyframes scidle{0%,100%{opacity:1;}50%{opacity:.72;}}
+.btxt{border-left:var(--hr) solid rgba(255,255,255,.1);padding-left:.55rem;display:flex;flex-direction:column;gap:.08rem;}
+.bname{font-family:var(--font-b);font-weight:800;font-size:clamp(.48rem,.95vw,.64rem);letter-spacing:.22em;color:var(--tx);text-transform:uppercase;}
+.bsub{font-family:var(--font-m);font-size:clamp(.32rem,.62vw,.42rem);letter-spacing:.18em;color:var(--accent);text-transform:uppercase;}
+
+/* ── TYPOGRAPHY ─────────────────────────────────────────────── */
+.rule{width:clamp(1.8rem,4vw,3rem);height:var(--hr);background:var(--accent);margin-bottom:clamp(.35rem,.9vh,.65rem);}
+.lbl{font-family:var(--font-m);font-size:clamp(.52rem,.95vw,.7rem);letter-spacing:.26em;text-transform:uppercase;color:var(--accent);margin-bottom:clamp(.35rem,.9vh,.65rem);display:flex;align-items:center;gap:.4rem;}
+.lbl::before{content:"";width:5px;height:5px;background:currentColor;flex-shrink:0;}
+.lbl.g{color:var(--green);}
+h1,.h1{font-family:var(--font-d);font-size:clamp(2.6rem,7.5vw + .8vh,7rem);line-height:.87;letter-spacing:.03em;font-weight:400;margin-bottom:clamp(.45rem,1.3vh,.9rem);}
+h2,.h2{font-family:var(--font-d);font-size:clamp(1.8rem,5vw + .5vh,5rem);line-height:.88;letter-spacing:.03em;font-weight:400;margin-bottom:clamp(.35rem,.9vh,.75rem);}
+.body{font-size:clamp(.78rem,1.3vw,1rem);line-height:1.78;color:rgba(221,230,245,.64);}
+.body strong{color:var(--tx);font-weight:500;}
+.accent{color:var(--accent);}
+.ibox{border:var(--hr) solid rgba(255,255,255,.08);background:rgba(255,255,255,.025);padding:clamp(.7rem,1.8vh,1.1rem) clamp(.85rem,1.8vw,1.3rem);margin-bottom:var(--gap);}
+.ibox-lbl{font-size:clamp(.48rem,.82vw,.64rem);letter-spacing:.22em;text-transform:uppercase;margin-bottom:clamp(.25rem,.7vh,.5rem);}
+.ibox-txt{font-size:clamp(.72rem,1.25vw,.96rem);line-height:1.72;color:rgba(221,230,245,.74);}
+.ibox-txt strong{color:var(--tx);font-weight:500;}
+.rk{display:flex;align-items:center;gap:.42rem;font-size:clamp(.56rem,.95vw,.74rem);color:var(--tx2);}
+.rk-dot{width:clamp(8px,1.4vw,11px);height:clamp(8px,1.4vw,11px);border-radius:2px;flex-shrink:0;}
+
+/* ── ZPERIOD ELEMENT BOX ────────────────────────────────────── */
+.el-box{border:1px solid;display:inline-flex;flex-direction:column;align-items:center;padding:clamp(.5rem,1.1vw,.9rem) clamp(.5rem,.95vw,.85rem) clamp(.4rem,.85vw,.72rem);min-width:clamp(70px,12vw,110px);}
+.el-an{font-family:var(--font-m);font-size:clamp(.52rem,.95vw,.78rem);align-self:flex-start;line-height:1;margin-bottom:2px;}
+.el-sym{font-family:var(--font-d);font-size:clamp(2rem,4.8vw,4.2rem);line-height:1;font-weight:400;}
+.el-nm{font-size:clamp(.44rem,.78vw,.62rem);color:rgba(221,230,245,.5);margin-top:2px;text-align:center;}
+.el-am{font-size:clamp(.38rem,.68vw,.54rem);color:rgba(221,230,245,.3);text-align:center;}
+.el-box.jumbo{min-width:clamp(95px,14vw,145px);}
+.el-box.jumbo .el-an{font-size:clamp(.75rem,1.4vw,1.05rem);}
+.el-box.jumbo .el-sym{font-size:clamp(2.8rem,7.5vw,6.2rem);}
+.el-box.jumbo .el-nm{font-size:clamp(.58rem,1.05vw,.82rem);}
+.el-box.jumbo .el-am{font-size:clamp(.48rem,.88vw,.68rem);}
+/* glow on interactive highlight */
+.el-box.jumbo .el-an.glow,.el-box.jumbo .el-sym.glow,.el-box.jumbo .el-nm.glow,.el-box.jumbo .el-am.glow{transition:text-shadow .3s;}
+.el-box.jumbo .el-an.glow-active{text-shadow:0 0 10px currentColor;}
+.el-box.jumbo .el-sym.glow-active{text-shadow:0 0 16px currentColor,0 0 32px currentColor;}
+.el-box.jumbo .el-nm.glow-active{text-shadow:0 0 8px rgba(56,189,248,.8);color:var(--blue)!important;}
+.el-box.jumbo .el-am.glow-active{text-shadow:0 0 8px rgba(62,255,160,.8);color:var(--green)!important;}
+/* category */
+.z-alkali{border-color:var(--c-alkali);background:rgba(239,68,68,.1);} .z-alkali .el-an,.z-alkali .el-sym{color:var(--c-alkali);}
+.z-alkaline{border-color:var(--c-alkaline);background:rgba(249,115,22,.1);} .z-alkaline .el-an,.z-alkaline .el-sym{color:var(--c-alkaline);}
+.z-transition{border-color:var(--c-transition);background:rgba(234,179,8,.1);} .z-transition .el-an,.z-transition .el-sym{color:var(--c-transition);}
+.z-post{border-color:var(--c-post);background:rgba(34,197,94,.1);} .z-post .el-an,.z-post .el-sym{color:var(--c-post);}
+.z-metalloid{border-color:var(--c-metalloid);background:rgba(20,184,166,.1);} .z-metalloid .el-an,.z-metalloid .el-sym{color:var(--c-metalloid);}
+.z-nonmetal{border-color:var(--c-nonmetal);background:rgba(59,130,246,.1);} .z-nonmetal .el-an,.z-nonmetal .el-sym{color:var(--c-nonmetal);}
+.z-halogen{border-color:var(--c-halogen);background:rgba(139,92,246,.1);} .z-halogen .el-an,.z-halogen .el-sym{color:var(--c-halogen);}
+.z-noble{border-color:var(--c-noble);background:rgba(168,85,247,.1);} .z-noble .el-an,.z-noble .el-sym{color:var(--c-noble);}
+.z-lanthanide{border-color:var(--c-lanthanide);background:rgba(236,72,153,.1);} .z-lanthanide .el-an,.z-lanthanide .el-sym{color:var(--c-lanthanide);}
+.z-actinide{border-color:var(--c-actinide);background:rgba(244,63,94,.1);} .z-actinide .el-an,.z-actinide .el-sym{color:var(--c-actinide);}
+.z-unknown{border-color:var(--c-unknown);background:rgba(100,116,139,.1);} .z-unknown .el-an,.z-unknown .el-sym{color:var(--c-unknown);}
+
+/* ── FLIP CARDS ─────────────────────────────────────────────── */
+.flip-gallery{display:flex;gap:clamp(8px,1.4vw,14px);flex:1;align-items:center;justify-content:center;flex-wrap:wrap;padding:clamp(.5rem,1.5vh,1rem) 0;}
+.flip-card{perspective:900px;cursor:pointer;flex:1;min-width:clamp(82px,11vw,144px);max-width:clamp(120px,16vw,188px);height:clamp(115px,20vh,210px);flex-shrink:0;user-select:none;}
+.fci{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,0,.2,1);}
+.flip-card.flipped .fci{transform:rotateY(180deg);}
+.ff{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid;display:flex;flex-direction:column;padding:clamp(.45rem,1vw,.85rem);overflow:hidden;}
+.ff.back{transform:rotateY(180deg);}
+.flip-card:hover .fci:not(:is(.flipped *)){transform:translateY(-3px) rotateX(3deg);}
+.flip-card.flipped:hover .fci{transform:rotateY(180deg) translateY(-3px) rotateX(-3deg);}
+/* front */
+.ff-an{font-family:var(--font-m);font-size:clamp(.55rem,.95vw,.8rem);line-height:1;margin-bottom:2px;}
+.ff-sym{font-family:var(--font-d);font-size:clamp(2.3rem,5.5vw,4.8rem);line-height:1;flex:1;display:flex;align-items:center;justify-content:center;font-weight:400;}
+.ff-mass{font-family:var(--font-m);font-size:clamp(.4rem,.68vw,.55rem);text-align:center;color:rgba(221,230,245,.35);}
+.ff-hint{font-size:clamp(.35rem,.58vw,.48rem);letter-spacing:.1em;text-transform:uppercase;text-align:center;margin-top:3px;color:rgba(221,230,245,.28);}
+/* back */
+.fb-top{display:flex;flex-direction:column;margin-bottom:auto;}
+.fb-name{font-family:var(--font-d);font-size:clamp(1.1rem,2.8vw,2.1rem);line-height:1.05;font-weight:400;}
+.fb-cat{font-size:clamp(.42rem,.72vw,.58rem);letter-spacing:.15em;text-transform:uppercase;margin-top:3px;margin-bottom:clamp(5px,.8vh,8px);}
+.fb-fact{font-size:clamp(.52rem,.88vw,.72rem);color:rgba(221,230,245,.68);line-height:1.55;flex:1;}
+.fb-meta{font-family:var(--font-m);font-size:clamp(.38rem,.65vw,.52rem);color:rgba(221,230,245,.35);margin-top:auto;padding-top:5px;border-top:1px solid rgba(255,255,255,.08);}
+/* flip status */
+.flip-status{font-family:var(--font-m);font-size:clamp(.5rem,.85vw,.65rem);letter-spacing:.18em;text-transform:uppercase;color:var(--tx3);margin-top:clamp(.3rem,.8vh,.55rem);transition:color .3s;}
+.flip-status.done{color:var(--green);}
+
+/* ── FULL PERIODIC TABLE ─────────────────────────────────────── */
+.pt-slide-layout{display:flex;flex-direction:column;flex:1;min-height:0;gap:clamp(6px,1vh,10px);}
+/* Toolbar */
+.pt-toolbar{display:flex;flex-wrap:wrap;gap:4px;flex-shrink:0;}
+.tb-btn{font-family:var(--font-m);font-size:clamp(.42rem,.72vw,.58rem);letter-spacing:.12em;text-transform:uppercase;padding:3px 8px;border:var(--hr) solid rgba(255,255,255,.12);background:transparent;color:var(--tx2);cursor:pointer;border-radius:2px;transition:all .18s;}
+.tb-btn:hover{border-color:var(--accent-line);color:var(--accent);}
+.tb-btn.act{border-color:var(--accent);background:rgba(245,200,66,.08);color:var(--accent);}
+/* PT main area */
+.pt-main-area{display:flex;gap:clamp(6px,1vw,10px);flex:1;min-height:0;overflow:hidden;}
+/* PT table wrapper */
+.pt-table-wrap{flex:1;display:flex;flex-direction:column;gap:2px;overflow:hidden;min-width:0;}
+/* Grid */
+.pt-grid{display:grid;grid-template-columns:repeat(18,1fr);gap:2px;}
+.pt-fgrid{display:grid;grid-template-columns:repeat(18,1fr);gap:2px;} /* f-block */
+.pt-spacer{height:clamp(2px,0.4vh,5px);}
+.pt-cell{border:1px solid;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;transition:transform .1s,filter .18s,border-color .18s;border-radius:1px;overflow:hidden;aspect-ratio:1;min-width:0;}
+.pt-cell:hover{transform:scale(1.12);z-index:2;border-color:rgba(255,255,255,.4)!important;}
+.pt-cell.selected{outline:2px solid var(--accent);outline-offset:-1px;z-index:3;}
+.pt-cell.dim{filter:brightness(.22) saturate(.4);}
+.pt-cell.hl{filter:brightness(1.18);outline:2px solid rgba(245,200,66,.5);outline-offset:-1px;}
+.pt-an{font-family:var(--font-m);font-size:clamp(4px,.52vw,8.5px);line-height:1;align-self:flex-start;padding:2px 2px 0;}
+.pt-sym{font-family:var(--font-d);font-size:clamp(6px,.95vw,16px);line-height:1;font-weight:400;}
+.pt-gap{aspect-ratio:1;border:1px solid transparent;}
+.pt-placeholder{aspect-ratio:1;border:1px dashed rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-family:var(--font-m);font-size:clamp(4px,.5vw,7px);color:rgba(255,255,255,.25);letter-spacing:.06em;border-radius:1px;}
+/* Element info panel */
+.el-panel{width:clamp(140px,20vw,220px);flex-shrink:0;border:var(--hr) solid rgba(255,255,255,.1);background:rgba(11,15,30,.85);backdrop-filter:blur(8px);padding:clamp(.6rem,1.4vw,1rem);display:flex;flex-direction:column;gap:clamp(.35rem,.8vh,.6rem);transition:opacity .2s;position:relative;}
+.el-panel.hidden{opacity:0;pointer-events:none;}
+.ep-close{position:absolute;top:.5rem;right:.6rem;background:none;border:none;color:var(--tx3);font-size:1rem;cursor:pointer;line-height:1;padding:2px 4px;}
+.ep-close:hover{color:var(--tx);}
+.ep-box{border:1px solid;padding:clamp(.5rem,.9vw,.8rem);display:flex;flex-direction:column;align-items:center;margin-bottom:clamp(.3rem,.6vh,.5rem);}
+.ep-an-lbl{font-family:var(--font-m);font-size:clamp(.45rem,.75vw,.6rem);align-self:flex-start;line-height:1;margin-bottom:2px;}
+.ep-sym{font-family:var(--font-d);font-size:clamp(2rem,4vw,3.5rem);line-height:1;font-weight:400;}
+.ep-name{font-size:clamp(.62rem,1.05vw,.82rem);color:rgba(221,230,245,.65);margin-top:2px;text-align:center;}
+.ep-mass{font-family:var(--font-m);font-size:clamp(.45rem,.78vw,.6rem);color:rgba(221,230,245,.38);}
+.ep-row{display:flex;gap:.45rem;font-size:clamp(.48rem,.82vw,.64rem);}
+.ep-key{color:var(--tx3);flex-shrink:0;}
+.ep-val{color:var(--tx);}
+.ep-fact{font-size:clamp(.5rem,.85vw,.65rem);color:rgba(221,230,245,.58);line-height:1.55;border-top:var(--hr) solid rgba(255,255,255,.08);padding-top:clamp(.3rem,.6vh,.5rem);margin-top:auto;}
+.ep-empty{display:flex;align-items:center;justify-content:center;height:100%;color:var(--tx3);font-size:clamp(.55rem,.9vw,.7rem);text-align:center;letter-spacing:.1em;text-transform:uppercase;}
+
+/* ── GAME ────────────────────────────────────────────────────── */
+.bank{display:flex;flex-wrap:wrap;gap:var(--gap);margin-bottom:var(--gap);}
+.tile{border:1px solid;display:inline-flex;flex-direction:column;align-items:center;padding:clamp(.38rem,.82vw,.6rem) clamp(.38rem,.75vw,.55rem) clamp(.32rem,.68vw,.5rem);min-width:clamp(56px,8.5vw,78px);cursor:pointer;user-select:none;transition:transform .12s,opacity .2s;}
+.tile:hover:not(.placed){transform:translateY(-2px);}
+.tile.sel{outline:2px solid var(--accent);outline-offset:2px;}
+.tile.placed{opacity:.2;pointer-events:none;}
+.t-an{font-family:var(--font-m);font-size:clamp(.48rem,.82vw,.62rem);align-self:flex-start;line-height:1;margin-bottom:1px;}
+.t-sym{font-family:var(--font-d);font-size:clamp(1rem,2.4vw,1.85rem);line-height:1;font-weight:400;}
+.t-nm{font-size:clamp(.38rem,.62vw,.52rem);color:rgba(221,230,245,.4);text-align:center;margin-top:1px;max-width:100%;overflow:hidden;white-space:nowrap;}
+.zone{border:1px dashed rgba(255,255,255,.2);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;cursor:pointer;transition:background .15s,border-color .15s;min-height:clamp(68px,11vh,95px);padding:clamp(.38rem,.7vw,.58rem);}
+.zone:hover{background:rgba(255,255,255,.025);}
+.zone.ok{border-style:solid;border-color:var(--green);background:rgba(62,255,160,.06);}
+.zone.bad{animation:zbad .42s ease;}
+@keyframes zbad{0%,100%{border-color:rgba(255,255,255,.2);background:transparent;}50%{border-color:var(--red);background:rgba(248,113,113,.1);}}
+.z-lbl{font-family:var(--font-m);font-size:clamp(.48rem,.82vw,.62rem);letter-spacing:.12em;color:rgba(255,255,255,.28);text-transform:uppercase;}
+.z-lbl.a{color:var(--accent);font-size:clamp(.58rem,.95vw,.72rem);}
+.z-content{display:flex;flex-wrap:wrap;gap:3px;margin-top:5px;justify-content:flex-start;}
+.mini-el{display:flex;flex-direction:column;align-items:center;padding:2px 5px;border:1px solid;border-radius:1px;}
+.mini-sym{font-family:var(--font-d);font-size:clamp(.7rem,1.4vw,1.05rem);line-height:1;font-weight:400;}
+.mini-nm{font-size:clamp(.33rem,.52vw,.46rem);color:rgba(221,230,245,.38);white-space:nowrap;overflow:hidden;}
+.g-row{display:flex;align-items:center;gap:var(--gap);margin-top:auto;padding-top:var(--gap);flex-shrink:0;}
+.g-score{font-family:var(--font-m);font-size:clamp(.52rem,.88vw,.68rem);color:rgba(255,255,255,.28);}
+.g-done{color:var(--green)!important;}
+.reset-btn{font-family:var(--font-m);font-size:clamp(.48rem,.8vw,.6rem);letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.28);background:none;border:var(--hr) solid rgba(255,255,255,.1);padding:.28rem .65rem;cursor:pointer;border-radius:2px;transition:all .2s;}
+.reset-btn:hover{border-color:rgba(255,255,255,.22);color:rgba(255,255,255,.5);}
+/* Game 1 */
+#grid1{display:flex;gap:var(--gap);flex-wrap:wrap;}
+.g1-z{flex:1;min-width:clamp(54px,8vw,75px);}
+/* Game 2 */
+.g2-cols{display:flex;gap:var(--gap2);flex:1;min-height:0;}
+.g2-col{flex:1;}
+.g2-lbl{font-family:var(--font-m);font-size:clamp(.48rem,.82vw,.62rem);letter-spacing:.16em;text-transform:uppercase;margin-bottom:var(--gap);}
+.g2-zone{width:100%;min-height:clamp(95px,17vh,155px);align-items:flex-start;}
+/* Game 3 */
+.g3-bins{display:flex;gap:var(--gap);flex-wrap:wrap;}
+.g3-bin{flex:1;min-width:clamp(95px,23vw,175px);}
+.g3-lbl{font-family:var(--font-m);font-size:clamp(.48rem,.82vw,.62rem);letter-spacing:.16em;text-transform:uppercase;margin-bottom:var(--gap);}
+.g3-zone{width:100%;min-height:clamp(85px,14vh,135px);align-items:flex-start;}
+/* Atomic callouts */
+.callout-row{display:flex;align-items:flex-start;gap:clamp(.55rem,1.4vw,1.1rem);border-top:var(--hr) solid rgba(255,255,255,.06);padding:clamp(.42rem,1.1vh,.75rem) 0;}
+.callout-row:first-child{border-top:none;padding-top:0;}
+.c-key{font-family:var(--font-m);font-size:clamp(.48rem,.82vw,.62rem);letter-spacing:.15em;color:var(--accent);text-transform:uppercase;min-width:clamp(75px,11vw,105px);flex-shrink:0;margin-top:1px;cursor:pointer;transition:opacity .2s;border:none;background:none;text-align:left;padding:0;}
+.c-key:hover{opacity:.75;}
+.c-val{font-size:clamp(.68rem,1.15vw,.9rem);color:rgba(221,230,245,.76);line-height:1.6;}
+.c-val strong{color:var(--tx);font-weight:500;}
+.c-val em{color:var(--tx2);font-style:normal;}
+/* Agenda */
+.ag-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 var(--gap2);flex:1;min-height:0;}
+.ag-row{display:flex;align-items:flex-start;gap:clamp(.55rem,1.4vw,.9rem);padding:clamp(.5rem,1.1vh,.8rem) 0;border-top:var(--hr) solid rgba(255,255,255,.06);}
+.ag-t{font-family:var(--font-m);font-size:clamp(.48rem,.82vw,.62rem);color:var(--accent);letter-spacing:.1em;min-width:clamp(36px,6vw,50px);flex-shrink:0;margin-top:1px;}
+.ag-c{font-size:clamp(.68rem,1.15vw,.9rem);color:rgba(221,230,245,.7);line-height:1.4;}
+.ag-c strong{color:var(--tx);display:block;font-size:clamp(.75rem,1.28vw,.97rem);font-weight:500;margin-bottom:1px;}
+.eq-banner{border-top:var(--hr) solid rgba(255,255,255,.06);padding-top:clamp(.45rem,1.2vh,.8rem);margin-top:auto;}
+.eq-tag{font-family:var(--font-m);font-size:clamp(.42rem,.72vw,.56rem);letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:.3rem;}
+.eq-q{font-size:clamp(.72rem,1.2vw,.94rem);color:rgba(221,230,245,.58);line-height:1.6;}
+/* CLO */
+.clo-box{border:var(--hr) solid rgba(245,200,66,.2);background:rgba(245,200,66,.04);padding:clamp(.65rem,1.5vh,1rem) clamp(.8rem,1.8vw,1.25rem);margin-bottom:var(--gap);}
+.clo-box.b{border-color:rgba(56,189,248,.2);background:rgba(56,189,248,.04);}
+.clo-lbl{font-family:var(--font-m);font-size:clamp(.42rem,.72vw,.56rem);letter-spacing:.22em;text-transform:uppercase;margin-bottom:clamp(.22rem,.58vh,.4rem);}
+.clo-lbl.y{color:rgba(245,200,66,.6);}
+.clo-lbl.b{color:rgba(56,189,248,.6);}
+.clo-txt{font-size:clamp(.76rem,1.28vw,.98rem);color:var(--tx);line-height:1.56;}
+.sc-row{display:flex;align-items:flex-start;gap:clamp(.45rem,1.1vw,.8rem);padding:clamp(.38rem,.9vh,.6rem) 0;border-top:var(--hr) solid rgba(255,255,255,.06);font-size:clamp(.64rem,1.08vw,.84rem);color:rgba(221,230,245,.62);line-height:1.48;}
+.sc-n{font-family:var(--font-m);font-size:clamp(.45rem,.78vw,.59rem);color:var(--accent);letter-spacing:.14em;flex-shrink:0;margin-top:2px;}
+.sc-n em{color:var(--tx3);font-style:normal;}
+/* Essential question big */
+.eq-big{border:var(--hr) solid rgba(245,200,66,.22);background:rgba(245,200,66,.04);padding:clamp(.9rem,2.5vh,1.8rem) clamp(1.1rem,2.8vw,1.9rem);flex:1;display:flex;flex-direction:column;justify-content:center;}
+.eq-big-txt{font-size:clamp(.85rem,1.75vw,1.38rem);color:var(--tx);line-height:1.78;}
+.eq-big-txt strong{color:var(--accent);font-weight:500;}
+.eq-note{font-family:var(--font-m);font-size:clamp(.45rem,.78vw,.6rem);color:rgba(255,255,255,.2);letter-spacing:.12em;margin-top:auto;padding-top:clamp(.45rem,1.1vh,.75rem);}
+/* Three regions */
+.tr-layout{display:flex;gap:var(--gap2);flex:1;min-height:0;overflow:hidden;}
+.tr-info{flex:1;display:flex;flex-direction:column;}
+.tr-map-wrap{flex-shrink:0;min-width:clamp(155px,25vw,235px);display:flex;flex-direction:column;}
+.rm-grid{display:grid;grid-template-columns:repeat(18,1fr);gap:2px;}
+.rm-cell{aspect-ratio:1;border-radius:1px;}
+
+/* ── RESPONSIVE ──────────────────────────────────────────────── */
+@media(max-width:640px){
+  :root{--px:.9rem;--pt:3rem;--pb:3.5rem;}
+  #scene-strip{display:none;} .bname,.bsub{display:none;} .btxt{display:none;}
+  h1,.h1{font-size:clamp(2.2rem,10vw,3.2rem);}
+  h2,.h2{font-size:clamp(1.8rem,8.5vw,2.6rem);}
+  .ag-grid{grid-template-columns:1fr;}
+  .pt-main-area{flex-direction:column;}
+  .el-panel{width:100%;min-height:0;}
+  .g2-cols{gap:.6rem;}
+  .g3-bins{gap:.45rem;}
+  .g3-bin{min-width:clamp(82px,26vw,140px);}
+  .tr-layout{flex-direction:column;overflow-y:auto;}
+  .tr-map-wrap{min-width:unset;}
+  .flip-card{height:clamp(105px,18vh,175px);}
+  .flip-gallery{gap:clamp(6px,1.1vw,10px);}
+}
+@media(min-width:641px) and (max-width:900px){
+  h1,.h1{font-size:clamp(2.6rem,5.5vw,4.5rem);}
+  h2,.h2{font-size:clamp(2rem,4.2vw,3.5rem);}
+  .tr-layout{flex-wrap:wrap;}
+  .tr-map-wrap{flex:0 0 100%;}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.001ms!important;animation-duration:.001ms!important;}}
+</style>
+</head>
+<body>
+
+<!-- BRAND -->
+<div id="brand">
+  <div class="bm"><div class="bsc" data-r="1"></div><div class="bsc" data-r="1"></div><div class="bsc" data-r="1"></div><div class="bsc" data-r="2"></div><div class="bsc" data-r="2"></div><div class="bsc" data-r="2"></div><div class="bsc" data-r="3"></div><div class="bsc" data-r="3"></div><div class="bsc" data-r="3"></div></div>
+  <div class="btxt"><div class="bname">STRATOSYN</div><div class="bsub">Classroom Board · Day 1 · Periodic Table</div></div>
+</div>
+<!-- HUD -->
+<div id="hud"><div id="hud-sl">01 / 11</div><div class="pb"><div class="pf" id="prog-fill" style="width:0%"></div></div></div>
+<!-- DOTS -->
+<div id="scene-strip"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDES
+════════════════════════════════════════════════════════════ -->
+<div id="slides">
+
+<!-- ── S0 · AGENDA ─────────────────────────────────────────── -->
+<div class="slide active" id="s0">
+<div class="sg">?</div><div class="si">
+<div class="rule"></div>
+<div class="lbl">7th Grade Science · Periodic Table Unit · Day 1 of 5</div>
+<h1>TODAY'S<br>AGENDA</h1>
+<div class="ag-grid">
+  <div>
+    <div class="ag-row"><div class="ag-t">0–10m</div><div class="ag-c"><strong>Element Card Gallery</strong>Flip 6 element cards before instruction</div></div>
+    <div class="ag-row"><div class="ag-t">10–18m</div><div class="ag-c"><strong>The Organizing Problem</strong>Mendeleev's challenge · Q1–Q2</div></div>
+    <div class="ag-row"><div class="ag-t">18–28m</div><div class="ag-c"><strong>Atomic Number</strong>Reading the element box · Q3–Q4</div></div>
+  </div>
+  <div>
+    <div class="ag-row"><div class="ag-t">28–38m</div><div class="ag-c"><strong>Interactive Periodic Table</strong>Periods, groups, filters · Challenges 1 &amp; 2 · Q5–Q6</div></div>
+    <div class="ag-row"><div class="ag-t">38–46m</div><div class="ag-c"><strong>Three Regions</strong>Metals · Nonmetals · Metalloids · Challenge 3 · Q7–Q8</div></div>
+    <div class="ag-row"><div class="ag-t">46–50m</div><div class="ag-c"><strong>Essential Question</strong>Stratosyn S6–S7 · Canvas submission</div></div>
+  </div>
+</div>
+<div class="eq-banner">
+  <div class="eq-tag">Essential Question — returns on slide 11</div>
+  <div class="eq-q">Why is the periodic table organized by atomic number rather than any other property?</div>
+</div>
+</div></div>
+
+<!-- ── S1 · CLO ─────────────────────────────────────────────── -->
+<div class="slide" id="s1">
+<div class="sg" style="font-size:min(40vw,40vh);">CLO</div><div class="si">
+<div class="rule"></div>
+<div class="lbl">Learning Target</div>
+<div class="clo-box">
+  <div class="clo-lbl y">Course Learning Objective · NGSS PS1.A / AZ Science Standard 7.PS1.A</div>
+  <div class="clo-txt">Students will use atomic number, period, and group to identify, organize, and classify elements within the periodic table.</div>
+</div>
+<div class="clo-box b">
+  <div class="clo-lbl b">I Can Statement · Student Friendly</div>
+  <div class="clo-txt">I can read the periodic table to find any element and explain why it is organized the way it is.</div>
+</div>
+<div style="font-family:var(--font-m);font-size:clamp(.42rem,.72vw,.56rem);letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:clamp(.2rem,.5vh,.4rem);margin-top:clamp(.28rem,.7vh,.5rem);">Success Criteria — Measurable Metrics</div>
+<div class="sc-row"><span class="sc-n">SC1</span>I can name all 4 parts of an element box: atomic number, symbol, name, atomic mass <em>→ Q3 &amp; Q4</em></div>
+<div class="sc-row"><span class="sc-n">SC2</span>I can find any element's period and group on the table <em>→ Q5, Q6 &amp; Challenge 2</em></div>
+<div class="sc-row"><span class="sc-n">SC3</span>I can classify an element as metal, nonmetal, or metalloid <em>→ Q7, Q8 &amp; Challenge 3</em></div>
+<div class="sc-row"><span class="sc-n">SC4</span>I can explain why atomic number organizes the table with 2+ examples <em>→ Essential Question</em></div>
+<div style="margin-top:auto;border-top:var(--hr) solid rgba(255,255,255,.06);padding-top:clamp(.38rem,.9vh,.62rem);font-family:var(--font-m);font-size:clamp(.42rem,.72vw,.56rem);color:rgba(255,255,255,.2);letter-spacing:.12em;">PROFICIENCY → ≥ 6/8 MC + Essential Question with 2+ named elements and explanation of scientific utility</div>
+</div></div>
+
+<!-- ── S2 · ELEMENT FLIP CARDS ─────────────────────────────── -->
+<div class="slide" id="s2">
+<div class="sg">⬡</div><div class="si">
+<div class="rule"></div>
+<div class="lbl">01 · Engage</div>
+<h2>MEET THE<br>ELEMENTS</h2>
+<div class="body" style="margin-bottom:0;">118 building blocks of everything. <strong>Click any card to flip it.</strong> Students do the same on their Stratosyn devices.</div>
+<div class="flip-gallery" id="flip-gallery"></div>
+<div class="flip-status" id="flip-status">0 / 6 flipped — click a card to reveal</div>
+</div></div>
+
+<!-- ── S3 · ORGANIZING PROBLEM ──────────────────────────────── -->
+<div class="slide" id="s3">
+<div class="sg">63</div><div class="si">
+<div class="rule"></div>
+<div class="lbl">02 · Explore</div>
+<h2>THE ORGANIZING<br>PROBLEM</h2>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);flex:1;min-height:0;">
+  <div class="ibox" style="border-color:rgba(248,113,113,.25);background:rgba(248,113,113,.04);">
+    <div class="ibox-lbl" style="color:#f87171;">The Problem · 1860s</div>
+    <div class="ibox-txt">63 known elements. No system. Properties were unpredictable. Alphabetical order told you nothing about how an element behaves or reacts.</div>
+  </div>
+  <div class="ibox" style="border-color:rgba(245,200,66,.25);background:rgba(245,200,66,.04);">
+    <div class="ibox-lbl" style="color:#f5c842;">Mendeleev's Discovery · 1869</div>
+    <div class="ibox-txt">Sort by atomic mass → properties <strong>repeat</strong> in a pattern. He called this pattern <em style="color:#f5c842;">periodic</em>. He predicted 3 missing elements before they were found.</div>
+  </div>
+  <div class="ibox" style="border-color:rgba(62,255,160,.25);background:rgba(62,255,160,.04);">
+    <div class="ibox-lbl" style="color:#3effa0;">Modern Fix · Atomic Number</div>
+    <div class="ibox-txt">Atomic mass caused ordering exceptions. Atomic number — the proton count — fixed every one. Today: <strong style="color:#3effa0;">atomic number = the organizing principle.</strong></div>
+  </div>
+</div>
+</div></div>
+
+<!-- ── S4 · ATOMIC NUMBER (interactive callouts) ─────────────── -->
+<div class="slide" id="s4">
+<div class="sg">Na</div><div class="si">
+<div class="rule"></div>
+<div class="lbl">03 · Explain · Part 1</div>
+<h2>READING THE<br>ELEMENT BOX</h2>
+<div style="display:flex;gap:var(--gap2);align-items:flex-start;flex:1;min-height:0;">
+  <div style="flex-shrink:0;">
+    <div class="el-box z-alkali jumbo" id="an-box">
+      <div class="el-an glow" id="an-part">11</div>
+      <div class="el-sym glow" id="sym-part">Na</div>
+      <div class="el-nm glow" id="nm-part">Sodium</div>
+      <div class="el-am glow" id="am-part">22.990</div>
+    </div>
+    <div style="font-family:var(--font-m);font-size:clamp(.42rem,.72vw,.56rem);color:var(--tx3);text-align:center;margin-top:clamp(.35rem,.8vh,.6rem);letter-spacing:.1em;">click labels →</div>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;overflow-y:auto;">
+    <div class="callout-row">
+      <button class="c-key" onclick="highlightPart('an')">Atomic Number</button>
+      <div class="c-val">11 — sodium has <strong style="color:var(--c-alkali);">11 protons</strong>. No other element in the universe has exactly 11. This number IS the definition of sodium.</div>
+    </div>
+    <div class="callout-row">
+      <button class="c-key" onclick="highlightPart('sym')">Symbol</button>
+      <div class="c-val">Na — from Latin <em>natrium</em>. Many symbols come from older names in Latin or German. Symbol and English name may not match.</div>
+    </div>
+    <div class="callout-row">
+      <button class="c-key" onclick="highlightPart('nm')">Element Name</button>
+      <div class="c-val">Sodium — the English name. <em>Why "Na"?</em> Because the Latin name was used first in science.</div>
+    </div>
+    <div class="callout-row">
+      <button class="c-key" onclick="highlightPart('am')">Atomic Mass</button>
+      <div class="c-val"><strong>22.990</strong> — the decimal is the tell. <strong>NOT the atomic number.</strong> Includes proton + neutron mass, averaged across all naturally occurring isotopes.</div>
+    </div>
+  </div>
+</div>
+<div style="margin-top:auto;border-top:var(--hr) solid rgba(255,255,255,.06);padding-top:clamp(.38rem,.9vh,.62rem);font-family:var(--font-m);font-size:clamp(.48rem,.82vw,.62rem);color:rgba(221,230,245,.32);">KEY RULE: Atomic number = always whole. Atomic mass = almost never whole. That decimal tells them apart every time.</div>
+</div></div>
+
+<!-- ── S5 · CHALLENGE 1 ─────────────────────────────────────── -->
+<div class="slide" id="s5">
+<div class="sg" style="color:var(--green);">1</div><div class="si">
+<div class="rule" style="background:var(--green);"></div>
+<div class="lbl g">Challenge · Round 1 of 3 · Order in the Row</div>
+<h2>PLACE PERIOD 3<br>IN ORDER</h2>
+<div class="body" style="margin-bottom:var(--gap);">Each slot shows an atomic number. <strong>Click an element from the bank</strong>, then click its correct numbered slot.</div>
+<div class="bank" id="bank1"></div>
+<div id="grid1"></div>
+<div class="g-row"><div class="g-score" id="g1-sc">Placed: 0 / 6</div><button class="reset-btn" onclick="resetR(1)">↺ Reset</button></div>
+</div></div>
+
+<!-- ── S6 · FULL INTERACTIVE PERIODIC TABLE ──────────────────── -->
+<div class="slide" id="s6">
+<div class="si">
+<div class="rule"></div>
+<div class="lbl">04 · Explain · Part 2 — Periods &amp; Groups</div>
+<h2>THE PERIODIC<br>TABLE — INTERACTIVE</h2>
+<div class="pt-slide-layout">
+  <div class="pt-toolbar" id="pt-toolbar">
+    <button class="tb-btn act" data-filter="all" onclick="filterPT('all',this)">All</button>
+    <button class="tb-btn" data-filter="alkali" onclick="filterPT('alkali',this)">Alkali</button>
+    <button class="tb-btn" data-filter="alkaline" onclick="filterPT('alkaline',this)">Alkaline Earth</button>
+    <button class="tb-btn" data-filter="transition" onclick="filterPT('transition',this)">Transition</button>
+    <button class="tb-btn" data-filter="post" onclick="filterPT('post',this)">Post-Trans</button>
+    <button class="tb-btn" data-filter="metalloid" onclick="filterPT('metalloid',this)">Metalloid</button>
+    <button class="tb-btn" data-filter="nonmetal" onclick="filterPT('nonmetal',this)">Nonmetal</button>
+    <button class="tb-btn" data-filter="halogen" onclick="filterPT('halogen',this)">Halogen</button>
+    <button class="tb-btn" data-filter="noble" onclick="filterPT('noble',this)">Noble Gas</button>
+    <button class="tb-btn" data-filter="period3" onclick="filterPT('period3',this)">Period 3</button>
+    <button class="tb-btn" data-filter="group1" onclick="filterPT('group1',this)">Group 1</button>
+    <button class="tb-btn" data-filter="group18" onclick="filterPT('group18',this)">Group 18</button>
+  </div>
+  <div class="pt-main-area">
+    <div class="pt-table-wrap" id="pt-table-wrap"></div>
+    <div class="el-panel" id="el-panel">
+      <button class="ep-close" onclick="closePanel()">×</button>
+      <div class="ep-empty" id="ep-empty">Click any<br>element</div>
+      <div id="ep-content" style="display:none;flex-direction:column;gap:clamp(.3rem,.6vh,.5rem);height:100%;">
+        <div class="ep-box" id="ep-box">
+          <div class="ep-an-lbl" id="ep-an"></div>
+          <div class="ep-sym" id="ep-sym"></div>
+          <div class="ep-name" id="ep-nm"></div>
+          <div class="ep-mass" id="ep-mass"></div>
+        </div>
+        <div class="ep-row"><span class="ep-key">Category</span><span class="ep-val" id="ep-cat"></span></div>
+        <div class="ep-row"><span class="ep-key">Period</span><span class="ep-val" id="ep-period"></span></div>
+        <div class="ep-row"><span class="ep-key">Group</span><span class="ep-val" id="ep-group"></span></div>
+        <div class="ep-fact" id="ep-fact"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div></div>
+
+<!-- ── S7 · CHALLENGE 2 ─────────────────────────────────────── -->
+<div class="slide" id="s7">
+<div class="sg" style="color:var(--green);">2</div><div class="si">
+<div class="rule" style="background:var(--green);"></div>
+<div class="lbl g">Challenge · Round 2 of 3 · Find the Family</div>
+<h2>WHICH GROUP<br>DOES IT BELONG TO?</h2>
+<div class="body" style="margin-bottom:var(--gap);"><strong>Click an element</strong>, then click its correct group column — Group 1 (Alkali) or Group 18 (Noble Gas).</div>
+<div class="bank" id="bank2"></div>
+<div class="g2-cols">
+  <div class="g2-col">
+    <div class="g2-lbl" style="color:var(--c-alkali);">Group 1 · Alkali Metals</div>
+    <div class="zone g2-zone" id="zone-g1" data-group="1" onclick="placeR2(this)">
+      <div class="z-lbl">Drop Group 1 here</div><div class="z-content" id="c-g1"></div>
+    </div>
+  </div>
+  <div class="g2-col">
+    <div class="g2-lbl" style="color:var(--c-noble);">Group 18 · Noble Gases</div>
+    <div class="zone g2-zone" id="zone-g18" data-group="18" onclick="placeR2(this)">
+      <div class="z-lbl">Drop Group 18 here</div><div class="z-content" id="c-g18"></div>
+    </div>
+  </div>
+</div>
+<div class="g-row"><div class="g-score" id="g2-sc">Placed: 0 / 6</div><button class="reset-btn" onclick="resetR(2)">↺ Reset</button></div>
+</div></div>
+
+<!-- ── S8 · THREE REGIONS ───────────────────────────────────── -->
+<div class="slide" id="s8">
+<div class="sg">Fe</div><div class="si">
+<div class="rule"></div>
+<div class="lbl">05 · Explain · Part 3</div>
+<h2>THREE<br>REGIONS</h2>
+<div class="tr-layout">
+  <div class="tr-info">
+    <div class="ibox" style="border-color:rgba(234,179,8,.22);background:rgba(234,179,8,.04);">
+      <div class="ibox-lbl" style="color:#eab308;">Metals · ~80% of all elements</div>
+      <div class="ibox-txt">Left &amp; center block. Shiny, conduct electricity and heat, malleable. Examples: Na, Fe, Au, Ca, Cu.</div>
+    </div>
+    <div class="ibox" style="border-color:rgba(59,130,246,.22);background:rgba(59,130,246,.04);">
+      <div class="ibox-lbl" style="color:#3b82f6;">Nonmetals · Upper Right</div>
+      <div class="ibox-txt">Poor conductors. Brittle as solids. Examples: O, S, Cl, N, He. Essential for all life.</div>
+    </div>
+    <div class="ibox" style="border-color:rgba(20,184,166,.22);background:rgba(20,184,166,.04);">
+      <div class="ibox-lbl" style="color:#14b8a6;">Metalloids · The Staircase</div>
+      <div class="ibox-txt">Properties of both. Si and Ge conduct electricity <strong>under certain conditions</strong>. Every computer chip ever made = silicon.</div>
+    </div>
+  </div>
+  <div class="tr-map-wrap">
+    <div id="region-map"></div>
+    <div style="display:flex;flex-direction:column;gap:clamp(3px,.5vh,5px);margin-top:clamp(.45rem,1.1vh,.8rem);">
+      <div class="rk"><div class="rk-dot" style="background:rgba(234,179,8,.55);"></div><span>Metals</span></div>
+      <div class="rk"><div class="rk-dot" style="background:rgba(59,130,246,.55);"></div><span>Nonmetals (upper-right + noble)</span></div>
+      <div class="rk"><div class="rk-dot" style="background:rgba(20,184,166,.55);"></div><span>Metalloids (staircase)</span></div>
+    </div>
+  </div>
+</div>
+</div></div>
+
+<!-- ── S9 · CHALLENGE 3 ─────────────────────────────────────── -->
+<div class="slide" id="s9">
+<div class="sg" style="color:var(--green);">3</div><div class="si">
+<div class="rule" style="background:var(--green);"></div>
+<div class="lbl g">Challenge · Round 3 of 3 · Sort the Squad</div>
+<h2>METAL, NONMETAL,<br>OR METALLOID?</h2>
+<div class="body" style="margin-bottom:var(--gap);"><strong>Click an element</strong>, then click its correct bin. Use location and properties to decide.</div>
+<div class="bank" id="bank3"></div>
+<div class="g3-bins">
+  <div class="g3-bin"><div class="g3-lbl" style="color:#eab308;">Metals</div>
+    <div class="zone g3-zone" id="bin-m" data-bin="metal" style="border-color:rgba(234,179,8,.2);" onclick="placeR3(this)">
+      <div class="z-lbl">Metals</div><div class="z-content" id="bmc"></div>
+    </div></div>
+  <div class="g3-bin"><div class="g3-lbl" style="color:#3b82f6;">Nonmetals</div>
+    <div class="zone g3-zone" id="bin-n" data-bin="nonmetal" style="border-color:rgba(59,130,246,.2);" onclick="placeR3(this)">
+      <div class="z-lbl">Nonmetals</div><div class="z-content" id="bnc"></div>
+    </div></div>
+  <div class="g3-bin"><div class="g3-lbl" style="color:#14b8a6;">Metalloids</div>
+    <div class="zone g3-zone" id="bin-t" data-bin="metalloid" style="border-color:rgba(20,184,166,.2);" onclick="placeR3(this)">
+      <div class="z-lbl">Metalloids</div><div class="z-content" id="btc"></div>
+    </div></div>
+</div>
+<div class="g-row"><div class="g-score" id="g3-sc">Placed: 0 / 6</div><button class="reset-btn" onclick="resetR(3)">↺ Reset</button></div>
+</div></div>
+
+<!-- ── S10 · ESSENTIAL QUESTION ────────────────────────────── -->
+<div class="slide" id="s10">
+<div class="sg">Σ</div><div class="si">
+<div class="rule"></div>
+<div class="lbl">06 · Evaluate</div>
+<h1>ESSENTIAL<br>QUESTION</h1>
+<div class="eq-big">
+  <div class="eq-big-txt">The modern periodic table is organized by <strong>atomic number</strong> rather than atomic mass, alphabetical order, or any other property.<br><br>Using <strong>at least TWO examples</strong> from today's lesson, explain:<br><strong>(1)</strong> What information atomic number gives us<br><strong>(2)</strong> Why this makes the table useful as a scientific tool</div>
+</div>
+<div class="eq-note">Students → Stratosyn S6 → type response → S7 → Copy → Canvas Text Entry → Submit &nbsp;|&nbsp; 12 pts: 8 MC × 1pt + Essential Question 4pts</div>
+</div></div>
+
+</div><!-- end #slides -->
+
+<nav id="nav">
+  <button class="nb" id="btn-prev" onclick="prev()" disabled><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 6H1M6 11L1 6l5-5"/></svg>Back</button>
+  <span id="sl-ctr">1 of 11</span>
+  <button class="nb prime" id="btn-next" onclick="next()">Next<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 6h10M6 1l5 5-5 5"/></svg></button>
+</nav>
+
+<script>
+/* ════════════════════════════════════════════════════════
+   ELEMENT DATA — all 118 elements
+   [an, sym, name, mass, period, group, cat, fact]
+   period 8 = lanthanide row, period 9 = actinide row
+════════════════════════════════════════════════════════ */
+const ELDATA=[
+[1,'H','Hydrogen','1.008',1,1,'nonmetal','Makes up 75% of all matter in the universe'],
+[2,'He','Helium','4.003',1,18,'noble','Used in balloons and MRI machines'],
+[3,'Li','Lithium','6.941',2,1,'alkali','Powers your phone\'s rechargeable battery'],
+[4,'Be','Beryllium','9.012',2,2,'alkaline','Extremely stiff — used in aerospace'],
+[5,'B','Boron','10.811',2,13,'metalloid','Essential for plant growth'],
+[6,'C','Carbon','12.011',2,14,'nonmetal','Basis of all known life on Earth'],
+[7,'N','Nitrogen','14.007',2,15,'nonmetal','78% of the air you breathe'],
+[8,'O','Oxygen','15.999',2,16,'nonmetal','Most abundant element in Earth\'s crust'],
+[9,'F','Fluorine','18.998',2,17,'halogen','Most reactive element known'],
+[10,'Ne','Neon','20.180',2,18,'noble','Glows red-orange in neon signs'],
+[11,'Na','Sodium','22.990',3,1,'alkali','Explodes in water; safe as table salt (NaCl)'],
+[12,'Mg','Magnesium','24.305',3,2,'alkaline','Burns with an intense white flame'],
+[13,'Al','Aluminum','26.982',3,13,'post','Most abundant metal in Earth\'s crust'],
+[14,'Si','Silicon','28.086',3,14,'metalloid','Every computer chip ever made'],
+[15,'P','Phosphorus','30.974',3,15,'nonmetal','Essential for DNA and energy (ATP)'],
+[16,'S','Sulfur','32.060',3,16,'nonmetal','Used in gunpowder and rubber vulcanizing'],
+[17,'Cl','Chlorine','35.450',3,17,'halogen','Disinfects drinking water and pools'],
+[18,'Ar','Argon','39.948',3,18,'noble','Fills incandescent light bulbs'],
+[19,'K','Potassium','39.098',4,1,'alkali','Essential electrolyte — abundant in bananas'],
+[20,'Ca','Calcium','40.078',4,2,'alkaline','Makes up your bones and teeth'],
+[21,'Sc','Scandium','44.956',4,3,'transition','Used in high-performance sports equipment'],
+[22,'Ti','Titanium','47.867',4,4,'transition','Strong as steel at half the weight'],
+[23,'V','Vanadium','50.942',4,5,'transition','Strengthens steel for tools and springs'],
+[24,'Cr','Chromium','51.996',4,6,'transition','Makes stainless steel shiny and rust-proof'],
+[25,'Mn','Manganese','54.938',4,7,'transition','Essential for steel production'],
+[26,'Fe','Iron','55.845',4,8,'transition','Carries oxygen in your blood via hemoglobin'],
+[27,'Co','Cobalt','58.933',4,9,'transition','Makes permanent magnets and blue pigment'],
+[28,'Ni','Nickel','58.693',4,10,'transition','US 5-cent coin is 75% copper, 25% nickel'],
+[29,'Cu','Copper','63.546',4,11,'transition','Best common electrical conductor for wiring'],
+[30,'Zn','Zinc','65.38',4,12,'transition','Galvanizing — prevents steel from rusting'],
+[31,'Ga','Gallium','69.723',4,13,'post','Melts in your hand (melting point 29.8°C)'],
+[32,'Ge','Germanium','72.630',4,14,'metalloid','Used in semiconductors and fiber optics'],
+[33,'As','Arsenic','74.922',4,15,'metalloid','Toxic but used in some semiconductors'],
+[34,'Se','Selenium','78.971',4,16,'nonmetal','Essential trace mineral for human health'],
+[35,'Br','Bromine','79.904',4,17,'halogen','One of only two liquid elements at room temp'],
+[36,'Kr','Krypton','83.798',4,18,'noble','Used in high-performance flash photography'],
+[37,'Rb','Rubidium','85.468',5,1,'alkali','Used in atomic clocks (incredibly precise)'],
+[38,'Sr','Strontium','87.62',5,2,'alkaline','Makes brilliant red colors in fireworks'],
+[39,'Y','Yttrium','88.906',5,3,'transition','Used in LED lights and laser crystals'],
+[40,'Zr','Zirconium','91.224',5,4,'transition','Used in nuclear reactor fuel rod cladding'],
+[41,'Nb','Niobium','92.906',5,5,'transition','Becomes superconducting at very low temps'],
+[42,'Mo','Molybdenum','95.96',5,6,'transition','Strengthens high-performance steel alloys'],
+[43,'Tc','Technetium','98',5,7,'transition','First artificially produced element (1937)'],
+[44,'Ru','Ruthenium','101.07',5,8,'transition','Used in hard disk drive coatings'],
+[45,'Rh','Rhodium','102.906',5,9,'transition','Used in catalytic converters'],
+[46,'Pd','Palladium','106.42',5,10,'transition','Used in catalytic converters and jewelry'],
+[47,'Ag','Silver','107.868',5,11,'transition','Best electrical conductor of all metals'],
+[48,'Cd','Cadmium','112.411',5,12,'transition','Used in rechargeable NiCd batteries'],
+[49,'In','Indium','114.818',5,13,'post','Used in touchscreens (ITO coating)'],
+[50,'Sn','Tin','118.710',5,14,'post','Used in solder and food cans'],
+[51,'Sb','Antimony','121.760',5,15,'metalloid','Used in flame retardants'],
+[52,'Te','Tellurium','127.60',5,16,'metalloid','Used in solar panels and DVDs'],
+[53,'I','Iodine','126.904',5,17,'halogen','Essential for thyroid hormone production'],
+[54,'Xe','Xenon','131.293',5,18,'noble','Used in HID car headlights and lasers'],
+[55,'Cs','Cesium','132.905',6,1,'alkali','Defines the second in atomic clocks'],
+[56,'Ba','Barium','137.327',6,2,'alkaline','Used as X-ray contrast agent (barium swallow)'],
+[57,'La','Lanthanum','138.905',8,3,'lanthanide','Used in high-quality camera lenses'],
+[58,'Ce','Cerium','140.116',8,4,'lanthanide','Used in lighter flints and catalytic converters'],
+[59,'Pr','Praseodymium','140.908',8,5,'lanthanide','Used in powerful neodymium magnets'],
+[60,'Nd','Neodymium','144.242',8,6,'lanthanide','Makes the strongest permanent magnets known'],
+[61,'Pm','Promethium','145',8,7,'lanthanide','Radioactive — no stable isotopes exist'],
+[62,'Sm','Samarium','150.36',8,8,'lanthanide','Used in headphones and guitar pickups'],
+[63,'Eu','Europium','151.964',8,9,'lanthanide','Makes red and blue colors in TV/phone screens'],
+[64,'Gd','Gadolinium','157.25',8,10,'lanthanide','Used as MRI contrast agent'],
+[65,'Tb','Terbium','158.925',8,11,'lanthanide','Used in green phosphors for screens'],
+[66,'Dy','Dysprosium','162.500',8,12,'lanthanide','Used in hybrid and electric car motors'],
+[67,'Ho','Holmium','164.930',8,13,'lanthanide','Has the highest magnetic moment of any element'],
+[68,'Er','Erbium','167.259',8,14,'lanthanide','Used in fiber optic signal amplifiers'],
+[69,'Tm','Thulium','168.934',8,15,'lanthanide','Used in portable X-ray machines'],
+[70,'Yb','Ytterbium','173.054',8,16,'lanthanide','Used in stainless steel and atomic clocks'],
+[71,'Lu','Lutetium','174.967',8,17,'lanthanide','Used in PET scan detectors'],
+[72,'Hf','Hafnium','178.49',6,4,'transition','Used in nuclear reactor control rods'],
+[73,'Ta','Tantalum','180.948',6,5,'transition','Used in capacitors for phones and laptops'],
+[74,'W','Tungsten','183.84',6,6,'transition','Highest melting point of all metals (3422°C)'],
+[75,'Re','Rhenium','186.207',6,7,'transition','Used in jet engine turbine blades'],
+[76,'Os','Osmium','190.23',6,8,'transition','Densest naturally occurring element'],
+[77,'Ir','Iridium','192.217',6,9,'transition','Most corrosion-resistant metal known'],
+[78,'Pt','Platinum','195.084',6,10,'transition','Used in catalytic converters and jewelry'],
+[79,'Au','Gold','196.967',6,11,'transition','Most malleable metal — 1g can cover 1 m²'],
+[80,'Hg','Mercury','200.592',6,12,'transition','Only metal that is liquid at room temperature'],
+[81,'Tl','Thallium','204.383',6,13,'post','Highly toxic — was used as rat poison'],
+[82,'Pb','Lead','207.2',6,14,'post','Used in car batteries and radiation shielding'],
+[83,'Bi','Bismuth','208.980',6,15,'post','Used in Pepto-Bismol and low-melt alloys'],
+[84,'Po','Polonium','209',6,16,'metalloid','Extremely radioactive — discovered by Marie Curie'],
+[85,'At','Astatine','210',6,17,'halogen','Rarest naturally occurring element on Earth'],
+[86,'Rn','Radon','222',6,18,'noble','Radioactive gas from uranium decay in soil'],
+[87,'Fr','Francium','223',7,1,'alkali','Most unstable naturally occurring element'],
+[88,'Ra','Radium','226',7,2,'alkaline','Discovered by Marie Curie — intensely radioactive'],
+[89,'Ac','Actinium','227',9,3,'actinide','Intensely radioactive — glows blue in the dark'],
+[90,'Th','Thorium','232.038',9,4,'actinide','Potential nuclear fuel — more abundant than uranium'],
+[91,'Pa','Protactinium','231.036',9,5,'actinide','Rare and highly toxic'],
+[92,'U','Uranium','238.029',9,6,'actinide','Primary nuclear fuel — discovered 1789'],
+[93,'Np','Neptunium','237',9,7,'actinide','First synthetic transuranic element made'],
+[94,'Pu','Plutonium','244',9,8,'actinide','Used in nuclear weapons and space power sources'],
+[95,'Am','Americium','243',9,9,'actinide','Found in household smoke detectors'],
+[96,'Cm','Curium','247',9,10,'actinide','Named for Marie and Pierre Curie'],
+[97,'Bk','Berkelium','247',9,11,'actinide','Named for Berkeley, California'],
+[98,'Cf','Californium','251',9,12,'actinide','Used to start nuclear reactors'],
+[99,'Es','Einsteinium','252',9,13,'actinide','Named for Albert Einstein'],
+[100,'Fm','Fermium','257',9,14,'actinide','Named for Enrico Fermi'],
+[101,'Md','Mendelevium','258',9,15,'actinide','Named for Dmitri Mendeleev'],
+[102,'No','Nobelium','259',9,16,'actinide','Named for Alfred Nobel'],
+[103,'Lr','Lawrencium','266',9,17,'actinide','Named for Ernest Lawrence'],
+[104,'Rf','Rutherfordium','267',7,4,'transition','Named for Ernest Rutherford'],
+[105,'Db','Dubnium','268',7,5,'transition','Named for Dubna, Russia'],
+[106,'Sg','Seaborgium','269',7,6,'transition','Named for Glenn Seaborg'],
+[107,'Bh','Bohrium','270',7,7,'transition','Named for Niels Bohr'],
+[108,'Hs','Hassium','269',7,8,'transition','Named for Hesse, Germany'],
+[109,'Mt','Meitnerium','278',7,9,'unknown','Named for Lise Meitner'],
+[110,'Ds','Darmstadtium','281',7,10,'unknown','Made at GSI in Darmstadt, Germany'],
+[111,'Rg','Roentgenium','282',7,11,'unknown','Named for Wilhelm Röntgen (X-rays)'],
+[112,'Cn','Copernicium','285',7,12,'transition','Named for Nicolaus Copernicus'],
+[113,'Nh','Nihonium','286',7,13,'unknown','Nihon = Japan — discovered in Japan (2004)'],
+[114,'Fl','Flerovium','289',7,14,'unknown','Named for Flerov Laboratory of Nuclear Reactions'],
+[115,'Mc','Moscovium','290',7,15,'unknown','Named for the Moscow region'],
+[116,'Lv','Livermorium','293',7,16,'unknown','Named for Livermore, California'],
+[117,'Ts','Tennessine','294',7,17,'halogen','Named for Tennessee'],
+[118,'Og','Oganesson','294',7,18,'noble','Named for Yuri Oganessian — heaviest known element'],
+];
+
+const BY_AN={};
+const CC={alkali:'#ef4444',alkaline:'#f97316',transition:'#eab308',post:'#22c55e',metalloid:'#14b8a6',nonmetal:'#3b82f6',halogen:'#8b5cf6',noble:'#a855f7',lanthanide:'#ec4899',actinide:'#f43f5e',unknown:'#64748b'};
+const CAT_LABEL={alkali:'Alkali Metal',alkaline:'Alkaline Earth Metal',transition:'Transition Metal',post:'Post-Transition Metal',metalloid:'Metalloid',nonmetal:'Reactive Nonmetal',halogen:'Halogen',noble:'Noble Gas',lanthanide:'Lanthanide',actinide:'Actinide',unknown:'Unknown'};
+ELDATA.forEach(e=>{BY_AN[e[0]]={an:e[0],sym:e[1],name:e[2],mass:e[3],period:e[4],group:e[5],cat:e[6],fact:e[7]};});
+
+/* ════════════════════════════════════════════════════════
+   SLIDE ENGINE
+════════════════════════════════════════════════════════ */
+const $=id=>document.getElementById(id);
+const $$=s=>[...document.querySelectorAll(s)];
+const slideEls=$$('.slide');
+const N=slideEls.length;
+let cur=0;
+
+function buildDots(){const s=$('scene-strip');for(let i=0;i<N;i++){const d=document.createElement('button');d.className='sdot'+(i===0?' act':'');d.setAttribute('aria-label',`Slide ${i+1}`);d.onclick=()=>goTo(i);s.appendChild(d);}}
+
+function goTo(n,dir){
+  if(n<0||n>=N)return;
+  const d=dir??(n>cur?1:-1);
+  slideEls[cur].classList.remove('active');
+  slideEls[cur].classList.add(d>0?'exit-l':'exit-r');
+  const lv=slideEls[cur];
+  setTimeout(()=>lv.classList.remove('exit-l','exit-r'),360);
+  slideEls[cur].scrollTop=0;
+  cur=n;
+  slideEls[cur].classList.add('active');
+  $$('.sdot').forEach((d,i)=>d.classList.toggle('act',i===cur));
+  $('hud-sl').textContent=String(cur+1).padStart(2,'0')+' / '+String(N).padStart(2,'0');
+  $('prog-fill').style.width=`${(cur/(N-1))*100}%`;
+  $('sl-ctr').textContent=`${cur+1} of ${N}`;
+  $('btn-prev').disabled=cur===0;
+  $('btn-next').disabled=cur===N-1;
+  $('btn-next').className=cur===N-2?'nb prime':'nb';
+}
+function next(){goTo(cur+1,1);}function prev(){goTo(cur-1,-1);}
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName))return;
+  if(e.key==='ArrowRight'||e.key===' '||e.key==='ArrowDown'){e.preventDefault();next();}
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();prev();}
+});
+let tx0=0,ty0=0;
+document.addEventListener('touchstart',e=>{tx0=e.touches[0].clientX;ty0=e.touches[0].clientY;},{passive:true});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx0,dy=e.changedTouches[0].clientY-ty0;if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>55)dx<0?next():prev();},{passive:true});
+
+/* ════════════════════════════════════════════════════════
+   FLIP CARDS
+════════════════════════════════════════════════════════ */
+const FLIP_ELS=[
+  {sym:'H',an:1,am:'1.008',cat:'nonmetal',name:'Hydrogen',fact:'Makes up 75% of all matter in the universe — every water molecule has 2.',period:1,group:1},
+  {sym:'O',an:8,am:'15.999',cat:'nonmetal',name:'Oxygen',fact:'You breathe it every few seconds. Most abundant element in Earth\'s crust.',period:2,group:16},
+  {sym:'Na',an:11,am:'22.990',cat:'alkali',name:'Sodium',fact:'Explodes violently in water alone — combined with Cl it becomes table salt.',period:3,group:1},
+  {sym:'Fe',an:26,am:'55.845',cat:'transition',name:'Iron',fact:'Carries oxygen in your blood via hemoglobin. Most-used metal in the world.',period:4,group:8},
+  {sym:'Si',an:14,am:'28.086',cat:'metalloid',name:'Silicon',fact:'Every computer chip ever made. Conducts electricity only under conditions.',period:3,group:14},
+  {sym:'Au',an:79,am:'196.967',cat:'transition',name:'Gold',fact:'Most malleable metal — 1 gram can be hammered to cover a full square meter.',period:6,group:11},
+];
+let flippedCount=0;
+
+function buildFlipCards(){
+  const gallery=$('flip-gallery');
+  FLIP_ELS.forEach(el=>{
+    const col=CC[el.cat]||'#888';
+    const card=document.createElement('div');
+    card.className='flip-card';
+    card.setAttribute('aria-label',`Element card: ${el.name}`);
+    card.innerHTML=`
+    <div class="fci">
+      <div class="ff z-${el.cat}">
+        <div class="ff-an">${el.an}</div>
+        <div class="ff-sym">${el.sym}</div>
+        <div class="ff-mass">${el.am}</div>
+        <div class="ff-hint">click to flip</div>
+      </div>
+      <div class="ff back" style="border-color:${col};background:rgba(${h2r(col)},.12);">
+        <div class="fb-top">
+          <div class="fb-name" style="color:${col};">${el.name}</div>
+          <div class="fb-cat" style="color:${col};">${CAT_LABEL[el.cat]||el.cat}</div>
+        </div>
+        <div class="fb-fact">${el.fact}</div>
+        <div class="fb-meta">AN: ${el.an} · AM: ${el.am} · Period ${el.period} · Group ${el.group}</div>
+      </div>
+    </div>`;
+    card.onclick=()=>{
+      const wasFlipped=card.classList.contains('flipped');
+      card.classList.toggle('flipped');
+      if(!wasFlipped){
+        flippedCount++;
+        const st=$('flip-status');
+        if(flippedCount===FLIP_ELS.length){st.textContent='✓ All 6 cards explored — continue →';st.classList.add('done');}
+        else{st.textContent=`${flippedCount} / ${FLIP_ELS.length} flipped`;}
+      }else{
+        flippedCount--;
+        const st=$('flip-status');
+        st.textContent=`${flippedCount} / ${FLIP_ELS.length} flipped`;st.classList.remove('done');
+      }
+    };
+    gallery.appendChild(card);
+  });
+}
+
+/* ════════════════════════════════════════════════════════
+   ATOMIC NUMBER INTERACTIVE CALLOUTS
+════════════════════════════════════════════════════════ */
+let activeCallout=null;
+function highlightPart(part){
+  ['an','sym','nm','am'].forEach(p=>{$(`${p}-part`)?.classList.remove('glow-active');});
+  if(activeCallout===part){activeCallout=null;return;}
+  activeCallout=part;
+  const el=$(part+'-part');
+  if(el)el.classList.add('glow-active');
+}
+
+/* ════════════════════════════════════════════════════════
+   FULL INTERACTIVE PERIODIC TABLE
+════════════════════════════════════════════════════════ */
+// Row 1-7 + lanthanide/actinide rows
+// null = gap, '*la' = lanthanide placeholder, '*ac' = actinide placeholder
+const TABLE=[
+  [1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,2],
+  [3,4,null,null,null,null,null,null,null,null,null,null,5,6,7,8,9,10],
+  [11,12,null,null,null,null,null,null,null,null,null,null,13,14,15,16,17,18],
+  [19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36],
+  [37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54],
+  [55,56,'*la',72,73,74,75,76,77,78,79,80,81,82,83,84,85,86],
+  [87,88,'*ac',104,105,106,107,108,109,110,111,112,113,114,115,116,117,118],
+];
+// Lanthanides: AN 57-71, displayed groups 3-17
+const LANTHA=[57,58,59,60,61,62,63,64,65,66,67,68,69,70,71];
+// Actinides: AN 89-103, displayed groups 3-17
+const ACTIN=[89,90,91,92,93,94,95,96,97,98,99,100,101,102,103];
+
+let ptFilter='all';
+let selectedPTCell=null;
+
+function buildPT(){
+  const wrap=$('pt-table-wrap');
+  if(!wrap)return;
+
+  // Main table
+  const mainGrid=document.createElement('div');
+  mainGrid.className='pt-grid';
+  mainGrid.style.flex='1';
+
+  TABLE.forEach((row,rowIdx)=>{
+    const period=rowIdx+1;
+    row.forEach((cell,colIdx)=>{
+      const group=colIdx+1;
+      if(cell===null){
+        const g=document.createElement('div');g.className='pt-gap';mainGrid.appendChild(g);return;
+      }
+      if(cell==='*la'||cell==='*ac'){
+        const p=document.createElement('div');p.className='pt-placeholder';
+        p.textContent=cell==='*la'?'57–71':'89–103';mainGrid.appendChild(p);return;
+      }
+      const d=BY_AN[cell];if(!d){mainGrid.appendChild(document.createElement('div'));return;}
+      const el=makePTCell(d,period);mainGrid.appendChild(el);
+    });
+  });
+  wrap.appendChild(mainGrid);
+
+  // Spacer
+  const sp=document.createElement('div');sp.className='pt-spacer';sp.style.gridColumn='1/-1';
+  wrap.appendChild(sp);
+
+  // Lanthanide row
+  const laGrid=document.createElement('div');laGrid.className='pt-fgrid';
+  [null,null,...LANTHA,null].forEach((an,i)=>{
+    if(an===null){const g=document.createElement('div');g.className='pt-gap';laGrid.appendChild(g);return;}
+    const d=BY_AN[an];if(!d){laGrid.appendChild(document.createElement('div'));return;}
+    const el=makePTCell(d,8);laGrid.appendChild(el);
+  });
+  wrap.appendChild(laGrid);
+
+  // Actinide row
+  const acGrid=document.createElement('div');acGrid.className='pt-fgrid';
+  [null,null,...ACTIN,null].forEach((an,i)=>{
+    if(an===null){const g=document.createElement('div');g.className='pt-gap';acGrid.appendChild(g);return;}
+    const d=BY_AN[an];if(!d){acGrid.appendChild(document.createElement('div'));return;}
+    const el=makePTCell(d,9);acGrid.appendChild(el);
+  });
+  wrap.appendChild(acGrid);
+}
+
+function makePTCell(d,displayPeriod){
+  const col=CC[d.cat]||'#888';
+  const el=document.createElement('div');
+  el.className=`pt-cell z-${d.cat}`;
+  el.dataset.an=d.an;el.dataset.cat=d.cat;
+  el.dataset.period=d.period<=7?d.period:(d.period===8?6:7);
+  el.dataset.group=d.group;
+  el.dataset.displayPeriod=displayPeriod;
+  el.title=`${d.name} (${d.an})`;
+  el.innerHTML=`<div class="pt-an">${d.an}</div><div class="pt-sym">${d.sym}</div>`;
+  el.onclick=()=>showElPanel(d,el);
+  return el;
+}
+
+function showElPanel(d,cellEl){
+  if(selectedPTCell)selectedPTCell.classList.remove('selected');
+  selectedPTCell=cellEl;cellEl.classList.add('selected');
+  const col=CC[d.cat]||'#888';
+  $('ep-empty').style.display='none';
+  const cont=$('ep-content');cont.style.display='flex';
+  $('ep-box').style.borderColor=col;$('ep-box').style.background=`rgba(${h2r(col)},.1)`;
+  $('ep-an').textContent=d.an;$('ep-an').style.color=col;
+  $('ep-sym').textContent=d.sym;$('ep-sym').style.color=col;
+  $('ep-nm').textContent=d.name;
+  $('ep-mass').textContent=d.mass;
+  $('ep-cat').textContent=CAT_LABEL[d.cat]||d.cat;$('ep-cat').style.color=col;
+  $('ep-period').textContent=d.period<=7?`Period ${d.period}`:d.period===8?'Lanthanide':'Actinide';
+  $('ep-group').textContent=d.group<=18?`Group ${d.group}`:'f-block';
+  $('ep-fact').textContent=d.fact;
+  $('el-panel').classList.remove('hidden');
+}
+
+function closePanel(){
+  if(selectedPTCell)selectedPTCell.classList.remove('selected');
+  selectedPTCell=null;
+  $('ep-empty').style.display='flex';$('ep-content').style.display='none';
+  $('el-panel').classList.add('hidden');
+}
+
+function filterPT(mode,btn){
+  ptFilter=mode;
+  $$('.tb-btn').forEach(b=>b.classList.remove('act'));
+  if(btn)btn.classList.add('act');
+  $$('.pt-cell').forEach(cell=>{
+    cell.classList.remove('dim','hl');
+    if(mode==='all')return;
+    const cat=cell.dataset.cat;
+    const period=parseInt(cell.dataset.period);
+    const group=parseInt(cell.dataset.group);
+    let match=false;
+    if(mode==='period3')match=period===3;
+    else if(mode==='group1')match=group===1;
+    else if(mode==='group18')match=group===18;
+    else match=cat===mode;
+    cell.classList.add(match?'hl':'dim');
+  });
+}
+
+/* ════════════════════════════════════════════════════════
+   GAME ENGINE
+════════════════════════════════════════════════════════ */
+let selected=null;
+const scores={1:0,2:0,3:0};
+
+function h2r(h){const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return r+','+g+','+b;}
+
+function clearSel(){$$('.tile.sel').forEach(t=>t.classList.remove('sel'));selected=null;}
+function selTile(el){if(el.classList.contains('placed'))return;if(selected===el){clearSel();return;}clearSel();selected=el;el.classList.add('sel');}
+function wrongFlash(zone){zone.classList.add('bad');clearSel();setTimeout(()=>zone.classList.remove('bad'),460);}
+function makeTile(sym){
+  const d=BY_AN[ELDATA.find(e=>e[1]===sym)?.[0]];
+  const col=CC[d?.cat]||'#888';
+  const el=document.createElement('button');
+  el.className='tile';el.dataset.sym=sym;
+  el.style.borderColor=col;el.style.background=`rgba(${h2r(col)},.1)`;
+  el.setAttribute('aria-label',`${d?.name||sym} — atomic number ${d?.an||''}`);
+  el.innerHTML=`<span class="t-an" style="color:${col};">${d?.an||''}</span><span class="t-sym" style="color:${col};">${sym}</span><span class="t-nm">${d?.name||''}</span>`;
+  el.onclick=()=>selTile(el);return el;
+}
+function miniEl(sym){
+  const d=BY_AN[ELDATA.find(e=>e[1]===sym)?.[0]];
+  const col=CC[d?.cat]||'#888';
+  const el=document.createElement('div');el.className='mini-el';
+  el.style.borderColor=col;el.style.background=`rgba(${h2r(col)},.12)`;
+  el.innerHTML=`<span class="mini-sym" style="color:${col};">${sym}</span><span class="mini-nm">${d?.name||''}</span>`;
+  return el;
+}
+
+/* Round 1 */
+const R1_ORDER=['Na','Mg','Al','Si','P','Cl'];
+const R1_AN={Na:11,Mg:12,Al:13,Si:14,P:15,Cl:17};
+function buildR1(){
+  const bank=$('bank1');const grid=$('grid1');
+  bank.innerHTML='';grid.innerHTML='';scores[1]=0;
+  $('g1-sc').textContent='Placed: 0 / 6';$('g1-sc').className='g-score';
+  [...R1_ORDER].sort(()=>Math.random()-.5).forEach(s=>bank.appendChild(makeTile(s)));
+  R1_ORDER.forEach(sym=>{
+    const z=document.createElement('div');z.className='zone g1-z';z.dataset.expects=sym;
+    z.innerHTML=`<div class="z-lbl a">${R1_AN[sym]}</div><div class="z-lbl" style="font-size:clamp(.4rem,.62vw,.5rem);margin-top:2px;">Period 3</div>`;
+    z.onclick=()=>{
+      if(!selected)return;
+      const s=selected.dataset.sym;
+      if(s===z.dataset.expects){
+        z.innerHTML='';z.classList.add('ok');z.appendChild(miniEl(s));
+        selected.classList.add('placed');clearSel();scores[1]++;
+        $('g1-sc').textContent=`Placed: ${scores[1]} / 6`;
+        if(scores[1]===6)$('g1-sc').className='g-score g-done';
+      }else wrongFlash(z);
+    };
+    grid.appendChild(z);
+  });
+}
+
+/* Round 2 */
+const R2_SYMS=['Li','Na','K','He','Ne','Ar'];
+const R2_GRP={Li:1,Na:1,K:1,He:18,Ne:18,Ar:18};
+function buildR2(){
+  $('bank2').innerHTML='';scores[2]=0;
+  $('g2-sc').textContent='Placed: 0 / 6';$('g2-sc').className='g-score';
+  $('c-g1').innerHTML='';$('c-g18').innerHTML='';
+  ['zone-g1','zone-g18'].forEach(id=>$(id).classList.remove('ok'));
+  [...R2_SYMS].sort(()=>Math.random()-.5).forEach(s=>$('bank2').appendChild(makeTile(s)));
+}
+function placeR2(zone){
+  if(!selected)return;
+  const sym=selected.dataset.sym;const zg=parseInt(zone.dataset.group);
+  if(R2_GRP[sym]===zg){
+    $(zg===1?'c-g1':'c-g18').appendChild(miniEl(sym));
+    selected.classList.add('placed');clearSel();scores[2]++;
+    $('g2-sc').textContent=`Placed: ${scores[2]} / 6`;
+    if(scores[2]===6){$('g2-sc').className='g-score g-done';['zone-g1','zone-g18'].forEach(id=>$(id).classList.add('ok'));}
+  }else wrongFlash(zone);
+}
+
+/* Round 3 */
+const R3_SYMS=['Fe','Ca','O','Cl','Si','Ge'];
+const R3_REG={Fe:'metal',Ca:'metal',O:'nonmetal',Cl:'nonmetal',Si:'metalloid',Ge:'metalloid'};
+const R3_CNT={metal:'bmc',nonmetal:'bnc',metalloid:'btc'};
+function buildR3(){
+  $('bank3').innerHTML='';scores[3]=0;
+  $('g3-sc').textContent='Placed: 0 / 6';$('g3-sc').className='g-score';
+  Object.values(R3_CNT).forEach(id=>$(id).innerHTML='');
+  ['bin-m','bin-n','bin-t'].forEach(id=>$(id).classList.remove('ok'));
+  [...R3_SYMS].sort(()=>Math.random()-.5).forEach(s=>$('bank3').appendChild(makeTile(s)));
+}
+function placeR3(zone){
+  if(!selected)return;
+  const sym=selected.dataset.sym;const bin=zone.dataset.bin;
+  if(R3_REG[sym]===bin){
+    $(R3_CNT[bin]).appendChild(miniEl(sym));
+    selected.classList.add('placed');clearSel();scores[3]++;
+    $('g3-sc').textContent=`Placed: ${scores[3]} / 6`;
+    if(scores[3]===6){$('g3-sc').className='g-score g-done';['bin-m','bin-n','bin-t'].forEach(id=>$(id).classList.add('ok'));}
+  }else wrongFlash(zone);
+}
+function resetR(n){clearSel();if(n===1)buildR1();if(n===2)buildR2();if(n===3)buildR3();}
+
+/* ════════════════════════════════════════════════════════
+   REGION MAP
+════════════════════════════════════════════════════════ */
+function buildRegionMap(){
+  const el=$('region-map');if(!el)return;
+  const ROWS=[
+    ['N','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','N'],
+    ['M','M','E','E','E','E','E','E','E','E','E','E','T','N','N','N','N','N'],
+    ['M','M','E','E','E','E','E','E','E','E','E','E','M','T','N','N','N','N'],
+    ['M','M','M','M','M','M','M','M','M','M','M','M','M','T','T','N','N','N'],
+    ['M','M','M','M','M','M','M','M','M','M','M','M','M','M','T','T','N','N'],
+    ['M','M','E','M','M','M','M','M','M','M','M','M','M','M','M','T','N','N'],
+    ['M','M','E','M','M','M','M','M','M','M','M','M','M','M','M','M','N','N'],
+  ];
+  const RC={M:'rgba(234,179,8,.3)',N:'rgba(59,130,246,.25)',T:'rgba(20,184,166,.25)',E:'rgba(255,255,255,.03)'};
+  const grid=document.createElement('div');grid.className='rm-grid';
+  ROWS.forEach(row=>row.forEach(t=>{const c=document.createElement('div');c.className='rm-cell';c.style.background=RC[t];grid.appendChild(c);}));
+  el.appendChild(grid);
+}
+
+/* ════════════════════════════════════════════════════════
+   BOOT
+════════════════════════════════════════════════════════ */
+buildDots();
+buildFlipCards();
+buildPT();
+buildR1();buildR2();buildR3();
+buildRegionMap();
+goTo(0);
+</script>
+</body>
+</html>
