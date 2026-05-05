@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Stratosyn · Day 2 · Periodic Table · Student Worksheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+/* ================================================================
+   STRATOSYN · STUDENT WORKSHEET · Day 2 · Periodic Table
+   Electron Shells · Valence Electrons · Element Families
+   localStorage-persisted · Full metric tracking · Scrollable
+   ================================================================ */
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{color-scheme:dark;scroll-behavior:smooth;}
+:root{
+  --void:#06080f;--d1:#0b0f1e;--tx:#dde6f5;--tx2:#8898b8;--tx3:#4a5570;
+  --accent:#f5c842;--accent-soft:rgba(245,200,66,.10);--accent-line:rgba(245,200,66,.22);--accent-glow:rgba(245,200,66,.45);
+  --green:#3effa0;--blue:#38bdf8;--red:#f87171;--purple:#c084fc;
+  --hr:.0625rem;--card-max:800px;
+  --font-d:"Bebas Neue","Impact",sans-serif;
+  --font-b:"Syne",sans-serif;
+  --font-m:"DM Mono",ui-monospace,monospace;
+  --c-alkali:#ef4444;--c-alkaline:#f97316;--c-transition:#eab308;--c-post:#22c55e;
+  --c-metalloid:#14b8a6;--c-nonmetal:#3b82f6;--c-halogen:#8b5cf6;--c-noble:#a855f7;
+}
+body{background:var(--void);color:var(--tx);font-family:var(--font-m);overflow-x:hidden;padding-top:58px;}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(60% 50% at 50% 40%,rgba(56,189,248,.04) 0%,transparent 65%),radial-gradient(40% 35% at 80% 80%,rgba(62,255,160,.03) 0%,transparent 60%);z-index:0;pointer-events:none;}
+::selection{background:var(--accent);color:var(--void);}
+
+/* ── HEADER ── */
+#hdr{position:fixed;top:0;left:0;right:0;z-index:50;height:52px;background:rgba(6,8,15,.96);backdrop-filter:blur(14px);border-bottom:var(--hr) solid rgba(255,255,255,.07);display:flex;align-items:center;padding:0 1.25rem;gap:1rem;}
+.hdr-brand{display:flex;align-items:center;gap:.55rem;flex-shrink:0;}
+.bm{display:grid;grid-template-columns:repeat(3,8px);grid-template-rows:repeat(3,8px);gap:1.5px;transform-style:preserve-3d;animation:bfloat 14s ease-in-out infinite;}
+@keyframes bfloat{0%{transform:rotateY(0deg) rotateX(2.5deg);}33%{transform:rotateY(6deg) rotateX(-1.5deg);}66%{transform:rotateY(-5deg) rotateX(3deg);}100%{transform:rotateY(0deg) rotateX(2.5deg);}}
+.bsc{background:rgba(221,230,245,.12);}
+.bsc[data-r="2"]{background:var(--accent);box-shadow:0 0 5px var(--accent-glow);animation:scidle 2.8s ease-in-out infinite;}
+@keyframes scidle{0%,100%{opacity:1;}50%{opacity:.72;}}
+.hdr-name{font-family:var(--font-b);font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--tx2);}
+.hdr-name span{color:var(--accent);}
+.hdr-mid{flex:1;display:flex;flex-direction:column;gap:3px;min-width:0;}
+.hdr-prog-lbl{font-family:var(--font-m);font-size:.48rem;letter-spacing:.2em;text-transform:uppercase;color:var(--tx3);}
+.hdr-prog-bar{height:2px;background:rgba(255,255,255,.07);border-radius:1px;overflow:hidden;}
+.hdr-prog-fill{height:100%;background:var(--blue);transition:width .5s ease;width:0%;}
+#hdr-timer{font-family:var(--font-m);font-size:.68rem;letter-spacing:.14em;color:var(--tx3);flex-shrink:0;}
+.save-dot{width:5px;height:5px;border-radius:50%;background:var(--green);opacity:0;transition:opacity .3s;flex-shrink:0;}
+.save-dot.flash{opacity:1;}
+
+/* ── LAYOUT ── */
+main{position:relative;z-index:1;padding-bottom:4rem;}
+.section-wrap{max-width:var(--card-max);margin:0 auto;padding:2rem 1.25rem;}
+.card{background:rgba(11,15,30,.65);border-left:var(--hr) solid rgba(56,189,248,.2);backdrop-filter:blur(8px);padding:1.75rem;position:relative;overflow:hidden;}
+.card::before{content:"";position:absolute;inset:0 auto 0 0;width:1px;background:linear-gradient(180deg,transparent,rgba(56,189,248,.18),transparent);pointer-events:none;}
+.card+.card{margin-top:1.25rem;}
+.rule{width:2.5rem;height:var(--hr);background:var(--blue);margin-bottom:.65rem;}
+.rule.g{background:var(--green);}
+.lbl{font-size:.58rem;letter-spacing:.26em;text-transform:uppercase;color:var(--blue);margin-bottom:.6rem;display:flex;align-items:center;gap:.4rem;}
+.lbl::before{content:"";width:4px;height:4px;background:currentColor;flex-shrink:0;}
+.lbl.g{color:var(--green);}
+.lbl.a{color:var(--accent);}
+h2{font-family:var(--font-d);font-size:clamp(1.8rem,4.5vw,3.5rem);line-height:.9;letter-spacing:.03em;font-weight:400;margin-bottom:.65rem;}
+.body-t{font-size:.82rem;line-height:1.82;color:rgba(221,230,245,.62);}
+.body-t strong{color:var(--tx);font-weight:500;}
+.body-t em{color:var(--blue);font-style:normal;}
+
+/* ── STUDENT INFO ── */
+.si-grid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin-top:1rem;}
+@media(max-width:480px){.si-grid{grid-template-columns:1fr;}}
+.si-row{display:flex;flex-direction:column;gap:.28rem;}
+.si-lbl{font-size:.5rem;letter-spacing:.24em;text-transform:uppercase;color:var(--tx3);}
+.si-input,.si-select{background:rgba(255,255,255,.022);border:var(--hr) solid rgba(255,255,255,.08);padding:.6rem .75rem;width:100%;font-family:var(--font-m);font-size:.76rem;color:var(--tx);transition:border-color .2s;}
+.si-input:focus,.si-select:focus{outline:none;border-color:rgba(56,189,248,.3);}
+.si-select{appearance:none;cursor:pointer;}
+.si-select option{background:#0b0f1e;}
+
+/* ── RECAP CARDS ── */
+.recap-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.75rem;margin-top:.85rem;}
+.recap-card{border:var(--hr) solid rgba(255,255,255,.07);background:rgba(255,255,255,.018);padding:.85rem 1rem;cursor:pointer;transition:border-color .2s,background .2s;}
+.recap-card:hover{border-color:rgba(255,255,255,.14);}
+.recap-card.revealed{border-color:rgba(56,189,248,.25);background:rgba(56,189,248,.04);}
+.rc-q{font-size:.65rem;color:var(--tx2);line-height:1.6;flex:1;}
+.rc-a{font-size:.68rem;color:var(--blue);line-height:1.55;margin-top:.5rem;display:none;}
+.recap-card.revealed .rc-a{display:block;}
+.rc-hint{font-family:var(--font-m);font-size:.45rem;color:var(--tx3);letter-spacing:.1em;text-transform:uppercase;margin-top:.5rem;}
+.recap-card.revealed .rc-hint{display:none;}
+
+/* ── SHELL BUILDER ── */
+.shell-layout{display:flex;gap:1.25rem;align-items:flex-start;flex-wrap:wrap;margin:1rem 0;}
+.shell-btn-grid{display:flex;flex-wrap:wrap;gap:.45rem;flex-shrink:0;}
+.shell-btn{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.02);display:flex;align-items:center;gap:.45rem;padding:.38rem .55rem;cursor:pointer;font-family:var(--font-m);font-size:.62rem;color:var(--tx2);transition:all .18s;}
+.shell-btn:hover{border-color:rgba(255,255,255,.2);color:var(--tx);}
+.shell-btn.active{border-color:rgba(56,189,248,.4);background:rgba(56,189,248,.08);color:var(--blue);}
+.sb-sym{font-family:var(--font-d);font-size:1.1rem;line-height:1;min-width:22px;text-align:center;}
+.shell-center{display:flex;flex-direction:column;align-items:center;gap:.45rem;flex:1;min-width:180px;}
+#shell-svg-s{overflow:visible;}
+.shell-detail{flex:1;min-width:160px;display:flex;flex-direction:column;gap:.5rem;}
+.sd-row{border-top:var(--hr) solid rgba(255,255,255,.06);padding:.42rem 0;}
+.sd-row:first-child{border-top:none;padding-top:0;}
+.sd-key{font-family:var(--font-m);font-size:.46rem;letter-spacing:.18em;text-transform:uppercase;color:var(--tx3);margin-bottom:.18rem;}
+.sd-val{font-size:.7rem;color:var(--tx);line-height:1.5;}
+.sd-val em{color:var(--blue);font-style:normal;}
+
+/* ── MC QUESTIONS ── */
+.mc-block{margin-top:1.4rem;}
+.mc-q{font-family:var(--font-m);font-size:.72rem;color:var(--tx);line-height:1.72;margin-bottom:.5rem;font-weight:500;}
+.mc-opts{display:flex;flex-direction:column;gap:.28rem;}
+.mc-opt{display:flex;align-items:flex-start;gap:.6rem;padding:.48rem .7rem;border:var(--hr) solid rgba(255,255,255,.07);background:rgba(255,255,255,.018);cursor:pointer;font-family:var(--font-m);font-size:.66rem;color:var(--tx2);text-align:left;width:100%;transition:border-color .15s,background .15s,color .15s;}
+.mc-opt:hover{border-color:rgba(56,189,248,.25);color:var(--tx);background:rgba(255,255,255,.03);}
+.mc-opt.selected{border-color:var(--blue);background:rgba(56,189,248,.09);color:var(--blue);}
+.mc-letter{font-family:var(--font-d);font-size:.88rem;color:var(--blue);opacity:.4;flex-shrink:0;line-height:1;transition:opacity .15s;padding-top:.05rem;}
+.mc-opt.selected .mc-letter{opacity:1;}
+.mc-text{line-height:1.55;}
+
+/* ── FAMILY FLIP CARDS ── */
+.fam-gallery{display:flex;flex-wrap:wrap;gap:10px;margin:1.1rem 0;}
+.fam-card{perspective:800px;cursor:pointer;width:clamp(110px,20vw,155px);height:clamp(135px,22vw,180px);flex-shrink:0;user-select:none;}
+.fci{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .52s cubic-bezier(.4,0,.2,1);}
+.fam-card.flipped .fci{transform:rotateY(180deg);}
+.ff{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid;display:flex;flex-direction:column;padding:.6rem .65rem;}
+.ff.back{transform:rotateY(180deg);}
+.fam-card:hover .ff:not(.back){border-color:rgba(255,255,255,.2);}
+.ff-group{font-family:var(--font-m);font-size:.42rem;letter-spacing:.14em;color:rgba(221,230,245,.3);margin-bottom:3px;}
+.ff-fname{font-family:var(--font-d);font-size:clamp(1rem,2.5vw,1.5rem);line-height:1;font-weight:400;flex:1;display:flex;align-items:center;}
+.ff-exs{display:flex;gap:4px;flex-wrap:wrap;margin-top:auto;}
+.ff-ex{font-family:var(--font-d);font-size:clamp(.85rem,2vw,1.2rem);line-height:1;font-weight:400;opacity:.7;}
+.ff-hint{font-size:.42rem;letter-spacing:.08em;text-transform:uppercase;text-align:center;color:rgba(221,230,245,.22);margin-top:3px;}
+.fb-ve{display:flex;align-items:center;gap:.4rem;margin-bottom:5px;}
+.fb-ve-num{font-family:var(--font-d);font-size:clamp(1.5rem,4vw,2.2rem);line-height:1;font-weight:400;}
+.fb-ve-lbl{font-size:.42rem;color:rgba(221,230,245,.4);letter-spacing:.07em;line-height:1.4;}
+.fb-trait{font-size:clamp(.48rem,.85vw,.62rem);color:rgba(221,230,245,.65);line-height:1.5;flex:1;}
+.fb-real{font-family:var(--font-m);font-size:.38rem;color:rgba(221,230,245,.3);margin-top:auto;padding-top:4px;border-top:1px solid rgba(255,255,255,.07);}
+.flip-status{font-family:var(--font-m);font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--tx3);margin-top:.35rem;transition:color .3s;}
+.flip-status.done{color:var(--green);}
+
+/* ── GAMES ── */
+.game-block{margin-top:1rem;padding:1.1rem;border:var(--hr) solid rgba(255,255,255,.07);background:rgba(255,255,255,.015);}
+.game-title{font-family:var(--font-d);font-size:1.5rem;letter-spacing:.04em;line-height:1;margin-bottom:.28rem;color:var(--green);}
+.game-inst{font-size:.68rem;color:rgba(221,230,245,.55);line-height:1.6;margin-bottom:.85rem;}
+.bank{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:.9rem;}
+.tile{border:1px solid;display:inline-flex;flex-direction:column;align-items:center;padding:.42rem .42rem .35rem;min-width:58px;cursor:pointer;user-select:none;transition:transform .12s,opacity .2s;}
+.tile:hover:not(.placed){transform:translateY(-2px);}
+.tile.sel{outline:2px solid var(--accent);outline-offset:2px;}
+.tile.placed{opacity:.2;pointer-events:none;}
+.t-an{font-family:var(--font-m);font-size:7.5px;align-self:flex-start;line-height:1;margin-bottom:1px;}
+.t-sym{font-family:var(--font-d);font-size:1.25rem;line-height:1;font-weight:400;}
+.t-nm{font-size:5.5px;color:rgba(221,230,245,.38);text-align:center;margin-top:1px;max-width:100%;overflow:hidden;white-space:nowrap;}
+.prop-tile{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.02);padding:.4rem .65rem;cursor:pointer;font-family:var(--font-m);font-size:.62rem;color:var(--tx2);transition:all .15s;line-height:1.4;}
+.prop-tile:hover:not(.placed){border-color:rgba(255,255,255,.22);color:var(--tx);}
+.prop-tile.sel{outline:2px solid var(--accent);outline-offset:2px;color:var(--accent);border-color:var(--accent-line);}
+.prop-tile.placed{opacity:.2;pointer-events:none;}
+.zone{border:1px dashed rgba(255,255,255,.18);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;cursor:pointer;transition:background .15s,border-color .15s;min-height:68px;padding:.42rem;}
+.zone:hover{background:rgba(255,255,255,.02);}
+.zone.ok{border-style:solid;border-color:var(--green);background:rgba(62,255,160,.06);}
+.zone.bad{animation:zbad .42s ease;}
+@keyframes zbad{0%,100%{border-color:rgba(255,255,255,.18);}50%{border-color:var(--red);background:rgba(248,113,113,.1);}}
+.z-lbl{font-family:var(--font-m);font-size:.5rem;letter-spacing:.1em;color:rgba(255,255,255,.26);text-transform:uppercase;}
+.z-lbl.a{color:var(--accent);font-size:.58rem;}
+.z-content{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px;width:100%;}
+.mini-el{display:flex;flex-direction:column;align-items:center;padding:2px 4px;border:1px solid;border-radius:1px;}
+.mini-sym{font-family:var(--font-d);font-size:.8rem;line-height:1;font-weight:400;}
+.mini-nm{font-size:5px;color:rgba(221,230,245,.38);}
+.mini-prop{font-family:var(--font-m);font-size:.45rem;color:rgba(221,230,245,.5);padding:2px 5px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);}
+.two-cols{display:flex;gap:10px;flex-wrap:wrap;}
+.two-cols>div{flex:1;min-width:120px;}
+.col-lbl{font-family:var(--font-m);font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.5rem;}
+.three-bins{display:flex;gap:8px;flex-wrap:wrap;}
+.three-bins>div{flex:1;min-width:110px;}
+.bin-lbl{font-family:var(--font-m);font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.5rem;}
+.rank-slots{display:flex;gap:8px;flex-wrap:wrap;}
+.rank-slot{flex:1;min-width:80px;display:flex;flex-direction:column;align-items:center;gap:.35rem;}
+.rank-lbl{font-family:var(--font-m);font-size:.52rem;color:var(--tx3);letter-spacing:.1em;text-align:center;line-height:1.35;}
+.rank-zone{width:100%;min-height:65px;}
+.game-score{display:flex;align-items:center;gap:.85rem;margin-top:.6rem;padding-top:.4rem;border-top:var(--hr) solid rgba(255,255,255,.06);}
+.g-sc{font-family:var(--font-m);font-size:.6rem;color:rgba(255,255,255,.28);}
+.g-done{color:var(--green)!important;}
+.g-att{font-family:var(--font-m);font-size:.56rem;color:rgba(255,255,255,.2);}
+.reset-btn{font-family:var(--font-m);font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.28);background:none;border:var(--hr) solid rgba(255,255,255,.1);padding:.25rem .6rem;cursor:pointer;border-radius:2px;transition:all .2s;}
+.reset-btn:hover{border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.5);}
+
+/* ── EQ ── */
+.eq-banner{background:rgba(56,189,248,.06);border-left:2px solid rgba(56,189,248,.3);padding:.65rem .85rem;margin:1rem 0;}
+.eq-l{font-size:.5rem;letter-spacing:.28em;color:var(--blue);text-transform:uppercase;margin-bottom:.25rem;}
+.eq-t{font-family:var(--font-b);font-size:.88rem;font-weight:600;color:var(--tx);line-height:1.4;}
+.ws-res{width:100%;min-height:130px;background:rgba(255,255,255,.022);border:var(--hr) solid rgba(255,255,255,.08);padding:.65rem .75rem;font-family:var(--font-m);font-size:.72rem;color:var(--tx);resize:vertical;line-height:1.7;display:block;transition:border-color .2s;}
+.ws-res:focus{outline:none;border-color:rgba(56,189,248,.3);}
+.ws-res::placeholder{color:var(--tx3);}
+.word-count{font-family:var(--font-m);font-size:.52rem;color:var(--tx3);text-align:right;margin-top:.3rem;}
+
+/* ── SUBMIT ── */
+.submit-card{background:rgba(11,15,30,.8);border:var(--hr) solid rgba(56,189,248,.2);padding:2rem 1.75rem;}
+.chk-list{display:flex;flex-direction:column;gap:.35rem;margin:1rem 0;}
+.chk-row{display:flex;align-items:center;gap:.65rem;font-size:.7rem;color:rgba(221,230,245,.62);}
+.chk-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.15);flex-shrink:0;transition:background .3s;}
+.chk-dot.done{background:var(--green);}
+.copy-status{display:none;font-family:var(--font-m);font-size:.62rem;line-height:1.75;border:var(--hr) solid rgba(255,255,255,.09);background:rgba(255,255,255,.025);padding:.85rem 1rem;margin-bottom:.75rem;}
+.copy-btn{display:flex;align-items:center;justify-content:center;gap:.65rem;width:100%;padding:1rem 1.6rem;border:var(--hr) solid var(--blue);background:var(--blue);color:var(--void);font-family:var(--font-m);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;margin-top:1.1rem;transition:filter .2s,background .3s,border-color .3s;}
+.copy-btn:hover:not(:disabled){filter:brightness(1.08);}
+.copy-btn.copied{background:var(--green);border-color:var(--green);}
+.copy-notice{font-family:var(--font-m);font-size:.58rem;color:var(--green);letter-spacing:.16em;text-transform:uppercase;margin-top:.55rem;opacity:0;transition:opacity .3s;display:flex;align-items:center;gap:.4rem;}
+.copy-notice.show{opacity:1;}
+.copy-notice::before{content:"";width:5px;height:5px;background:var(--green);border-radius:50%;flex-shrink:0;}
+.canvas-steps{margin-top:1.25rem;display:flex;flex-direction:column;gap:.5rem;}
+.cs{display:flex;gap:.75rem;align-items:flex-start;font-size:.7rem;color:rgba(221,230,245,.62);line-height:1.5;}
+.cs-n{font-family:var(--font-d);font-size:1.1rem;color:var(--blue);line-height:1;flex-shrink:0;min-width:18px;}
+.section-divider{text-align:center;padding:1rem 0;font-family:var(--font-m);font-size:.5rem;letter-spacing:.28em;text-transform:uppercase;color:var(--tx3);}
+
+/* ── IBOX ── */
+.ibox{border:var(--hr) solid rgba(255,255,255,.08);background:rgba(255,255,255,.025);padding:.85rem 1rem;margin-bottom:.75rem;}
+.ibox-lbl{font-size:.48rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.35rem;}
+.ibox-txt{font-size:.75rem;line-height:1.72;color:rgba(221,230,245,.72);}
+.ibox-txt strong{color:var(--tx);font-weight:500;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px){
+  .shell-layout{flex-direction:column;}
+  .shell-detail{width:100%;}
+  .fam-card{width:clamp(90px,28vw,130px);height:clamp(120px,28vw,160px);}
+  .two-cols{flex-direction:column;}
+  .three-bins{flex-direction:column;}
+  .rank-slots{gap:.5rem;}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.001ms!important;animation-duration:.001ms!important;}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="hdr">
+  <div class="hdr-brand">
+    <div class="bm"><div class="bsc" data-r="1"></div><div class="bsc" data-r="1"></div><div class="bsc" data-r="1"></div><div class="bsc" data-r="2"></div><div class="bsc" data-r="2"></div><div class="bsc" data-r="2"></div><div class="bsc" data-r="3"></div><div class="bsc" data-r="3"></div><div class="bsc" data-r="3"></div></div>
+    <div class="hdr-name">Stratosyn · Ms. Madewell &nbsp;<span id="hdr-name-display">—</span></div>
+  </div>
+  <div class="hdr-mid">
+    <div class="hdr-prog-lbl">Day 2 Progress — <span id="hdr-prog-pct">0%</span></div>
+    <div class="hdr-prog-bar"><div class="hdr-prog-fill" id="hdr-prog-fill"></div></div>
+  </div>
+  <div id="hdr-timer">00:00</div>
+  <div class="save-dot" id="save-dot"></div>
+</header>
+
+<main>
+
+<!-- ── S0: TITLE + STUDENT INFO ── -->
+<div class="section-wrap" id="s0">
+  <div class="card">
+    <div class="rule"></div>
+    <div class="lbl a">7th Grade Science · Day 2 of 5</div>
+    <h2>ELECTRON SHELLS<br>&amp; ELEMENT FAMILIES</h2>
+    <p class="body-t" style="margin-bottom:1rem;">Today you'll explore <em>why</em> the periodic table works — electron shells, valence electrons, and element families. Your work saves automatically every time you click something. Complete all sections to unlock the copy button at the end.</p>
+    <div class="si-grid">
+      <div class="si-row"><div class="si-lbl">First Name</div><input class="si-input" id="si-first" type="text" placeholder="First name" autocomplete="given-name"></div>
+      <div class="si-row"><div class="si-lbl">Last Name</div><input class="si-input" id="si-last" type="text" placeholder="Last name" autocomplete="family-name"></div>
+      <div class="si-row"><div class="si-lbl">Class Period</div>
+        <select class="si-select" id="si-period">
+          <option value="">Select period</option>
+          <option>Period 1</option><option>Period 2</option><option>Period 3</option>
+          <option>Period 4</option><option>Period 5</option><option>Period 6</option><option>Period 7</option>
+        </select>
+      </div>
+      <div class="si-row"><div class="si-lbl">Today's Date</div><input class="si-input" id="si-date" type="date"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── S1: DAY 1 RECAP ── -->
+<div class="section-divider">· · ·</div>
+<div class="section-wrap" id="s1" data-section="recap">
+  <div class="card">
+    <div class="rule"></div>
+    <div class="lbl">00 · Day 1 Recap · Click each card to review</div>
+    <h2>WHAT WE<br>LEARNED</h2>
+    <p class="body-t" style="margin-bottom:.75rem;">Six quick questions from Day 1. Click each card to reveal the answer. This section does not affect your grade — it's just a warm-up.</p>
+    <div class="recap-grid" id="recap-grid"></div>
+  </div>
+</div>
+
+<!-- ── S2: ELECTRON SHELLS ── -->
+<div class="section-divider">· · ·</div>
+<div class="section-wrap" id="s2" data-section="shells">
+  <div class="card">
+    <div class="rule"></div>
+    <div class="lbl">01 · Explain · Electron Shells</div>
+    <h2>ELECTRON<br>SHELLS</h2>
+    <p class="body-t" style="margin-bottom:1rem;">Electrons don't randomly surround the nucleus — they fill <strong>energy shells</strong> in order. Shell 1 (closest to nucleus) fills first — max 2 electrons. Shell 2 — max 8 electrons. Shell 3 — max 8 electrons. The number of shells an atom uses equals its <strong>period number</strong>. Click any element to see its shell diagram.</p>
+
+    <div class="shell-layout">
+      <div>
+        <div style="font-family:var(--font-m);font-size:.48rem;letter-spacing:.18em;text-transform:uppercase;color:var(--tx3);margin-bottom:.45rem;">Select an element</div>
+        <div class="shell-btn-grid" id="shell-btns-s"></div>
+      </div>
+      <div class="shell-center">
+        <svg id="shell-svg-s" width="200" height="200" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+          <g id="s-rings"></g>
+          <g id="s-electrons"></g>
+          <circle id="s-nucleus-bg" cx="150" cy="150" r="22" fill="rgba(245,200,66,.15)" stroke="#f5c842" stroke-width="1"/>
+          <text id="s-nucleus-text" x="150" y="154" text-anchor="middle" font-family="'Bebas Neue',Impact,sans-serif" font-size="16" fill="#f5c842">?</text>
+          <text id="s-nucleus-sub" x="150" y="165" text-anchor="middle" font-family="'DM Mono',monospace" font-size="7" fill="rgba(245,200,66,.45)">protons</text>
+        </svg>
+        <div style="font-family:var(--font-m);font-size:.46rem;color:var(--tx3);text-align:center;letter-spacing:.08em;" id="s-caption">Click an element above</div>
+      </div>
+      <div class="shell-detail">
+        <div class="sd-row"><div class="sd-key">Element</div><div class="sd-val" id="sd-el">—</div></div>
+        <div class="sd-row"><div class="sd-key">Period (= shells)</div><div class="sd-val" id="sd-period">—</div></div>
+        <div class="sd-row"><div class="sd-key">Electron distribution</div><div class="sd-val" id="sd-dist">—</div></div>
+        <div class="sd-row"><div class="sd-key">Valence electrons</div><div class="sd-val" id="sd-ve">—</div></div>
+        <div class="sd-row"><div class="sd-key">Group</div><div class="sd-val" id="sd-group">—</div></div>
+      </div>
+    </div>
+
+    <div class="mc-block" data-qid="q1">
+      <p class="mc-q">Q1 · Sodium (Na) has atomic number 11 and is in Period 3. What does Period 3 tell you about sodium's electron structure?</p>
+      <div class="mc-opts">
+        <button class="mc-opt" data-val="A" type="button"><span class="mc-letter">A</span><span class="mc-text">Sodium's electrons are arranged in 3 energy shells around the nucleus</span></button>
+        <button class="mc-opt" data-val="B" type="button"><span class="mc-letter">B</span><span class="mc-text">Sodium has exactly 3 electrons in total</span></button>
+        <button class="mc-opt" data-val="C" type="button"><span class="mc-letter">C</span><span class="mc-text">Sodium has 3 protons in its nucleus</span></button>
+        <button class="mc-opt" data-val="D" type="button"><span class="mc-letter">D</span><span class="mc-text">Sodium belongs to the 3rd chemical family</span></button>
+      </div>
+    </div>
+
+    <div class="mc-block" data-qid="q2">
+      <p class="mc-q">Q2 · Shell 1 holds a maximum of 2 electrons. Shell 2 holds a maximum of 8 electrons. How many total electrons can an atom have before it needs to start filling a 3rd shell?</p>
+      <div class="mc-opts">
+        <button class="mc-opt" data-val="A" type="button"><span class="mc-letter">A</span><span class="mc-text">8 — the second shell is the last one most atoms use</span></button>
+        <button class="mc-opt" data-val="B" type="button"><span class="mc-letter">B</span><span class="mc-text">10 — 2 in shell 1 plus 8 in shell 2</span></button>
+        <button class="mc-opt" data-val="C" type="button"><span class="mc-letter">C</span><span class="mc-text">12 — each shell holds 4 more than the one before it</span></button>
+        <button class="mc-opt" data-val="D" type="button"><span class="mc-letter">D</span><span class="mc-text">16 — each shell doubles in capacity</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── S3: VALENCE ELECTRONS + CHALLENGE 1 ── -->
+<div class="section-divider">· · ·</div>
+<div class="section-wrap" id="s3" data-section="valence">
+  <div class="card">
+    <div class="rule"></div>
+    <div class="lbl">02 · Explain · Valence Electrons</div>
+    <h2>VALENCE<br>ELECTRONS</h2>
+    <p class="body-t" style="margin-bottom:1rem;">The electrons in an atom's <strong>outermost shell</strong> are called <strong>valence electrons</strong>. They are the ones that interact with other atoms during chemical reactions. For main-group elements, the group number tells you how many valence electrons the atom has.</p>
+
+    <div class="ibox" style="border-color:rgba(239,68,68,.22);background:rgba(239,68,68,.04);">
+      <div class="ibox-lbl" style="color:var(--c-alkali);">Group 1 — 1 Valence Electron</div>
+      <div class="ibox-txt">Li, Na, K all have 1 outer electron they want to give away. <strong>Highly reactive.</strong> The farther down the group, the easier it is to give that electron away.</div>
+    </div>
+    <div class="ibox" style="border-color:rgba(139,92,246,.22);background:rgba(139,92,246,.04);">
+      <div class="ibox-lbl" style="color:var(--c-halogen);">Group 17 — 7 Valence Electrons</div>
+      <div class="ibox-txt">F, Cl, Br have 7 outer electrons — one spot left to fill. <strong>Very reactive.</strong> They will aggressively grab one more electron from any metal they encounter.</div>
+    </div>
+    <div class="ibox" style="border-color:rgba(168,85,247,.22);background:rgba(168,85,247,.04);">
+      <div class="ibox-lbl" style="color:var(--c-noble);">Group 18 — 8 Valence Electrons (Full)</div>
+      <div class="ibox-txt">He, Ne, Ar have a completely full outer shell. <strong>Almost never react.</strong> Nothing to give, no room to take. Full shell = chemically stable.</div>
+    </div>
+
+    <div class="mc-block" data-qid="q3">
+      <p class="mc-q">Q3 · Chlorine (Cl) is in Group 17. How many valence electrons does a chlorine atom have?</p>
+      <div class="mc-opts">
+        <button class="mc-opt" data-val="A" type="button"><span class="mc-letter">A</span><span class="mc-text">17 — the same as its atomic number</span></button>
+        <button class="mc-opt" data-val="B" type="button"><span class="mc-letter">B</span><span class="mc-text">3 — it is in Period 3, so it has 3 valence electrons</span></button>
+        <button class="mc-opt" data-val="C" type="button"><span class="mc-letter">C</span><span class="mc-text">7 — its group number tells you the number of valence electrons</span></button>
+        <button class="mc-opt" data-val="D" type="button"><span class="mc-letter">D</span><span class="mc-text">8 — all elements in the third period have 8 valence electrons</span></button>
+      </div>
+    </div>
+
+    <div class="mc-block" data-qid="q4">
+      <p class="mc-q">Q4 · Lithium (Li), Sodium (Na), and Potassium (K) are all in Group 1 and all react in very similar ways. What is the electron-based reason for this similarity?</p>
+      <div class="mc-opts">
+        <button class="mc-opt" data-val="A" type="button"><span class="mc-letter">A</span><span class="mc-text">They all have the same atomic mass, which determines reactivity</span></button>
+        <button class="mc-opt" data-val="B" type="button"><span class="mc-letter">B</span><span class="mc-text">They all have 1 valence electron — the same outer-shell structure drives the same chemistry</span></button>
+        <button class="mc-opt" data-val="C" type="button"><span class="mc-letter">C</span><span class="mc-text">They were all discovered by the same chemist using the same method</span></button>
+        <button class="mc-opt" data-val="D" type="button"><span class="mc-letter">D</span><span class="mc-text">They all have the same number of total electrons, giving them identical properties</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game 1 — Shell Sorting -->
+  <div class="game-block" id="g1-block">
+    <div class="game-title">Challenge 1 · Shell Sorting</div>
+    <div class="game-inst"><strong>Click an element</strong>, then click the zone for its correct number of electron shells. Period number = shell count.</div>
+    <div class="bank" id="bank1"></div>
+    <div class="two-cols" style="gap:10px;flex-wrap:wrap;">
+      <div>
+        <div class="col-lbl" style="color:var(--blue);">1 Shell · Period 1</div>
+        <div class="zone" id="zone-s1" data-shells="1" style="min-height:75px;" onclick="placeR1(this)"><div class="z-lbl">Period 1 here</div><div class="z-content" id="c-s1"></div></div>
+      </div>
+      <div>
+        <div class="col-lbl" style="color:var(--green);">2 Shells · Period 2</div>
+        <div class="zone" id="zone-s2" data-shells="2" style="min-height:75px;" onclick="placeR1(this)"><div class="z-lbl">Period 2 here</div><div class="z-content" id="c-s2"></div></div>
+      </div>
+      <div>
+        <div class="col-lbl" style="color:var(--accent);">3 Shells · Period 3</div>
+        <div class="zone" id="zone-s3" data-shells="3" style="min-height:75px;" onclick="placeR1(this)"><div class="z-lbl">Period 3 here</div><div class="z-content" id="c-s3"></div></div>
+      </div>
+    </div>
+    <div class="game-score"><div class="g-sc" id="g1-sc">Placed: 0 / 6</div><div class="g-att" id="g1-att"></div><button class="reset-btn" onclick="resetGame(1)">↺ Reset</button></div>
+  </div>
+</div>
+
+<!-- ── S4: ELEMENT FAMILIES ── -->
+<div class="section-divider">· · ·</div>
+<div class="section-wrap" id="s4" data-section="families">
+  <div class="card">
+    <div class="rule"></div>
+    <div class="lbl">03 · Explain · Element Families</div>
+    <h2>ELEMENT<br>FAMILIES</h2>
+    <p class="body-t" style="margin-bottom:.75rem;">Elements with the same number of valence electrons form <strong>chemical families</strong> — groups that behave alike. Click each family card to reveal its valence count, key properties, and real-world examples.</p>
+    <div class="fam-gallery" id="fam-gallery"></div>
+    <div class="flip-status" id="fam-status">0 / 5 revealed — click a card</div>
+
+    <div class="mc-block" data-qid="q5">
+      <p class="mc-q">Q5 · Which of the following is the BEST explanation for why alkali metals (Group 1) are so highly reactive?</p>
+      <div class="mc-opts">
+        <button class="mc-opt" data-val="A" type="button"><span class="mc-letter">A</span><span class="mc-text">They have too many protons, making the nucleus unstable</span></button>
+        <button class="mc-opt" data-val="B" type="button"><span class="mc-letter">B</span><span class="mc-text">They are located on the left side of the table, where reactive elements are stored</span></button>
+        <button class="mc-opt" data-val="C" type="button"><span class="mc-letter">C</span><span class="mc-text">They have 1 valence electron that is easy to give away, driving reactions with other elements</span></button>
+        <button class="mc-opt" data-val="D" type="button"><span class="mc-letter">D</span><span class="mc-text">All metals are reactive — alkali metals are not special in this regard</span></button>
+      </div>
+    </div>
+
+    <div class="mc-block" data-qid="q6">
+      <p class="mc-q">Q6 · Noble gases (Group 18) are famously unreactive — they almost never form compounds with other elements. What is the electron-based explanation?</p>
+      <div class="mc-opts">
+        <button class="mc-opt" data-val="A" type="button"><span class="mc-letter">A</span><span class="mc-text">Noble gases have no electrons, so there is nothing available to react</span></button>
+        <button class="mc-opt" data-val="B" type="button"><span class="mc-letter">B</span><span class="mc-text">Their outer shell is completely full — they have nothing to give and no room to accept electrons</span></button>
+        <button class="mc-opt" data-val="C" type="button"><span class="mc-letter">C</span><span class="mc-text">Noble gases are nonmetals, and nonmetals do not react with other nonmetals</span></button>
+        <button class="mc-opt" data-val="D" type="button"><span class="mc-letter">D</span><span class="mc-text">They are in Group 18, and all elements in high-numbered groups are stable</span></button>
+      </div>
+    </div>
+
+    <!-- Game 2 — Family Properties -->
+    <div class="game-block" style="margin-top:.85rem;" id="g2-block">
+      <div class="game-title">Challenge 2 · Family Properties</div>
+      <div class="game-inst"><strong>Click a property tile</strong>, then click which family it describes — Alkali Metals, Halogens, or Noble Gases.</div>
+      <div class="bank" id="bank2"></div>
+      <div class="three-bins">
+        <div>
+          <div class="bin-lbl" style="color:var(--c-alkali);">Alkali Metals · Group 1</div>
+          <div class="zone" id="bin-alkali" data-family="alkali" style="border-color:rgba(239,68,68,.2);min-height:85px;" onclick="placeR2(this)"><div class="z-lbl">Alkali Metals</div><div class="z-content" id="c-alkali"></div></div>
+        </div>
+        <div>
+          <div class="bin-lbl" style="color:var(--c-halogen);">Halogens · Group 17</div>
+          <div class="zone" id="bin-halogen" data-family="halogen" style="border-color:rgba(139,92,246,.2);min-height:85px;" onclick="placeR2(this)"><div class="z-lbl">Halogens</div><div class="z-content" id="c-halogen"></div></div>
+        </div>
+        <div>
+          <div class="bin-lbl" style="color:var(--c-noble);">Noble Gases · Group 18</div>
+          <div class="zone" id="bin-noble" data-family="noble" style="border-color:rgba(168,85,247,.2);min-height:85px;" onclick="placeR2(this)"><div class="z-lbl">Noble Gases</div><div class="z-content" id="c-noble"></div></div>
+        </div>
+      </div>
+      <div class="game-score"><div class="g-sc" id="g2-sc">Placed: 0 / 6</div><div class="g-att" id="g2-att"></div><button class="reset-btn" onclick="resetGame(2)">↺ Reset</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── S5: PERIODIC TRENDS ── -->
+<div class="section-divider">· · ·</div>
+<div class="section-wrap" id="s5" data-section="trends">
+  <div class="card">
+    <div class="rule"></div>
+    <div class="lbl">04 · Explain · Periodic Trends</div>
+    <h2>PERIODIC<br>TRENDS</h2>
+    <p class="body-t" style="margin-bottom:1rem;">Properties don't just repeat — they follow predictable <strong>trends</strong> across and down the table. Two of the most important for 7th grade: reactivity and atomic size.</p>
+
+    <div class="ibox" style="border-color:rgba(239,68,68,.22);background:rgba(239,68,68,.04);">
+      <div class="ibox-lbl" style="color:var(--c-alkali);">Reactivity Trend in Group 1 — Increases Going DOWN</div>
+      <div class="ibox-txt">As you go down Group 1 (Li → Na → K → Rb → Cs), each element has its valence electron in a shell <strong>farther from the nucleus</strong>. The farther the electron, the less the nucleus holds onto it, and the easier it is to give away. Easier to give away = more reactive.</div>
+    </div>
+    <div class="ibox" style="border-color:rgba(56,189,248,.22);background:rgba(56,189,248,.04);">
+      <div class="ibox-lbl" style="color:var(--blue);">Atomic Size Trend — Larger Going DOWN</div>
+      <div class="ibox-txt">Atoms get larger going down a group because each new period adds a complete new electron shell. More shells = more space around the nucleus = bigger atom. Going left → right across a period, atoms get <strong>slightly smaller</strong> because more protons pull the same shells inward.</div>
+    </div>
+
+    <div class="mc-block" data-qid="q7">
+      <p class="mc-q">Q7 · As you move DOWN Group 1 (from Li to Cs), what happens to the reactivity of the alkali metals and why?</p>
+      <div class="mc-opts">
+        <button class="mc-opt" data-val="A" type="button"><span class="mc-letter">A</span><span class="mc-text">Reactivity decreases because the atoms get larger and harder to react</span></button>
+        <button class="mc-opt" data-val="B" type="button"><span class="mc-letter">B</span><span class="mc-text">Reactivity stays the same because they all have exactly 1 valence electron</span></button>
+        <button class="mc-opt" data-val="C" type="button"><span class="mc-letter">C</span><span class="mc-text">Reactivity increases because the outer electron is farther from the nucleus and easier to remove</span></button>
+        <button class="mc-opt" data-val="D" type="button"><span class="mc-letter">D</span><span class="mc-text">Reactivity increases because there are more electrons in total to react with other atoms</span></button>
+      </div>
+    </div>
+
+    <div class="mc-block" data-qid="q8">
+      <p class="mc-q">Q8 · Why do atoms get LARGER as you move DOWN a group on the periodic table?</p>
+      <div class="mc-opts">
+        <button class="mc-opt" data-val="A" type="button"><span class="mc-letter">A</span><span class="mc-text">They have more protons, and more protons take up more physical space in the nucleus</span></button>
+        <button class="mc-opt" data-val="B" type="button"><span class="mc-letter">B</span><span class="mc-text">Each lower element has an additional full electron shell, making the overall atom larger</span></button>
+        <button class="mc-opt" data-val="C" type="button"><span class="mc-letter">C</span><span class="mc-text">The atomic mass increases going down, and more mass equals more volume</span></button>
+        <button class="mc-opt" data-val="D" type="button"><span class="mc-letter">D</span><span class="mc-text">Atoms spread out over time, so older discovered elements happen to be larger</span></button>
+      </div>
+    </div>
+
+    <!-- Game 3 — Reactivity Ranking -->
+    <div class="game-block" style="margin-top:.85rem;" id="g3-block">
+      <div class="game-title">Challenge 3 · Reactivity Ranking</div>
+      <div class="game-inst">All four elements below are in Group 1. <strong>Click an element</strong>, then click its correct rank — #1 = most reactive, #4 = least reactive. Use the periodic trend to decide.</div>
+      <div style="font-family:var(--font-m);font-size:.58rem;color:var(--tx3);margin-bottom:.75rem;letter-spacing:.08em;">Hint: the farther down Group 1, the more reactive. Which element is in the lowest period?</div>
+      <div class="bank" id="bank3"></div>
+      <div class="rank-slots">
+        <div class="rank-slot"><div class="rank-lbl">Most reactive<br>#1</div><div class="zone rank-zone" id="rank-1" data-rank="1" onclick="placeR3(this)"><div class="z-lbl">Most</div><div class="z-content" id="r1c"></div></div></div>
+        <div class="rank-slot"><div class="rank-lbl">#2</div><div class="zone rank-zone" id="rank-2" data-rank="2" onclick="placeR3(this)"><div class="z-lbl">#2</div><div class="z-content" id="r2c"></div></div></div>
+        <div class="rank-slot"><div class="rank-lbl">#3</div><div class="zone rank-zone" id="rank-3" data-rank="3" onclick="placeR3(this)"><div class="z-lbl">#3</div><div class="z-content" id="r3c"></div></div></div>
+        <div class="rank-slot"><div class="rank-lbl">Least reactive<br>#4</div><div class="zone rank-zone" id="rank-4" data-rank="4" onclick="placeR3(this)"><div class="z-lbl">Least</div><div class="z-content" id="r4c"></div></div></div>
+      </div>
+      <div class="game-score"><div class="g-sc" id="g3-sc">Placed: 0 / 4</div><div class="g-att" id="g3-att"></div><button class="reset-btn" onclick="resetGame(3)">↺ Reset</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── S6: ESSENTIAL QUESTION ── -->
+<div class="section-divider">· · ·</div>
+<div class="section-wrap" id="s6" data-section="eq">
+  <div class="card">
+    <div class="rule"></div>
+    <div class="lbl">05 · Evaluate</div>
+    <h2>ESSENTIAL<br>QUESTION</h2>
+    <p class="body-t" style="margin-bottom:.75rem;">Use what you learned today. Write at least <strong>3 complete sentences</strong>. Name at least <strong>two specific elements</strong> from the same group and state their valence electron count.</p>
+    <div class="eq-banner">
+      <div class="eq-l">Essential Question</div>
+      <div class="eq-t">If two elements are in the same group on the periodic table, what does that tell you about their electron structure — and why does that make their chemical behavior similar? Use at least TWO specific elements from the same group as examples and include their valence electron counts.</div>
+    </div>
+    <textarea class="ws-res" id="eq-text" style="min-height:160px;" placeholder="Write your response here. Example: Sodium (Na) and Potassium (K) are both in Group 1... Aim for 3–5 complete sentences."></textarea>
+    <div class="word-count" id="word-count">0 words</div>
+  </div>
+</div>
+
+<!-- ── S7: EXIT TICKET + SUBMIT ── -->
+<div class="section-divider">· · ·</div>
+<div class="section-wrap" id="s7" data-section="submit">
+  <div class="submit-card">
+    <div class="rule"></div>
+    <div class="lbl a">06 · Exit Ticket · Copy &amp; Submit</div>
+    <h2>COPY YOUR<br>WORK</h2>
+    <p class="body-t" style="margin-bottom:1rem;">Check your completion below, then copy everything to Canvas.</p>
+
+    <div class="chk-list" id="chk-list">
+      <div class="chk-row"><div class="chk-dot" id="dot-name"></div><span>Name entered (first + last)</span></div>
+      <div class="chk-row"><div class="chk-dot" id="dot-period"></div><span>Class period selected</span></div>
+      <div class="chk-row"><div class="chk-dot" id="dot-q1to4"></div><span>Q1–Q4 answered</span></div>
+      <div class="chk-row"><div class="chk-dot" id="dot-q5to8"></div><span>Q5–Q8 answered</span></div>
+      <div class="chk-row"><div class="chk-dot" id="dot-games"></div><span>All 3 challenges — <span id="games-ct">0</span> / 16 elements placed</span></div>
+      <div class="chk-row"><div class="chk-dot" id="dot-eq"></div><span>Essential question — <span id="eq-wc">0</span> words</span></div>
+    </div>
+
+    <div class="copy-status" id="copy-status"></div>
+
+    <button class="copy-btn" id="copy-btn" onclick="copyWork()" disabled
+      style="opacity:.28;cursor:not-allowed;background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12);color:var(--tx3);">
+      Finish all sections to unlock copy
+      <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1a3 3 0 0 0-3 3v2H4a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-1V4a3 3 0 0 0-3-3zm0 1.5A1.5 1.5 0 0 1 9.5 4v2h-3V4A1.5 1.5 0 0 1 8 2.5z"/></svg>
+    </button>
+    <div class="copy-notice" id="copy-notice">Copied — paste into Canvas now and click Submit</div>
+
+    <div class="canvas-steps">
+      <div class="cs"><div class="cs-n">1</div>Click Copy above — your full worksheet is on your clipboard</div>
+      <div class="cs"><div class="cs-n">2</div>Open Canvas → <strong style="color:var(--tx);">Day 2 · Electron Shells &amp; Element Families · 7th Science</strong></div>
+      <div class="cs"><div class="cs-n">3</div>Submit Assignment → <strong style="color:var(--tx);">Text Entry</strong> → Paste (Ctrl+V / Cmd+V)</div>
+      <div class="cs"><div class="cs-n">4</div>Click <strong style="color:var(--blue);">Submit Assignment</strong> — done</div>
+    </div>
+  </div>
+</div>
+<div style="height:2rem;"></div>
+</main>
+
+<script>
+/* ════════════════════════════════════════════════════
+   DATA
+════════════════════════════════════════════════════ */
+const STORAGE_KEY='strat_d02_worksheet_v1';
+const CC={alkali:'#ef4444',alkaline:'#f97316',transition:'#eab308',post:'#22c55e',metalloid:'#14b8a6',nonmetal:'#3b82f6',halogen:'#8b5cf6',noble:'#a855f7'};
+const EL={
+  H: {n:'Hydrogen',  an:1,  cat:'nonmetal', p:1, g:1,  shells:[1],     ve:1},
+  He:{n:'Helium',    an:2,  cat:'noble',    p:1, g:18, shells:[2],     ve:2},
+  Li:{n:'Lithium',   an:3,  cat:'alkali',   p:2, g:1,  shells:[2,1],   ve:1},
+  O: {n:'Oxygen',    an:8,  cat:'nonmetal', p:2, g:16, shells:[2,6],   ve:6},
+  Na:{n:'Sodium',    an:11, cat:'alkali',   p:3, g:1,  shells:[2,8,1], ve:1},
+  Cl:{n:'Chlorine',  an:17, cat:'halogen',  p:3, g:17, shells:[2,8,7], ve:7},
+  K: {n:'Potassium', an:19, cat:'alkali',   p:4, g:1,  shells:[2,8,8,1],ve:1},
+  Rb:{n:'Rubidium',  an:37, cat:'alkali',   p:5, g:1,  shells:[2,8,18,8,1],ve:1},
+  Cs:{n:'Cesium',    an:55, cat:'alkali',   p:6, g:1,  shells:[2,8,18,18,8,1],ve:1},
+};
+
+const MC_QUESTIONS={
+  q1:'Q1 · Sodium (Na) has atomic number 11 and is in Period 3. What does Period 3 tell you about sodium\'s electron structure?',
+  q2:'Q2 · Shell 1 holds max 2 electrons and Shell 2 holds max 8. How many total electrons before needing a 3rd shell?',
+  q3:'Q3 · Chlorine (Cl) is in Group 17. How many valence electrons does chlorine have?',
+  q4:'Q4 · Li, Na, and K are all in Group 1 and behave similarly. What is the electron-based reason?',
+  q5:'Q5 · Which BEST explains why alkali metals (Group 1) are so highly reactive?',
+  q6:'Q6 · Noble gases (Group 18) rarely react. What is the electron-based explanation?',
+  q7:'Q7 · Moving DOWN Group 1 (Li to Cs), what happens to reactivity and why?',
+  q8:'Q8 · Why do atoms get LARGER as you move DOWN a group?',
+};
+
+const FAMILIES=[
+  {name:'Alkali Metals',group:'Group 1',cat:'alkali',examples:['Li','Na','K'],ve:1,veLbl:'1 valence e⁻',traits:'Soft metals. React violently with water. 1 outer electron they easily give away. Reactivity increases going down.',real:'Na in table salt · K in bananas · Li in batteries'},
+  {name:'Alkaline Earth Metals',group:'Group 2',cat:'alkaline',examples:['Mg','Ca'],ve:2,veLbl:'2 valence e⁻',traits:'Reactive metals, but less so than Group 1. 2 electrons to give away. Found in minerals and living things.',real:'Ca in bones · Mg in chlorophyll'},
+  {name:'Halogens',group:'Group 17',cat:'halogen',examples:['F','Cl'],ve:7,veLbl:'7 valence e⁻',traits:'Very reactive nonmetals. 7 outer electrons — only 1 spot left. React aggressively with metals to form salts.',real:'Cl in pool disinfectant · F in toothpaste'},
+  {name:'Noble Gases',group:'Group 18',cat:'noble',examples:['He','Ne'],ve:8,veLbl:'8 valence e⁻ (full)',traits:'Completely unreactive. Outer shell is full — nothing to gain or lose. Exist as single atoms naturally.',real:'He in balloons · Ne in signs · Ar in bulbs'},
+  {name:'Transition Metals',group:'Groups 3–12',cat:'transition',examples:['Fe','Cu'],ve:'1–2',veLbl:'1–2 valence e⁻',traits:'Large center block. Conduct electricity and heat. Form colorful compounds. Used widely in construction, electronics, and biology.',real:'Fe in steel & blood · Cu in wiring'},
+];
+
+/* ════════════════════════════════════════════════════
+   STATE & STORAGE
+════════════════════════════════════════════════════ */
+const defaultState=()=>({
+  version:1,firstName:'',lastName:'',period:'',date:'',
+  startTime:null,submitTime:null,
+  recapClicked:[],shellsExplored:[],famFlipped:[],calloutsUsed:[],
+  answers:{q1:null,q2:null,q3:null,q4:null,q5:null,q6:null,q7:null,q8:null},
+  firstAnswers:{q1:null,q2:null,q3:null,q4:null,q5:null,q6:null,q7:null,q8:null},
+  eq:'',
+  g1:{H:{w:0,p:false},He:{w:0,p:false},Li:{w:0,p:false},O:{w:0,p:false},Na:{w:0,p:false},Cl:{w:0,p:false}},
+  g2:{alkali1:{w:0,p:false,text:''},alkali2:{w:0,p:false,text:''},halogen1:{w:0,p:false,text:''},halogen2:{w:0,p:false,text:''},noble1:{w:0,p:false,text:''},noble2:{w:0,p:false,text:''}},
+  g3:{Cs:{w:0,p:false},Rb:{w:0,p:false},K:{w:0,p:false},Li:{w:0,p:false}},
+  sectionEntries:{},
+});
+let ST=defaultState();
+
+function loadState(){try{const s=localStorage.getItem(STORAGE_KEY);if(s){const p=JSON.parse(s);if(p.version===1)ST=p;}}catch(e){}}
+function saveState(){
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(ST));const d=$('save-dot');d.classList.add('flash');setTimeout(()=>d.classList.remove('flash'),600);}catch(e){}
+}
+
+const $=id=>document.getElementById(id);
+const $$=s=>[...document.querySelectorAll(s)];
+function h2r(h){return[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)].join(',');}
+function col(sym){return CC[EL[sym]?.cat]||'#888';}
+
+/* ════════════════════════════════════════════════════
+   TIMER
+════════════════════════════════════════════════════ */
+let timerInt=null;
+function ensureTimer(){if(ST.startTime)return;ST.startTime=Date.now();saveState();}
+function startTimerDisplay(){
+  if(timerInt)return;
+  timerInt=setInterval(()=>{
+    if(!ST.startTime)return;
+    const end=ST.submitTime||Date.now();
+    const el=$('hdr-timer');if(el)el.textContent=fmtTime(end-ST.startTime);
+  },1000);
+}
+function fmtTime(ms){const s=Math.floor(ms/1000),m=Math.floor(s/60),sec=s%60;return String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');}
+function fmtTimeLong(ms){const s=Math.floor(ms/1000),m=Math.floor(s/60),sec=s%60;return m===0?`${sec}s`:`${m}m ${sec}s`;}
+
+/* ════════════════════════════════════════════════════
+   PROGRESS
+════════════════════════════════════════════════════ */
+function calcProgress(){
+  let done=0;const total=13;
+  if(ST.firstName&&ST.lastName)done++;
+  if(ST.period)done++;
+  ['q1','q2','q3','q4','q5','q6','q7','q8'].forEach(q=>{if(ST.answers[q])done++;});
+  const g1d=Object.values(ST.g1).filter(v=>v.p).length;
+  const g3d=Object.values(ST.g3).filter(v=>v.p).length;
+  const g2d=Object.values(ST.g2).filter(v=>v.p).length;
+  if(g1d===6)done++;if(g2d===6)done++;if(g3d===4)done++;
+  const wc=ST.eq.trim().split(/\s+/).filter(Boolean).length;
+  if(wc>=15)done++;
+  return{done,total,pct:Math.round(done/total*100)};
+}
+function updateProgress(){
+  const{pct}=calcProgress();
+  const fill=$('hdr-prog-fill');const pctEl=$('hdr-prog-pct');
+  if(fill)fill.style.width=pct+'%';if(pctEl)pctEl.textContent=pct+'%';
+  const nm=$('hdr-name-display');
+  if(nm){const n=(ST.firstName||'')+(ST.lastName?' '+ST.lastName:'');nm.textContent=n||'—';}
+  updateChecklist();updateCopyBtn();
+}
+function updateChecklist(){
+  const g1d=Object.values(ST.g1).filter(v=>v.p).length;
+  const g2d=Object.values(ST.g2).filter(v=>v.p).length;
+  const g3d=Object.values(ST.g3).filter(v=>v.p).length;
+  const tot=g1d+g2d+g3d;
+  const q14=ST.answers.q1&&ST.answers.q2&&ST.answers.q3&&ST.answers.q4;
+  const q58=ST.answers.q5&&ST.answers.q6&&ST.answers.q7&&ST.answers.q8;
+  const wc=ST.eq.trim().split(/\s+/).filter(Boolean).length;
+  setDot('name',!!(ST.firstName&&ST.lastName));
+  setDot('period',!!ST.period);
+  setDot('q1to4',!!q14);
+  setDot('q5to8',!!q58);
+  setDot('games',tot===16);
+  setDot('eq',wc>=15);
+  const gEl=$('games-ct');if(gEl)gEl.textContent=tot;
+  const eqEl=$('eq-wc');if(eqEl)eqEl.textContent=wc;
+}
+function setDot(id,done){const d=$('dot-'+id);if(d)d.classList.toggle('done',done);}
+
+function checkCopyReady(){
+  const missing=[];
+  if(!ST.firstName.trim()||!ST.lastName.trim())missing.push('Your full name (first + last)');
+  if(!ST.period)missing.push('Your class period');
+  const ua=['q1','q2','q3','q4','q5','q6','q7','q8'].filter(q=>!ST.answers[q]);
+  if(ua.length)missing.push(`${ua.length} unanswered question${ua.length>1?'s':''}: ${ua.map(q=>q.toUpperCase()).join(', ')}`);
+  const g1d=Object.values(ST.g1).filter(v=>v.p).length;
+  const g2d=Object.values(ST.g2).filter(v=>v.p).length;
+  const g3d=Object.values(ST.g3).filter(v=>v.p).length;
+  const tot=g1d+g2d+g3d;
+  if(tot<16)missing.push(`Placement challenges (${tot} / 16 placed)`);
+  const wc=ST.eq.trim().split(/\s+/).filter(Boolean).length;
+  if(wc<15)missing.push(`Essential question response (${wc} / 15+ words)`);
+  return missing;
+}
+function updateCopyBtn(){
+  const missing=checkCopyReady();
+  const btn=$('copy-btn');const status=$('copy-status');if(!btn)return;
+  const ready=missing.length===0;
+  btn.disabled=!ready;
+  if(ready){
+    btn.style.cssText='opacity:1;cursor:pointer;background:var(--blue);border-color:var(--blue);color:var(--void);';
+    btn.innerHTML='Copy Completed Work to Clipboard <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="9" height="10" rx="1"/><path d="M3 11H2a1 1 0 01-1-1V2a1 1 0 011-1h8a1 1 0 011 1v1"/></svg>';
+    if(status){status.innerHTML='<span style="color:var(--green);">✓ All sections complete — ready to copy and submit</span>';status.style.display='block';}
+  }else{
+    btn.style.cssText='opacity:.28;cursor:not-allowed;background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12);color:var(--tx3);';
+    btn.innerHTML='Finish all sections to unlock copy <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1a3 3 0 0 0-3 3v2H4a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-1V4a3 3 0 0 0-3-3zm0 1.5A1.5 1.5 0 0 1 9.5 4v2h-3V4A1.5 1.5 0 0 1 8 2.5z"/></svg>';
+    if(status){
+      status.style.display='block';
+      status.innerHTML='<div style="color:var(--red);letter-spacing:.12em;text-transform:uppercase;font-size:.52rem;margin-bottom:.5rem;">Still needed before copy unlocks:</div>'+missing.map(m=>`<div style="color:rgba(248,113,113,.75);padding:.1rem 0;">· ${m}</div>`).join('');
+    }
+  }
+}
+
+/* ════════════════════════════════════════════════════
+   SECTION TIMING
+════════════════════════════════════════════════════ */
+function initSectionTracking(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{const sid=e.target.dataset.section;if(e.isIntersecting&&sid&&!ST.sectionEntries[sid]){ST.sectionEntries[sid]=Date.now();saveState();}});
+  },{threshold:.2});
+  document.querySelectorAll('[data-section]').forEach(el=>obs.observe(el));
+}
+
+/* ════════════════════════════════════════════════════
+   STUDENT INFO
+════════════════════════════════════════════════════ */
+function initStudentInfo(){
+  [['si-first','firstName'],['si-last','lastName'],['si-period','period'],['si-date','date']].forEach(([id,key])=>{
+    const el=$(id);if(!el)return;
+    el.value=ST[key]||'';
+    el.addEventListener('input',()=>{ensureTimer();ST[key]=el.value;saveState();updateProgress();});
+  });
+  if(!ST.date){const t=new Date().toISOString().slice(0,10);const el=$('si-date');if(el){el.value=t;ST.date=t;}}
+}
+
+/* ════════════════════════════════════════════════════
+   RECAP CARDS
+════════════════════════════════════════════════════ */
+const RECAP=[
+  {q:'What is the ATOMIC NUMBER of an element?',a:'The number of protons in its nucleus — unique to every element in the universe.'},
+  {q:'What does PERIOD number tell you?',a:'The number of electron shells (energy levels) the atom has. Period 3 = 3 shells.'},
+  {q:'What does GROUP number predict?',a:'Chemical behavior. Same group = same number of valence electrons = similar reactions.'},
+  {q:'What are the THREE regions of the periodic table?',a:'Metals (left/center), Nonmetals (upper right), Metalloids (staircase boundary).'},
+  {q:'Why is atomic number a better organizer than atomic mass?',a:'No two elements share the same atomic number — it uniquely identifies every element.'},
+  {q:'What makes alkali metals (Group 1) so reactive?',a:'They have 1 valence electron that is easy to give away — the whole group shares this trait.'},
+];
+function buildRecap(){
+  const g=$('recap-grid');if(!g)return;
+  RECAP.forEach((rc,i)=>{
+    const card=document.createElement('div');card.className='recap-card';
+    card.innerHTML=`<div class="rc-q">${rc.q}</div><div class="rc-a">${rc.a}</div><div class="rc-hint">Click to reveal</div>`;
+    card.onclick=()=>{
+      ensureTimer();card.classList.toggle('revealed');
+      if(!ST.recapClicked.includes(i)){ST.recapClicked.push(i);saveState();}
+    };
+    if(ST.recapClicked.includes(i))card.classList.add('revealed');
+    g.appendChild(card);
+  });
+}
+
+/* ════════════════════════════════════════════════════
+   SHELL BUILDER
+════════════════════════════════════════════════════ */
+const SHELL_ELS=['H','He','Li','O','Na','Cl','K','Cs'];
+const SHELL_RADII=[42,78,114];
+const SVG_NS='http://www.w3.org/2000/svg';
+
+function buildShellBtns(){
+  const wrap=$('shell-btns-s');if(!wrap)return;
+  SHELL_ELS.forEach(sym=>{
+    const d=EL[sym];const c=col(sym);
+    const btn=document.createElement('button');btn.className='shell-btn';btn.dataset.sym=sym;
+    btn.style.borderColor=`rgba(${h2r(c)},.25)`;
+    btn.innerHTML=`<span class="sb-sym" style="color:${c};">${sym}</span><span>${d.n}</span>`;
+    btn.onclick=()=>renderShell(sym);
+    wrap.appendChild(btn);
+  });
+}
+function renderShell(sym){
+  ensureTimer();
+  const d=EL[sym];if(!d)return;
+  const c=col(sym);
+  $$('.shell-btn').forEach(b=>b.classList.toggle('active',b.dataset.sym===sym));
+  if(!ST.shellsExplored.includes(sym)){ST.shellsExplored.push(sym);saveState();}
+  // nucleus
+  $('s-nucleus-bg').setAttribute('fill',`rgba(${h2r(c)},.15)`);
+  $('s-nucleus-bg').setAttribute('stroke',c);
+  $('s-nucleus-text').textContent=sym;$('s-nucleus-text').setAttribute('fill',c);
+  $('s-nucleus-sub').textContent=`${d.an}p⁺`;$('s-nucleus-sub').setAttribute('fill',`rgba(${h2r(c)},.45)`);
+  $('s-rings').innerHTML='';$('s-electrons').innerHTML='';
+  const shells=d.shells.length<=3?d.shells:d.shells.slice(0,3);
+  shells.forEach((count,si)=>{
+    const r=SHELL_RADII[si];const isV=si===shells.length-1;
+    const ring=document.createElementNS(SVG_NS,'circle');
+    ring.setAttribute('cx','150');ring.setAttribute('cy','150');ring.setAttribute('r',String(r));
+    ring.setAttribute('fill','none');ring.setAttribute('stroke',isV?c:'rgba(255,255,255,.35)');
+    ring.setAttribute('stroke-width',isV?'1.5':'1');ring.setAttribute('stroke-dasharray',isV?'5 3':'4 4');
+    $('s-rings').appendChild(ring);
+    for(let ei=0;ei<Math.min(count,8);ei++){
+      const angle=(ei*(360/count)-90)*(Math.PI/180);
+      const ex=150+r*Math.cos(angle);const ey=150+r*Math.sin(angle);
+      const dot=document.createElementNS(SVG_NS,'circle');
+      dot.setAttribute('cx',String(ex));dot.setAttribute('cy',String(ey));
+      dot.setAttribute('r',isV?'5':'4');
+      dot.setAttribute('fill',isV?c:'rgba(221,230,245,.4)');
+      dot.setAttribute('stroke',isV?`rgba(${h2r(c)},.4)`:'rgba(255,255,255,.12)');
+      dot.setAttribute('stroke-width','1');
+      dot.style.opacity='0';
+      setTimeout(()=>{dot.style.opacity='1';dot.style.transition=`opacity .3s ease ${ei*45+si*100}ms`;},20);
+      $('s-electrons').appendChild(dot);
+    }
+  });
+  $('sd-el').textContent=`${d.n} (${sym})`;
+  $('sd-period').innerHTML=`Period ${d.p} → <em>${d.p} shell${d.p>1?'s':''}</em>`;
+  $('sd-dist').textContent=shells.map((n,i)=>`Shell ${i+1}: ${n}e⁻`).join(' · ');
+  $('sd-ve').innerHTML=`<em>${d.ve} valence electron${d.ve>1?'s':''}</em>`;
+  $('sd-group').textContent=`Group ${d.g}`;
+  $('s-caption').textContent=`${d.n} · AN ${d.an} · Period ${d.p}`;
+}
+
+/* ════════════════════════════════════════════════════
+   FAMILY FLIP CARDS
+════════════════════════════════════════════════════ */
+let famFlipped=0;
+function buildFamilyCards(){
+  const gallery=$('fam-gallery');if(!gallery)return;
+  FAMILIES.forEach((fam,i)=>{
+    const c=CC[fam.cat]||'#888';
+    const card=document.createElement('div');card.className='fam-card';
+    if(ST.famFlipped.includes(i))card.classList.add('flipped');
+    card.innerHTML=`
+    <div class="fci">
+      <div class="ff z-${fam.cat}">
+        <div class="ff-group">${fam.group}</div>
+        <div class="ff-fname">${fam.name}</div>
+        <div class="ff-exs">${fam.examples.map(e=>`<span class="ff-ex" style="color:${c};">${e}</span>`).join('')}</div>
+        <div class="ff-hint">tap to flip</div>
+      </div>
+      <div class="ff back" style="border-color:${c};background:rgba(${h2r(c)},.1);">
+        <div class="fb-ve"><div class="fb-ve-num" style="color:${c};">${fam.ve}</div><div class="fb-ve-lbl">valence<br>electrons</div></div>
+        <div class="fb-trait">${fam.traits}</div>
+        <div class="fb-real">${fam.real}</div>
+      </div>
+    </div>`;
+    card.onclick=()=>{
+      ensureTimer();
+      const was=card.classList.contains('flipped');
+      card.classList.toggle('flipped');
+      if(!was&&!ST.famFlipped.includes(i)){ST.famFlipped.push(i);saveState();}
+      else if(was&&ST.famFlipped.includes(i)){ST.famFlipped=ST.famFlipped.filter(x=>x!==i);saveState();}
+      famFlipped=$$('.fam-card.flipped').length;
+      const st=$('fam-status');
+      if(famFlipped===FAMILIES.length){st.textContent='✓ All 5 families explored';st.classList.add('done');}
+      else{st.textContent=`${famFlipped} / ${FAMILIES.length} revealed`;st.classList.remove('done');}
+    };
+    gallery.appendChild(card);
+  });
+  famFlipped=ST.famFlipped.length;
+  const st=$('fam-status');
+  if(famFlipped===FAMILIES.length){st.textContent='✓ All 5 families explored';st.classList.add('done');}
+  else if(famFlipped>0)st.textContent=`${famFlipped} / ${FAMILIES.length} revealed`;
+}
+
+/* ════════════════════════════════════════════════════
+   MC
+════════════════════════════════════════════════════ */
+function initMC(){
+  document.querySelectorAll('.mc-opt').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      ensureTimer();
+      const block=btn.closest('.mc-block');const qid=block.dataset.qid;
+      const val=btn.dataset.val;const text=btn.querySelector('.mc-text').textContent.trim();
+      block.querySelectorAll('.mc-opt').forEach(o=>o.classList.remove('selected'));
+      btn.classList.add('selected');
+      if(!ST.firstAnswers[qid])ST.firstAnswers[qid]={val,text};
+      ST.answers[qid]={val,text};saveState();updateProgress();
+    });
+  });
+}
+function restoreMC(){
+  Object.entries(ST.answers).forEach(([qid,ans])=>{
+    if(!ans)return;
+    const block=document.querySelector(`.mc-block[data-qid="${qid}"]`);if(!block)return;
+    const btn=block.querySelector(`[data-val="${ans.val}"]`);
+    if(btn){block.querySelectorAll('.mc-opt').forEach(o=>o.classList.remove('selected'));btn.classList.add('selected');}
+  });
+}
+
+/* ════════════════════════════════════════════════════
+   EQ
+════════════════════════════════════════════════════ */
+function initEQ(){
+  const ta=$('eq-text');if(!ta)return;
+  ta.value=ST.eq;updateWC();
+  ta.addEventListener('input',()=>{ensureTimer();ST.eq=ta.value;updateWC();saveState();updateProgress();});
+}
+function updateWC(){
+  const ta=$('eq-text');const wc=$('word-count');if(!ta||!wc)return;
+  const n=ta.value.trim().split(/\s+/).filter(Boolean).length;
+  wc.textContent=n+' word'+(n!==1?'s':'')+(n<15?' — aim for 3+ complete sentences with specific elements':'');
+}
+
+/* ════════════════════════════════════════════════════
+   GAME ENGINE
+════════════════════════════════════════════════════ */
+let selected=null;
+function clearSel(){$$('.tile.sel,.prop-tile.sel').forEach(t=>t.classList.remove('sel'));selected=null;}
+function selTile(el){if(el.classList.contains('placed'))return;if(selected===el){clearSel();return;}clearSel();selected=el;el.classList.add('sel');}
+function wrongFlash(z){z.classList.add('bad');clearSel();setTimeout(()=>z.classList.remove('bad'),440);}
+
+function makeTile(sym){
+  const d=EL[sym];const c=col(sym);
+  const el=document.createElement('button');el.className='tile';el.dataset.sym=sym;
+  el.style.borderColor=c;el.style.background=`rgba(${h2r(c)},.1)`;
+  el.innerHTML=`<span class="t-an" style="color:${c};">${d.an}</span><span class="t-sym" style="color:${c};">${sym}</span><span class="t-nm">${d.n}</span>`;
+  el.onclick=()=>{ensureTimer();selTile(el);};return el;
+}
+function miniEl(sym){
+  const d=EL[sym];const c=col(sym);
+  const el=document.createElement('div');el.className='mini-el';
+  el.style.borderColor=c;el.style.background=`rgba(${h2r(c)},.12)`;
+  el.innerHTML=`<span class="mini-sym" style="color:${c};">${sym}</span><span class="mini-nm">${d.n}</span>`;return el;
+}
+function miniProp(text){const el=document.createElement('div');el.className='mini-prop';el.textContent=text.length>28?text.slice(0,28)+'…':text;return el;}
+
+/* ── G1 Shell Sorting ── */
+const R1_SYMS=['H','He','Li','O','Na','Cl'];
+const R1_SHELLS={H:1,He:1,Li:2,O:2,Na:3,Cl:3};
+function buildR1(){
+  const bank=$('bank1');bank.innerHTML='';
+  ['c-s1','c-s2','c-s3'].forEach(id=>{const el=$(id);if(el)el.innerHTML='';});
+  ['zone-s1','zone-s2','zone-s3'].forEach(id=>{const el=$(id);if(el)el.classList.remove('ok');});
+  [...R1_SYMS].sort(()=>Math.random()-.5).forEach(s=>{
+    const t=makeTile(s);if(ST.g1[s]?.p)t.classList.add('placed');bank.appendChild(t);
+  });
+  R1_SYMS.forEach(sym=>{if(ST.g1[sym]?.p){const sh=R1_SHELLS[sym];const el=$(`c-s${sh}`);if(el)el.appendChild(miniEl(sym));}});
+  [1,2,3].forEach(n=>{if(R1_SYMS.filter(s=>R1_SHELLS[s]===n&&ST.g1[s]?.p).length===R1_SYMS.filter(s=>R1_SHELLS[s]===n).length){const z=$(`zone-s${n}`);if(z)z.classList.add('ok');}});
+  updateG1Score();
+}
+function placeR1(zone){
+  if(!selected)return;
+  const sym=selected.dataset.sym;const zs=parseInt(zone.dataset.shells);
+  if(R1_SHELLS[sym]===zs){
+    $(`c-s${zs}`).appendChild(miniEl(sym));
+    selected.classList.add('placed');clearSel();
+    ST.g1[sym].p=true;saveState();updateG1Score();updateProgress();
+    if(R1_SYMS.filter(s=>R1_SHELLS[s]===zs&&ST.g1[s]?.p).length===R1_SYMS.filter(s=>R1_SHELLS[s]===zs).length)zone.classList.add('ok');
+  }else{ST.g1[sym].w++;saveState();wrongFlash(zone);}
+}
+function updateG1Score(){
+  const done=Object.values(ST.g1).filter(v=>v.p).length;
+  const g=$('g1-sc');if(g){g.textContent=`Placed: ${done} / 6`;g.className=done===6?'g-sc g-done':'g-sc';}
+  const tw=Object.values(ST.g1).reduce((a,v)=>a+v.w,0);
+  const att=$('g1-att');if(att)att.textContent=tw>0?`${tw} wrong attempt${tw>1?'s':''}`:done>0?'Perfect first try':'';
+}
+
+/* ── G2 Family Properties ── */
+const R2_PROPS=[
+  {id:'alkali1',text:'Explodes violently when dropped in water',family:'alkali'},
+  {id:'alkali2',text:'Soft enough to cut with a butter knife',family:'alkali'},
+  {id:'halogen1',text:'Used to disinfect swimming pools',family:'halogen'},
+  {id:'halogen2',text:'Makes a salt when it reacts with a metal',family:'halogen'},
+  {id:'noble1',text:'Used to fill incandescent light bulbs',family:'noble'},
+  {id:'noble2',text:'Exists as single atoms — never bonds naturally',family:'noble'},
+];
+const R2_CNT={alkali:'c-alkali',halogen:'c-halogen',noble:'c-noble'};
+function buildR2(){
+  const bank=$('bank2');bank.innerHTML='';
+  Object.values(R2_CNT).forEach(id=>{const el=$(id);if(el)el.innerHTML='';});
+  ['bin-alkali','bin-halogen','bin-noble'].forEach(id=>{const el=$(id);if(el)el.classList.remove('ok');});
+  [...R2_PROPS].sort(()=>Math.random()-.5).forEach(p=>{
+    const c=CC[p.family]||'#888';
+    const el=document.createElement('button');el.className='prop-tile';el.dataset.family=p.family;el.dataset.pid=p.id;
+    el.style.borderColor=`rgba(${h2r(c)},.22)`;el.textContent=p.text;
+    if(ST.g2[p.id]?.p)el.classList.add('placed');
+    el.onclick=()=>{ensureTimer();selTile(el);};
+    bank.appendChild(el);
+  });
+  R2_PROPS.forEach(p=>{if(ST.g2[p.id]?.p){const el=$(R2_CNT[p.family]);if(el)el.appendChild(miniProp(p.text));}});
+  ['alkali','halogen','noble'].forEach(fam=>{
+    const props=R2_PROPS.filter(p=>p.family===fam);
+    if(props.every(p=>ST.g2[p.id]?.p)){const z=$(`bin-${fam}`);if(z)z.classList.add('ok');}
+  });
+  updateG2Score();
+}
+function placeR2(zone){
+  if(!selected)return;
+  const fam=selected.dataset.family;const pid=selected.dataset.pid;const zf=zone.dataset.family;
+  if(fam===zf){
+    $(R2_CNT[fam]).appendChild(miniProp(selected.textContent));
+    selected.classList.add('placed');clearSel();
+    ST.g2[pid].p=true;saveState();updateG2Score();updateProgress();
+    const props=R2_PROPS.filter(p=>p.family===fam);
+    if(props.every(p=>ST.g2[p.id]?.p))zone.classList.add('ok');
+  }else{if(ST.g2[pid])ST.g2[pid].w++;saveState();wrongFlash(zone);}
+}
+function updateG2Score(){
+  const done=Object.values(ST.g2).filter(v=>v.p).length;
+  const g=$('g2-sc');if(g){g.textContent=`Placed: ${done} / 6`;g.className=done===6?'g-sc g-done':'g-sc';}
+  const tw=Object.values(ST.g2).reduce((a,v)=>a+v.w,0);
+  const att=$('g2-att');if(att)att.textContent=tw>0?`${tw} wrong attempt${tw>1?'s':''}`:done>0?'Perfect first try':'';
+}
+
+/* ── G3 Reactivity Ranking ── */
+const R3_SYMS=['Li','K','Rb','Cs'];
+const R3_CORRECT={Cs:1,Rb:2,K:3,Li:4};
+const R3_CNT={1:'r1c',2:'r2c',3:'r3c',4:'r4c'};
+function buildR3(){
+  const bank=$('bank3');bank.innerHTML='';
+  Object.values(R3_CNT).forEach(id=>{const el=$(id);if(el)el.innerHTML='';});
+  ['rank-1','rank-2','rank-3','rank-4'].forEach(id=>{const el=$(id);if(el)el.classList.remove('ok');});
+  [...R3_SYMS].sort(()=>Math.random()-.5).forEach(s=>{
+    const t=makeTile(s);if(ST.g3[s]?.p)t.classList.add('placed');bank.appendChild(t);
+  });
+  R3_SYMS.forEach(s=>{if(ST.g3[s]?.p){const rank=R3_CORRECT[s];const el=$(R3_CNT[rank]);if(el)el.appendChild(miniEl(s));}});
+  R3_SYMS.forEach(s=>{if(ST.g3[s]?.p){const z=$(`rank-${R3_CORRECT[s]}`);if(z)z.classList.add('ok');}});
+  updateG3Score();
+}
+function placeR3(zone){
+  if(!selected)return;
+  const sym=selected.dataset.sym;const rank=parseInt(zone.dataset.rank);
+  if(R3_CORRECT[sym]===rank){
+    $(R3_CNT[rank]).appendChild(miniEl(sym));
+    zone.classList.add('ok');selected.classList.add('placed');clearSel();
+    ST.g3[sym].p=true;saveState();updateG3Score();updateProgress();
+  }else{if(ST.g3[sym])ST.g3[sym].w++;saveState();wrongFlash(zone);}
+}
+function updateG3Score(){
+  const done=Object.values(ST.g3).filter(v=>v.p).length;
+  const g=$('g3-sc');if(g){g.textContent=`Placed: ${done} / 4`;g.className=done===4?'g-sc g-done':'g-sc';}
+  const tw=Object.values(ST.g3).reduce((a,v)=>a+v.w,0);
+  const att=$('g3-att');if(att)att.textContent=tw>0?`${tw} wrong attempt${tw>1?'s':''}`:done>0?'Perfect first try':'';
+}
+function resetGame(n){
+  clearSel();
+  if(n===1){Object.keys(ST.g1).forEach(k=>{ST.g1[k]={w:0,p:false};});saveState();buildR1();}
+  if(n===2){Object.keys(ST.g2).forEach(k=>{ST.g2[k]={w:0,p:false,text:''};});saveState();buildR2();}
+  if(n===3){Object.keys(ST.g3).forEach(k=>{ST.g3[k]={w:0,p:false};});saveState();buildR3();}
+  updateProgress();
+}
+
+/* ════════════════════════════════════════════════════
+   COPY WORK
+════════════════════════════════════════════════════ */
+function copyWork(){
+  ensureTimer();
+  if(checkCopyReady().length>0){updateCopyBtn();return;}
+  ST.submitTime=Date.now();saveState();
+  const fn=(ST.firstName||'').trim()||'[First not entered]';
+  const ln=(ST.lastName||'').trim()||'[Last not entered]';
+  const fullName=fn+' '+ln;
+  const cls=ST.period||'[Period not selected]';
+  const date=ST.date||(new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}));
+  const totalMs=ST.submitTime-(ST.startTime||ST.submitTime);
+  const line='═'.repeat(56);const dash='─'.repeat(44);
+
+  let out='';
+  out+=`To: Ms. Madewell — chasity.madewell@alaschools.org\n`;
+  out+=`Subject: Day 2 · Electron Shells & Element Families · ${fullName}\n\n`;
+  out+=`Ms. Madewell,\n\nPlease find my completed Day 2 worksheet below.\n\n`;
+  out+=line+'\n';
+  out+=`STUDENT : ${fullName}\nCLASS   : ${cls}\nDATE    : ${date}\n`;
+  out+=`LESSON  : 7th Grade Science · Day 2 — Electron Shells & Element Families\n`;
+  out+=`TIME ON TASK: ${fmtTimeLong(totalMs)}\n`;
+  out+=line+'\n\n';
+
+  const sections=[
+    {title:'SECTION 1 — ELECTRON SHELLS',qs:['q1','q2']},
+    {title:'SECTION 2 — VALENCE ELECTRONS',qs:['q3','q4']},
+    {title:'SECTION 3 — ELEMENT FAMILIES',qs:['q5','q6']},
+    {title:'SECTION 4 — PERIODIC TRENDS',qs:['q7','q8']},
+  ];
+  sections.forEach(sec=>{
+    out+=`──── ${sec.title} ${dash.slice(sec.title.length+6)}\n\n`;
+    sec.qs.forEach(qid=>{
+      const a=ST.answers[qid];
+      const changed=ST.firstAnswers[qid]&&a&&ST.firstAnswers[qid].val!==a.val;
+      out+=`${MC_QUESTIONS[qid]}\nAnswer: ${a?a.val+' · '+a.text:'[Not answered]'}${changed?` [changed from ${ST.firstAnswers[qid].val}]`:''}\n\n`;
+    });
+  });
+
+  // Games
+  out+=`──── CHALLENGE GAMES — PERFORMANCE LOG ${dash.slice(39)}\n\n`;
+  out+=`CHALLENGE 1 · Shell Sorting (Period 1 / 2 / 3)\n`;
+  R1_SYMS.forEach(sym=>{
+    const s=ST.g1[sym]||{w:0,p:false};const d=EL[sym];
+    out+=`  ${sym.padEnd(3)} (P${d.p}) — ${s.p?'✓ Placed':'✗ Not placed'} ${s.w===0&&s.p?'(first try)':s.p?`(${s.w} wrong attempt${s.w>1?'s':''} → ✓)`:`(${s.w||0} wrong, not completed)`}\n`;
+  });
+  const g1FT=R1_SYMS.filter(s=>ST.g1[s]?.w===0&&ST.g1[s]?.p).length;
+  const g1tot=R1_SYMS.filter(s=>ST.g1[s]?.p).length;
+  out+=`  Score: ${g1tot}/6 · First-try: ${g1FT}/${g1tot}\n\n`;
+
+  out+=`CHALLENGE 2 · Family Properties (Alkali / Halogen / Noble)\n`;
+  R2_PROPS.forEach(p=>{
+    const s=ST.g2[p.id]||{w:0,p:false};
+    out+=`  "${p.text.slice(0,40)}…" → ${s.p?'✓ '+p.family.toUpperCase():'✗ Not placed'} ${s.w===0&&s.p?'(first try)':s.p?`(${s.w} wrong → ✓)`:`(${s.w||0} wrong, incomplete)`}\n`;
+  });
+  const g2FT=R2_PROPS.filter(p=>ST.g2[p.id]?.w===0&&ST.g2[p.id]?.p).length;
+  const g2tot=R2_PROPS.filter(p=>ST.g2[p.id]?.p).length;
+  out+=`  Score: ${g2tot}/6 · First-try: ${g2FT}/${g2tot}\n\n`;
+
+  out+=`CHALLENGE 3 · Reactivity Ranking (Most → Least reactive, Group 1)\n`;
+  out+=`  Correct order: Cs (#1) > Rb (#2) > K (#3) > Li (#4)\n`;
+  R3_SYMS.forEach(sym=>{
+    const s=ST.g3[sym]||{w:0,p:false};const correct=R3_CORRECT[sym];
+    out+=`  ${sym.padEnd(3)} (correct rank #${correct}) — ${s.p?'✓ Placed correctly':'✗ Not placed'} ${s.w===0&&s.p?'(first try)':s.p?`(${s.w} wrong → ✓)`:`(${s.w||0} wrong, incomplete)`}\n`;
+  });
+  const g3FT=R3_SYMS.filter(s=>ST.g3[s]?.w===0&&ST.g3[s]?.p).length;
+  const g3tot=R3_SYMS.filter(s=>ST.g3[s]?.p).length;
+  out+=`  Score: ${g3tot}/4 · First-try: ${g3FT}/${g3tot}\n\n`;
+
+  out+=`──── ESSENTIAL QUESTION ${dash.slice(23)}\n`;
+  out+=`If two elements are in the same group, what does that tell you about their electron structure and why does that make their behavior similar? (2+ specific elements with valence electron counts)\n\n`;
+  out+=`Response:\n${ST.eq.trim()||'[No response entered]'}\n\n`;
+
+  out+=line+'\nENGAGEMENT METRICS\n'+dash+'\n';
+  const started=ST.startTime?new Date(ST.startTime).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}):'—';
+  const submitted=ST.submitTime?new Date(ST.submitTime).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}):'—';
+  out+=`Session started     : ${started}\nSubmitted at        : ${submitted}\nTime on task        : ${fmtTimeLong(totalMs)}\n\n`;
+  out+=`Shell diagrams explored : ${ST.shellsExplored.length} / ${SHELL_ELS.length} (${ST.shellsExplored.length?ST.shellsExplored.join(', '):'none'})\n`;
+  out+=`Family cards flipped    : ${ST.famFlipped.length} / 5\n`;
+  out+=`Recap cards reviewed    : ${ST.recapClicked.length} / 6\n\n`;
+  const allFT=g1FT+g2FT+g3FT;const allTot=g1tot+g2tot+g3tot;
+  out+=`Game first-try accuracy: ${allFT}/${allTot} (${allTot>0?Math.round(allFT/allTot*100):0}%)\n\n`;
+
+  const SE=ST.sectionEntries;
+  const sOrder=['recap','shells','valence','families','trends','eq'];
+  const sNames={recap:'Day 1 Recap',shells:'Electron Shells',valence:'Valence Electrons',families:'Element Families',trends:'Periodic Trends',eq:'Essential Question'};
+  if(Object.keys(SE).length>1){
+    out+=`Time per section:\n`;
+    sOrder.forEach((sid,i)=>{
+      if(!SE[sid])return;
+      const next=sOrder.slice(i+1).find(s=>SE[s]);
+      const end=next?SE[next]:(ST.submitTime||Date.now());
+      out+=`  ${(sNames[sid]||sid).padEnd(22)}: ${fmtTimeLong(end-SE[sid])}\n`;
+    });
+  }
+
+  out+='\n'+line+'\n';
+  out+=`Sent via Stratosyn · Day 2 · Periodic Table · ALA Room 501 · Ms. Madewell`;
+
+  navigator.clipboard.writeText(out).then(()=>{
+    const btn=$('copy-btn');const notice=$('copy-notice');
+    btn.classList.add('copied');btn.textContent='✓ Copied — Now paste in Canvas';
+    if(notice)notice.classList.add('show');
+    setTimeout(()=>{
+      btn.classList.remove('copied');
+      btn.innerHTML='Copy Completed Work to Clipboard <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="9" height="10" rx="1"/><path d="M3 11H2a1 1 0 01-1-1V2a1 1 0 011-1h8a1 1 0 011 1v1"/></svg>';
+    },5000);
+  }).catch(()=>alert('Copy failed — please copy the text manually.'));
+}
+
+/* ════════════════════════════════════════════════════
+   BOOT
+════════════════════════════════════════════════════ */
+(function boot(){
+  loadState();
+  initStudentInfo();
+  buildRecap();
+  buildShellBtns();
+  buildFamilyCards();
+  initMC();restoreMC();
+  initEQ();
+  buildR1();buildR2();buildR3();
+  initSectionTracking();
+  updateProgress();
+  startTimerDisplay();
+  // Pre-load Na in shell builder
+  setTimeout(()=>renderShell('Na'),300);
+})();
+</script>
+</body>
+</html>
