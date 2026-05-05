@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Stratosyn · Day 3 · Periodic Table · Classroom Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{color-scheme:dark;}
+html,body{height:100%;overflow:hidden;background:#06080f;color:#dde6f5;font-family:"DM Mono",ui-monospace,monospace;}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(60% 55% at 50% 45%,rgba(62,255,160,.05) 0%,transparent 65%),radial-gradient(50% 40% at 80% 20%,rgba(192,132,252,.03) 0%,transparent 60%);z-index:0;pointer-events:none;}
+::selection{background:#f5c842;color:#06080f;}
+:root{
+  --void:#06080f;--tx:#dde6f5;--tx2:#8898b8;--tx3:#4a5570;
+  --accent:#f5c842;--accent-soft:rgba(245,200,66,.10);--accent-line:rgba(245,200,66,.22);--accent-glow:rgba(245,200,66,.45);
+  --green:#3effa0;--blue:#38bdf8;--red:#f87171;--purple:#c084fc;--orange:#f97316;
+  --ionic:#3effa0;--covalent:#c084fc;
+  --hr:.0625rem;
+  --font-d:"Bebas Neue","Impact",sans-serif;
+  --font-b:"Syne",sans-serif;
+  --font-m:"DM Mono",ui-monospace,monospace;
+  --c-alkali:#ef4444;--c-alkaline:#f97316;--c-transition:#eab308;
+  --c-metalloid:#14b8a6;--c-nonmetal:#3b82f6;--c-halogen:#8b5cf6;--c-noble:#a855f7;
+  --px:clamp(.9rem,4vw,4.5rem);--pt:clamp(3.2rem,6vh,5rem);--pb:clamp(3.2rem,6vh,4.5rem);
+  --gap:clamp(.5rem,1.2vw,1rem);--gap2:clamp(.8rem,2vw,1.6rem);--z-ui:10;
+}
+/* ── SLIDES ── */
+#slides{position:fixed;inset:0;z-index:1;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:var(--pt) var(--px) var(--pb);overflow-y:auto;overflow-x:hidden;scrollbar-width:none;opacity:0;pointer-events:none;transition:opacity .32s ease,transform .32s ease;transform:translateX(28px);}
+.slide::-webkit-scrollbar{display:none;}
+.slide.active{opacity:1;pointer-events:all;transform:translateX(0);}
+.slide.exit-l{opacity:0;transform:translateX(-28px);}
+.slide.exit-r{opacity:0;transform:translateX(28px);}
+.sg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:min(55vw,52vh);color:var(--green);opacity:.025;pointer-events:none;user-select:none;line-height:1;z-index:0;}
+.si{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;min-height:0;}
+/* ── UI ── */
+#hud{position:fixed;top:.9rem;right:clamp(.9rem,3vw,1.8rem);z-index:var(--z-ui);text-align:right;font-family:var(--font-m);font-size:clamp(.5rem,1vw,.62rem);letter-spacing:.2em;color:var(--tx3);text-transform:uppercase;display:flex;flex-direction:column;align-items:flex-end;gap:.35rem;}
+#hud-sl{color:var(--green);}
+.pb{width:clamp(4.5rem,9vw,7.5rem);height:var(--hr);background:rgba(255,255,255,.07);overflow:hidden;}
+.pf{height:100%;background:var(--green);transition:width .32s ease;}
+#scene-strip{position:fixed;left:clamp(.8rem,1.8vw,1.4rem);top:50%;translate:-50% -50%;z-index:var(--z-ui);display:flex;flex-direction:column;gap:clamp(.5rem,1.1vh,.8rem);}
+.sdot{display:block;width:.25rem;height:.25rem;border-radius:50%;background:rgba(255,255,255,.18);cursor:pointer;transition:background .3s,scale .3s;position:relative;}
+.sdot::before{content:"";position:absolute;inset:-.35rem;}
+.sdot.act{background:var(--green);scale:1.9;}
+#nav{position:fixed;bottom:clamp(.65rem,1.8vh,1.1rem);left:50%;translate:-50% 0;z-index:var(--z-ui);display:flex;align-items:center;gap:clamp(.55rem,1.8vw,1.1rem);}
+.nb{display:inline-flex;align-items:center;gap:.4rem;padding:clamp(.42rem,.9vh,.6rem) clamp(.7rem,1.8vw,1.1rem);border:var(--hr) solid rgba(255,255,255,.1);background:rgba(11,15,30,.9);backdrop-filter:blur(10px);color:var(--tx2);font-family:var(--font-m);font-size:clamp(.48rem,.9vw,.6rem);letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:border-color .2s,color .2s;}
+.nb:hover:not(:disabled){border-color:rgba(62,255,160,.3);color:var(--green);}
+.nb:disabled{opacity:.18;cursor:default;}
+.nb.prime{border-color:var(--green);color:var(--green);background:rgba(62,255,160,.06);}
+.nb svg{width:.6rem;height:.6rem;}
+#sl-ctr{font-family:var(--font-m);font-size:clamp(.48rem,.85vw,.58rem);letter-spacing:.22em;color:var(--tx3);}
+#brand{position:fixed;top:clamp(.65rem,1.3vh,1rem);left:clamp(.9rem,2.2vw,1.6rem);z-index:var(--z-ui);display:flex;align-items:center;gap:.5rem;}
+.bm{display:grid;grid-template-columns:repeat(3,7px);grid-template-rows:repeat(3,7px);gap:1px;transform-style:preserve-3d;animation:bfloat 14s ease-in-out infinite;flex-shrink:0;}
+@keyframes bfloat{0%{transform:rotateY(0deg) rotateX(2.5deg);}33%{transform:rotateY(6deg) rotateX(-1.5deg);}66%{transform:rotateY(-5deg) rotateX(3deg);}100%{transform:rotateY(0deg) rotateX(2.5deg);}}
+.bsc{background:rgba(221,230,245,.12);}
+.bsc[data-r="2"]{background:var(--green);box-shadow:0 0 5px rgba(62,255,160,.45);animation:scidle 2.8s ease-in-out infinite;}
+@keyframes scidle{0%,100%{opacity:1;}50%{opacity:.72;}}
+.btxt{border-left:var(--hr) solid rgba(255,255,255,.1);padding-left:.55rem;display:flex;flex-direction:column;gap:.08rem;}
+.bname{font-family:var(--font-b);font-weight:800;font-size:clamp(.48rem,.95vw,.64rem);letter-spacing:.22em;color:var(--tx);text-transform:uppercase;}
+.bsub{font-family:var(--font-m);font-size:clamp(.32rem,.62vw,.42rem);letter-spacing:.18em;color:var(--green);text-transform:uppercase;}
+/* ── TYPE ── */
+.rule{width:clamp(1.8rem,4vw,3rem);height:var(--hr);background:var(--green);margin-bottom:clamp(.35rem,.9vh,.65rem);}
+.lbl{font-family:var(--font-m);font-size:clamp(.52rem,.95vw,.7rem);letter-spacing:.26em;text-transform:uppercase;color:var(--green);margin-bottom:clamp(.35rem,.9vh,.65rem);display:flex;align-items:center;gap:.4rem;}
+.lbl::before{content:"";width:5px;height:5px;background:currentColor;flex-shrink:0;}
+.lbl.a{color:var(--accent);}
+.lbl.p{color:var(--purple);}
+h2,.h2{font-family:var(--font-d);font-size:clamp(1.8rem,5vw + .5vh,5rem);line-height:.88;letter-spacing:.03em;font-weight:400;margin-bottom:clamp(.35rem,.9vh,.75rem);}
+h1,.h1{font-family:var(--font-d);font-size:clamp(2.6rem,7.5vw + .8vh,7rem);line-height:.87;letter-spacing:.03em;font-weight:400;margin-bottom:clamp(.45rem,1.3vh,.9rem);}
+.body{font-size:clamp(.78rem,1.3vw,1rem);line-height:1.78;color:rgba(221,230,245,.64);}
+.body strong{color:var(--tx);font-weight:500;}
+.ibox{border:var(--hr) solid rgba(255,255,255,.08);background:rgba(255,255,255,.025);padding:clamp(.7rem,1.8vh,1.1rem) clamp(.85rem,1.8vw,1.3rem);margin-bottom:var(--gap);}
+.ibox-lbl{font-size:clamp(.48rem,.82vw,.64rem);letter-spacing:.22em;text-transform:uppercase;margin-bottom:clamp(.25rem,.7vh,.5rem);}
+.ibox-txt{font-size:clamp(.72rem,1.25vw,.96rem);line-height:1.72;color:rgba(221,230,245,.74);}
+.ibox-txt strong{color:var(--tx);font-weight:500;}
+.rk{display:flex;align-items:center;gap:.42rem;font-size:clamp(.56rem,.95vw,.74rem);color:var(--tx2);}
+.rk-dot{width:clamp(8px,1.4vw,11px);height:clamp(8px,1.4vw,11px);border-radius:2px;flex-shrink:0;}
+/* ── ELEMENT BOX ── */
+.el-box{border:1px solid;display:inline-flex;flex-direction:column;align-items:center;padding:clamp(.4rem,.9vw,.75rem) clamp(.4rem,.85vw,.7rem) clamp(.35rem,.75vw,.6rem);min-width:clamp(60px,10vw,90px);}
+.el-an{font-family:var(--font-m);font-size:clamp(.45rem,.82vw,.65rem);align-self:flex-start;line-height:1;margin-bottom:2px;}
+.el-sym{font-family:var(--font-d);font-size:clamp(1.6rem,3.8vw,3.2rem);line-height:1;font-weight:400;}
+.el-nm{font-size:clamp(.38rem,.65vw,.52rem);color:rgba(221,230,245,.45);margin-top:2px;text-align:center;}
+.el-am{font-size:clamp(.32rem,.55vw,.45rem);color:rgba(221,230,245,.28);text-align:center;}
+.z-alkali{border-color:var(--c-alkali);background:rgba(239,68,68,.1);} .z-alkali .el-an,.z-alkali .el-sym{color:var(--c-alkali);}
+.z-halogen{border-color:var(--c-halogen);background:rgba(139,92,246,.1);} .z-halogen .el-an,.z-halogen .el-sym{color:var(--c-halogen);}
+.z-nonmetal{border-color:var(--c-nonmetal);background:rgba(59,130,246,.1);} .z-nonmetal .el-an,.z-nonmetal .el-sym{color:var(--c-nonmetal);}
+.z-alkaline{border-color:var(--c-alkaline);background:rgba(249,115,22,.1);} .z-alkaline .el-an,.z-alkaline .el-sym{color:var(--c-alkaline);}
+/* ── BOND BUILDER (S4) ── */
+.bond-builder{display:flex;flex-direction:column;gap:var(--gap);flex:1;min-height:0;}
+.bb-pairs{display:flex;gap:var(--gap);flex-wrap:wrap;}
+.bb-pair-btn{border:1px solid;padding:clamp(.38rem,.8vw,.62rem) clamp(.55rem,1.1vw,.88rem);cursor:pointer;font-family:var(--font-m);font-size:clamp(.5rem,.88vw,.68rem);color:var(--tx2);background:rgba(255,255,255,.018);transition:all .18s;display:flex;align-items:center;gap:.45rem;}
+.bb-pair-btn:hover{border-color:rgba(255,255,255,.18);color:var(--tx);}
+.bb-pair-btn.active-ionic{border-color:var(--ionic);background:rgba(62,255,160,.08);color:var(--ionic);}
+.bb-pair-btn.active-covalent{border-color:var(--covalent);background:rgba(192,132,252,.08);color:var(--covalent);}
+.bb-sym{font-family:var(--font-d);font-size:clamp(.9rem,1.8vw,1.4rem);line-height:1;}
+.bb-stage{flex:1;display:flex;gap:var(--gap2);align-items:center;justify-content:center;min-height:0;flex-wrap:wrap;}
+.bb-atom{display:flex;flex-direction:column;align-items:center;gap:var(--gap);}
+.bb-atom-label{font-family:var(--font-m);font-size:clamp(.48rem,.82vw,.62rem);color:var(--tx3);letter-spacing:.1em;text-transform:uppercase;}
+.bb-atom-box{position:relative;width:clamp(100px,18vw,160px);height:clamp(100px,18vw,160px);}
+.bb-atom-box svg{width:100%;height:100%;overflow:visible;}
+.bb-arrow{display:flex;flex-direction:column;align-items:center;gap:.35rem;padding:0 clamp(.5rem,1vw,.85rem);}
+.bb-arrow-icon{font-family:var(--font-d);font-size:clamp(1.5rem,3vw,2.5rem);color:var(--tx3);line-height:1;}
+.bb-arrow-lbl{font-family:var(--font-m);font-size:clamp(.42rem,.72vw,.56rem);color:var(--tx3);letter-spacing:.1em;text-transform:uppercase;text-align:center;}
+.bb-result{display:flex;flex-direction:column;align-items:center;gap:.35rem;}
+.bb-result-formula{font-family:var(--font-d);font-size:clamp(1.8rem,4vw,3.2rem);line-height:1;text-align:center;}
+.bb-result-name{font-family:var(--font-m);font-size:clamp(.5rem,.88vw,.68rem);color:var(--tx2);letter-spacing:.08em;}
+.bb-result-type{font-size:clamp(.42rem,.72vw,.56rem);letter-spacing:.18em;text-transform:uppercase;margin-top:.2rem;}
+.bb-info{display:flex;flex-direction:column;gap:.35rem;min-width:clamp(140px,22vw,200px);}
+.bb-info-row{border-top:var(--hr) solid rgba(255,255,255,.06);padding:clamp(.3rem,.7vh,.52rem) 0;}
+.bb-info-row:first-child{border-top:none;padding-top:0;}
+.bb-info-key{font-family:var(--font-m);font-size:clamp(.42rem,.72vw,.56rem);letter-spacing:.16em;text-transform:uppercase;color:var(--tx3);margin-bottom:.15rem;}
+.bb-info-val{font-size:clamp(.62rem,1.05vw,.82rem);color:var(--tx);line-height:1.45;}
+/* ── REVIEW CARDS ── */
+.review-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);flex:1;min-height:0;}
+.review-card{border:var(--hr) solid rgba(255,255,255,.08);background:rgba(255,255,255,.022);padding:clamp(.7rem,1.8vh,1.1rem) clamp(.85rem,1.8vw,1.3rem);display:flex;flex-direction:column;gap:.55rem;cursor:pointer;transition:border-color .2s,background .2s;}
+.review-card:hover{border-color:rgba(255,255,255,.16);background:rgba(255,255,255,.04);}
+.review-card.revealed{border-color:rgba(62,255,160,.25);background:rgba(62,255,160,.04);}
+.rc-q{font-size:clamp(.62rem,1.05vw,.82rem);color:var(--tx2);line-height:1.55;flex:1;}
+.rc-a{font-size:clamp(.68rem,1.15vw,.9rem);color:var(--green);line-height:1.5;display:none;}
+.review-card.revealed .rc-a{display:block;}
+.rc-hint{font-family:var(--font-m);font-size:clamp(.4rem,.65vw,.52rem);color:var(--tx3);letter-spacing:.1em;text-transform:uppercase;margin-top:auto;}
+.review-card.revealed .rc-hint{display:none;}
+/* ── CLO ── */
+.clo-box{border:var(--hr) solid rgba(62,255,160,.2);background:rgba(62,255,160,.04);padding:clamp(.65rem,1.5vh,1rem) clamp(.8rem,1.8vw,1.25rem);margin-bottom:var(--gap);}
+.clo-box.p{border-color:rgba(192,132,252,.2);background:rgba(192,132,252,.04);}
+.clo-lbl{font-family:var(--font-m);font-size:clamp(.42rem,.72vw,.56rem);letter-spacing:.22em;text-transform:uppercase;margin-bottom:clamp(.22rem,.58vh,.4rem);}
+.clo-lbl.g{color:rgba(62,255,160,.6);}
+.clo-lbl.p{color:rgba(192,132,252,.6);}
+.clo-txt{font-size:clamp(.76rem,1.28vw,.98rem);color:var(--tx);line-height:1.56;}
+.sc-row{display:flex;align-items:flex-start;gap:clamp(.45rem,1.1vw,.8rem);padding:clamp(.38rem,.9vh,.6rem) 0;border-top:var(--hr) solid rgba(255,255,255,.06);font-size:clamp(.64rem,1.08vw,.84rem);color:rgba(221,230,245,.62);line-height:1.48;}
+.sc-n{font-family:var(--font-m);font-size:clamp(.45rem,.78vw,.59rem);color:var(--green);letter-spacing:.14em;flex-shrink:0;margin-top:2px;}
+/* ── AGENDA ── */
+.ag-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 var(--gap2);flex:1;min-height:0;}
+.ag-row{display:flex;align-items:flex-start;gap:clamp(.55rem,1.4vw,.9rem);padding:clamp(.5rem,1.1vh,.8rem) 0;border-top:var(--hr) solid rgba(255,255,255,.06);}
+.ag-t{font-family:var(--font-m);font-size:clamp(.48rem,.82vw,.62rem);color:var(--green);letter-spacing:.1em;min-width:clamp(36px,6vw,50px);flex-shrink:0;margin-top:1px;}
+.ag-c{font-size:clamp(.68rem,1.15vw,.9rem);color:rgba(221,230,245,.7);line-height:1.4;}
+.ag-c strong{color:var(--tx);display:block;font-size:clamp(.75rem,1.28vw,.97rem);font-weight:500;margin-bottom:1px;}
+.eq-banner{border-top:var(--hr) solid rgba(255,255,255,.06);padding-top:clamp(.45rem,1.2vh,.8rem);margin-top:auto;}
+.eq-tag{font-family:var(--font-m);font-size:clamp(.42rem,.72vw,.56rem);letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:.3rem;}
+.eq-q{font-size:clamp(.72rem,1.2vw,.94rem);color:rgba(221,230,245,.58);line-height:1.6;}
+.eq-big{border:var(--hr) solid rgba(245,200,66,.22);background:rgba(245,200,66,.04);padding:clamp(.9rem,2.5vh,1.8rem) clamp(1.1rem,2.8vw,1.9rem);flex:1;display:flex;flex-direction:column;justify-content:center;}
+.eq-big-txt{font-size:clamp(.85rem,1.75vw,1.38rem);color:var(--tx);line-height:1.78;}
+.eq-big-txt strong{color:var(--accent);font-weight:500;}
+.eq-note{font-family:var(--font-m);font-size:clamp(.45rem,.78vw,.6rem);color:rgba(255,255,255,.2);letter-spacing:.12em;margin-top:auto;padding-top:clamp(.45rem,1.1vh,.75rem);}
+/* ── IONIC VS COVALENT comparison ── */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap2);flex:1;min-height:0;}
+.compare-col{display:flex;flex-direction:column;gap:var(--gap);}
+.compare-header{font-family:var(--font-d);font-size:clamp(1.6rem,3.5vw,2.8rem);line-height:.95;font-weight:400;}
+.compare-sub{font-family:var(--font-m);font-size:clamp(.45rem,.78vw,.6rem);letter-spacing:.14em;text-transform:uppercase;color:var(--tx3);margin-top:.2rem;margin-bottom:.5rem;}
+.compare-row{display:flex;align-items:flex-start;gap:.65rem;border-top:var(--hr) solid rgba(255,255,255,.06);padding:clamp(.35rem,.9vh,.6rem) 0;}
+.compare-row:first-child{border-top:none;padding-top:0;}
+.cr-icon{font-size:clamp(.8rem,1.4vw,1.1rem);flex-shrink:0;line-height:1;margin-top:.1rem;}
+.cr-text{font-size:clamp(.62rem,1.05vw,.82rem);color:rgba(221,230,245,.72);line-height:1.5;}
+.cr-text strong{color:var(--tx);font-weight:500;}
+/* ── GAMES ── */
+.bank{display:flex;flex-wrap:wrap;gap:var(--gap);margin-bottom:var(--gap);}
+.tile{border:1px solid;display:inline-flex;flex-direction:column;align-items:center;padding:clamp(.38rem,.82vw,.6rem) clamp(.38rem,.75vw,.55rem) clamp(.32rem,.68vw,.5rem);min-width:clamp(56px,8.5vw,78px);cursor:pointer;user-select:none;transition:transform .12s,opacity .2s;}
+.tile:hover:not(.placed){transform:translateY(-2px);}
+.tile.sel{outline:2px solid var(--accent);outline-offset:2px;}
+.tile.placed{opacity:.2;pointer-events:none;}
+.t-an{font-family:var(--font-m);font-size:clamp(.48rem,.82vw,.62rem);align-self:flex-start;line-height:1;margin-bottom:1px;}
+.t-sym{font-family:var(--font-d);font-size:clamp(1rem,2.4vw,1.85rem);line-height:1;font-weight:400;}
+.t-nm{font-size:clamp(.38rem,.62vw,.52rem);color:rgba(221,230,245,.4);text-align:center;margin-top:1px;max-width:100%;overflow:hidden;white-space:nowrap;}
+.label-tile{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.02);padding:clamp(.38rem,.8vw,.6rem) clamp(.55rem,1.1vw,.88rem);cursor:pointer;font-family:var(--font-m);font-size:clamp(.52rem,.9vw,.7rem);color:var(--tx2);transition:all .15s;text-align:center;}
+.label-tile:hover:not(.placed){border-color:rgba(255,255,255,.22);color:var(--tx);}
+.label-tile.sel{outline:2px solid var(--accent);outline-offset:2px;color:var(--accent);border-color:var(--accent-line);}
+.label-tile.placed{opacity:.2;pointer-events:none;}
+.zone{border:1px dashed rgba(255,255,255,.2);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;cursor:pointer;transition:background .15s,border-color .15s;min-height:clamp(68px,11vh,95px);padding:clamp(.38rem,.7vw,.58rem);}
+.zone:hover{background:rgba(255,255,255,.025);}
+.zone.ok{border-style:solid;border-color:var(--green);background:rgba(62,255,160,.06);}
+.zone.bad{animation:zbad .42s ease;}
+@keyframes zbad{0%,100%{border-color:rgba(255,255,255,.2);background:transparent;}50%{border-color:var(--red);background:rgba(248,113,113,.1);}}
+.z-lbl{font-family:var(--font-m);font-size:clamp(.48rem,.82vw,.62rem);letter-spacing:.12em;color:rgba(255,255,255,.28);text-transform:uppercase;}
+.z-lbl.a{color:var(--accent);font-size:clamp(.58rem,.95vw,.72rem);}
+.z-content{display:flex;flex-wrap:wrap;gap:3px;margin-top:5px;justify-content:flex-start;width:100%;}
+.mini-el{display:flex;flex-direction:column;align-items:center;padding:2px 5px;border:1px solid;border-radius:1px;}
+.mini-sym{font-family:var(--font-d);font-size:clamp(.7rem,1.4vw,1.05rem);line-height:1;font-weight:400;}
+.mini-nm{font-size:clamp(.33rem,.52vw,.46rem);color:rgba(221,230,245,.38);}
+.mini-label{font-family:var(--font-m);font-size:clamp(.38rem,.62vw,.52rem);color:rgba(221,230,245,.5);padding:2px 6px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);}
+.g-row{display:flex;align-items:center;gap:var(--gap);margin-top:auto;padding-top:var(--gap);flex-shrink:0;}
+.g-score{font-family:var(--font-m);font-size:clamp(.52rem,.88vw,.68rem);color:rgba(255,255,255,.28);}
+.g-done{color:var(--green)!important;}
+.reset-btn{font-family:var(--font-m);font-size:clamp(.48rem,.8vw,.6rem);letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.28);background:none;border:var(--hr) solid rgba(255,255,255,.1);padding:.28rem .65rem;cursor:pointer;border-radius:2px;transition:all .2s;}
+.reset-btn:hover{border-color:rgba(255,255,255,.22);color:rgba(255,255,255,.5);}
+.two-bins{display:flex;gap:var(--gap2);}
+.two-bins>div{flex:1;}
+.two-lbl{font-family:var(--font-m);font-size:clamp(.48rem,.82vw,.62rem);letter-spacing:.14em;text-transform:uppercase;margin-bottom:var(--gap);}
+.two-zone{width:100%;min-height:clamp(85px,14vh,120px);align-items:flex-start;}
+.match-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:var(--gap);align-items:start;flex:1;}
+.match-col-lbl{font-family:var(--font-m);font-size:clamp(.48rem,.82vw,.62rem);letter-spacing:.14em;text-transform:uppercase;color:var(--tx3);margin-bottom:var(--gap);}
+.match-slots{display:flex;flex-direction:column;gap:var(--gap);}
+.match-slot{display:flex;align-items:center;gap:.5rem;}
+.match-zone{flex:1;min-height:clamp(48px,8vh,65px);}
+.match-zone-lbl{font-family:var(--font-d);font-size:clamp(.9rem,1.8vw,1.4rem);color:var(--tx2);flex-shrink:0;line-height:1;}
+/* ── RESPONSIVE ── */
+@media(max-width:640px){
+  :root{--px:.9rem;--pt:3rem;--pb:3.5rem;}
+  #scene-strip{display:none;}.bname,.bsub,.btxt{display:none;}
+  h1,.h1{font-size:clamp(2.2rem,10vw,3.2rem);}
+  h2,.h2{font-size:clamp(1.8rem,8.5vw,2.6rem);}
+  .ag-grid,.compare-grid,.review-grid{grid-template-columns:1fr;}
+  .bb-stage{flex-direction:column;}
+  .two-bins{flex-direction:column;}
+  .match-grid{grid-template-columns:1fr;}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.001ms!important;animation-duration:.001ms!important;}}
+</style>
+</head>
+<body>
+<div id="brand">
+  <div class="bm"><div class="bsc" data-r="1"></div><div class="bsc" data-r="1"></div><div class="bsc" data-r="1"></div><div class="bsc" data-r="2"></div><div class="bsc" data-r="2"></div><div class="bsc" data-r="2"></div><div class="bsc" data-r="3"></div><div class="bsc" data-r="3"></div><div class="bsc" data-r="3"></div></div>
+  <div class="btxt"><div class="bname">STRATOSYN</div><div class="bsub">Ms. Madewell · Room 501 · Day 3 · Periodic Table</div></div>
+</div>
+<div id="hud"><div id="hud-sl">01 / 11</div><div class="pb"><div class="pf" id="prog-fill" style="width:0%"></div></div></div>
+<div id="scene-strip"></div>
+
+<div id="slides">
+
+<!-- S0 · AGENDA -->
+<div class="slide active" id="s0">
+<div class="sg">+−</div><div class="si">
+<div class="rule"></div>
+<div class="lbl a">7th Grade Science · Periodic Table Unit · Day 3 of 5</div>
+<h1>TODAY'S<br>AGENDA</h1>
+<div class="ag-grid">
+  <div>
+    <div class="ag-row"><div class="ag-t">0–5m</div><div class="ag-c"><strong>Days 1–2 Recap</strong>Click-to-reveal review cards</div></div>
+    <div class="ag-row"><div class="ag-t">5–18m</div><div class="ag-c"><strong>Why Atoms Bond</strong>Stability, full shells, the octet rule · Q1–Q2</div></div>
+    <div class="ag-row"><div class="ag-t">18–30m</div><div class="ag-c"><strong>Ionic Bonding</strong>Electron transfer · Ions · Bond builder · Q3–Q4</div></div>
+  </div>
+  <div>
+    <div class="ag-row"><div class="ag-t">30–40m</div><div class="ag-c"><strong>Covalent Bonding</strong>Electron sharing · Challenge 1 · Q5–Q6</div></div>
+    <div class="ag-row"><div class="ag-t">40–48m</div><div class="ag-c"><strong>Ionic vs Covalent</strong>Ion charges · Formula writing · Challenge 2 &amp; 3 · Q7–Q8</div></div>
+    <div class="ag-row"><div class="ag-t">48–50m</div><div class="ag-c"><strong>Essential Question</strong>Stratosyn worksheet → Canvas</div></div>
+  </div>
+</div>
+<div class="eq-banner">
+  <div class="eq-tag">Essential Question — returns on slide 11</div>
+  <div class="eq-q">Using what you know about valence electrons, explain why sodium and chlorine react to form NaCl — and why that compound is stable when neither sodium nor chlorine is.</div>
+</div>
+</div></div>
+
+<!-- S1 · CLO -->
+<div class="slide" id="s1">
+<div class="sg" style="font-size:min(38vw,38vh);color:var(--green);">CLO</div><div class="si">
+<div class="rule"></div>
+<div class="lbl">Learning Target · Day 3</div>
+<div class="clo-box">
+  <div class="clo-lbl g">Course Learning Objective · NGSS PS1.A / AZ Science Standard 7.PS1.A</div>
+  <div class="clo-txt">Students will explain how the number of valence electrons drives chemical bonding, distinguish between ionic and covalent bonds, and use group numbers to predict ion charges and simple compound formulas.</div>
+</div>
+<div class="clo-box p">
+  <div class="clo-lbl p">I Can Statement · Student Friendly</div>
+  <div class="clo-txt">I can explain why atoms bond, tell the difference between ionic and covalent bonds, and predict what simple compounds atoms will form.</div>
+</div>
+<div style="font-family:var(--font-m);font-size:clamp(.42rem,.72vw,.56rem);letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:clamp(.2rem,.5vh,.4rem);margin-top:clamp(.28rem,.7vh,.5rem);">Success Criteria — Measurable Metrics</div>
+<div class="sc-row"><span class="sc-n">SC1</span>I can explain why atoms bond using the concept of full outer shells <em>→ Q1 &amp; Q2</em></div>
+<div class="sc-row"><span class="sc-n">SC2</span>I can describe ionic bonding as electron transfer and identify the resulting ions <em>→ Bond Builder + Q3 &amp; Q4</em></div>
+<div class="sc-row"><span class="sc-n">SC3</span>I can describe covalent bonding as electron sharing and give an example <em>→ Q5 &amp; Q6</em></div>
+<div class="sc-row"><span class="sc-n">SC4</span>I can use group number to predict ion charge and write a simple compound formula <em>→ Challenge 2 &amp; 3 + Q7 &amp; Q8 + Essential Question</em></div>
+<div style="margin-top:auto;border-top:var(--hr) solid rgba(255,255,255,.06);padding-top:clamp(.38rem,.9vh,.62rem);font-family:var(--font-m);font-size:clamp(.42rem,.72vw,.56rem);color:rgba(255,255,255,.2);letter-spacing:.12em;">PROFICIENCY → ≥ 6/8 MC + Essential Question with valence electron reasoning and NaCl example</div>
+</div></div>
+
+<!-- S2 · RECAP -->
+<div class="slide" id="s2">
+<div class="sg">★</div><div class="si">
+<div class="rule"></div>
+<div class="lbl">Days 1–2 Recap · Click to reveal</div>
+<h2>WHAT WE<br>KNOW</h2>
+<div class="review-grid" id="review-grid"></div>
+</div></div>
+
+<!-- S3 · WHY ATOMS BOND -->
+<div class="slide" id="s3">
+<div class="sg" style="color:var(--green);">⚛</div><div class="si">
+<div class="rule"></div>
+<div class="lbl">01 · Explain · Part 1</div>
+<h2>WHY ATOMS<br>BOND</h2>
+<div class="body" style="margin-bottom:var(--gap);">Atoms bond because of one driving force: <strong>stability</strong>. Noble gases (Group 18) have full outer shells — 8 valence electrons — and they almost never react. Every other element is trying to reach that same full-shell state. Atoms bond with other atoms to either <strong>gain, lose, or share electrons</strong> until their outer shell is full. This is called the <strong>octet rule</strong> — most atoms want 8 valence electrons.</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);flex:1;min-height:0;">
+  <div class="ibox" style="border-color:rgba(239,68,68,.28);background:rgba(239,68,68,.05);">
+    <div class="ibox-lbl" style="color:#ef4444;">Metals (Group 1–2)</div>
+    <div class="ibox-txt">Have <strong>1 or 2 valence electrons</strong> — it is easier to give them away than to gain 6 or 7 more. They become positively charged ions (cations). Stability through loss.</div>
+  </div>
+  <div class="ibox" style="border-color:rgba(139,92,246,.28);background:rgba(139,92,246,.05);">
+    <div class="ibox-lbl" style="color:#8b5cf6;">Nonmetals (Group 15–17)</div>
+    <div class="ibox-txt">Have <strong>5, 6, or 7 valence electrons</strong> — close to full. Easier to gain 1, 2, or 3 electrons than to lose many. They become negatively charged ions (anions). Stability through gain.</div>
+  </div>
+  <div class="ibox" style="border-color:rgba(62,255,160,.28);background:rgba(62,255,160,.05);">
+    <div class="ibox-lbl" style="color:#3effa0;">Nonmetals + Nonmetals</div>
+    <div class="ibox-txt">When neither atom can easily take from the other, they <strong>share electrons</strong> between them. Both atoms count the shared electrons toward their octet. Stability through sharing.</div>
+  </div>
+</div>
+</div></div>
+
+<!-- S4 · BOND BUILDER (Interactive) -->
+<div class="slide" id="s4">
+<div class="sg" style="color:var(--green);">⚡</div><div class="si">
+<div class="rule"></div>
+<div class="lbl">02 · Interactive · Bond Builder</div>
+<h2>IONIC<br>BONDING</h2>
+<div class="body" style="margin-bottom:var(--gap);">Ionic bonding happens between a <strong>metal and a nonmetal</strong>. The metal gives its valence electron(s) to the nonmetal. Both become ions and attract each other. <strong>Click a pair below</strong> to see the bond form.</div>
+<div class="bond-builder">
+  <div class="bb-pairs" id="bb-pairs"></div>
+  <div class="bb-stage" id="bb-stage">
+    <div style="font-family:var(--font-m);font-size:clamp(.52rem,.9vw,.68rem);color:var(--tx3);letter-spacing:.12em;margin:auto;">Select a bond pair above</div>
+  </div>
+</div>
+</div></div>
+
+<!-- S5 · COVALENT BONDING -->
+<div class="slide" id="s5">
+<div class="sg" style="color:var(--purple);">∞</div><div class="si">
+<div class="rule"></div>
+<div class="lbl p">03 · Explain · Part 3</div>
+<h2>COVALENT<br>BONDING</h2>
+<div class="body" style="margin-bottom:var(--gap);">Covalent bonding happens between <strong>two nonmetals</strong>. Instead of transferring electrons, they <strong>share</strong> one or more pairs of electrons. Both atoms count the shared pair toward their octet. The shared electrons create a bond that holds the two atoms together.</div>
+<div class="compare-grid">
+  <div class="compare-col">
+    <div class="compare-header" style="color:var(--ionic);">IONIC</div>
+    <div class="compare-sub">Metal + Nonmetal · Electron Transfer</div>
+    <div class="compare-row"><div class="cr-icon" style="color:var(--ionic);">→</div><div class="cr-text"><strong>Metal GIVES</strong> electrons to nonmetal</div></div>
+    <div class="compare-row"><div class="cr-icon" style="color:var(--ionic);">⊕⊖</div><div class="cr-text">Creates <strong>ions</strong> — charged particles (cation + anion)</div></div>
+    <div class="compare-row"><div class="cr-icon" style="color:var(--ionic);">🧂</div><div class="cr-text">Usually forms <strong>crystals or salts</strong> at room temperature (NaCl, MgO)</div></div>
+    <div class="compare-row"><div class="cr-icon" style="color:var(--ionic);">💧</div><div class="cr-text"><strong>Conducts electricity</strong> when dissolved in water or melted</div></div>
+    <div class="compare-row"><div class="cr-icon" style="color:var(--ionic);">🔥</div><div class="cr-text"><strong>High melting points</strong> — strong ionic attraction holds the crystal together</div></div>
+  </div>
+  <div class="compare-col">
+    <div class="compare-header" style="color:var(--covalent);">COVALENT</div>
+    <div class="compare-sub">Nonmetal + Nonmetal · Electron Sharing</div>
+    <div class="compare-row"><div class="cr-icon" style="color:var(--covalent);">⇄</div><div class="cr-text">Both atoms <strong>SHARE</strong> one or more electron pairs</div></div>
+    <div class="compare-row"><div class="cr-icon" style="color:var(--covalent);">○○</div><div class="cr-text">Creates <strong>molecules</strong> — neutral particles with shared electrons</div></div>
+    <div class="compare-row"><div class="cr-icon" style="color:var(--covalent);">💧</div><div class="cr-text">Often forms <strong>liquids or gases</strong> at room temperature (H₂O, CO₂, O₂)</div></div>
+    <div class="compare-row"><div class="cr-icon" style="color:var(--covalent);">⚡</div><div class="cr-text"><strong>Does not conduct</strong> electricity — no free-moving ions</div></div>
+    <div class="compare-row"><div class="cr-icon" style="color:var(--covalent);">❄</div><div class="cr-text"><strong>Lower melting points</strong> — molecules separate more easily than ionic crystals</div></div>
+  </div>
+</div>
+</div></div>
+
+<!-- S6 · CHALLENGE 1 — IONIC vs COVALENT SORT -->
+<div class="slide" id="s6">
+<div class="sg" style="color:var(--green);">1</div><div class="si">
+<div class="rule"></div>
+<div class="lbl">Challenge · Round 1 of 3 · Ionic or Covalent?</div>
+<h2>SORT THE<br>BONDS</h2>
+<div class="body" style="margin-bottom:var(--gap);"><strong>Click a compound or pair</strong> from the bank, then drop it into the correct bond type. Think: metal + nonmetal = ionic. nonmetal + nonmetal = covalent.</div>
+<div class="bank" id="bank1"></div>
+<div class="two-bins">
+  <div>
+    <div class="two-lbl" style="color:var(--ionic);">Ionic · Metal + Nonmetal</div>
+    <div class="zone two-zone" id="bin-ionic" data-type="ionic" onclick="placeR1(this)">
+      <div class="z-lbl">Ionic compounds here</div>
+      <div class="z-content" id="c-ionic"></div>
+    </div>
+  </div>
+  <div>
+    <div class="two-lbl" style="color:var(--covalent);">Covalent · Nonmetal + Nonmetal</div>
+    <div class="zone two-zone" id="bin-covalent" data-type="covalent" onclick="placeR1(this)">
+      <div class="z-lbl">Covalent compounds here</div>
+      <div class="z-content" id="c-covalent"></div>
+    </div>
+  </div>
+</div>
+<div class="g-row"><div class="g-score" id="g1-sc">Placed: 0 / 8</div><button class="reset-btn" onclick="resetR(1)">↺ Reset</button></div>
+</div></div>
+
+<!-- S7 · ION CHARGES -->
+<div class="slide" id="s7">
+<div class="sg">±</div><div class="si">
+<div class="rule"></div>
+<div class="lbl">04 · Explain · Ion Charges</div>
+<h2>ION<br>CHARGES</h2>
+<div class="body" style="margin-bottom:var(--gap);">When an atom gains or loses electrons it becomes an <strong>ion</strong>. Group number predicts charge for main-group elements. Metals lose electrons → <strong>positive (cation)</strong>. Nonmetals gain electrons → <strong>negative (anion)</strong>. Opposite charges attract — that attraction IS the ionic bond.</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap);flex:1;min-height:0;">
+  <div class="ibox" style="border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.04);">
+    <div class="ibox-lbl" style="color:#ef4444;">Group 1 · Alkali</div>
+    <div class="ibox-txt"><strong style="color:#ef4444;font-size:clamp(1.2rem,2.5vw,2rem);">1+</strong><br>1 valence e⁻ → gives 1 away → 1+ charge<br><em style="color:var(--tx2);font-style:normal;">Na⁺, K⁺, Li⁺</em></div>
+  </div>
+  <div class="ibox" style="border-color:rgba(249,115,22,.25);background:rgba(249,115,22,.04);">
+    <div class="ibox-lbl" style="color:#f97316;">Group 2 · Alkaline</div>
+    <div class="ibox-txt"><strong style="color:#f97316;font-size:clamp(1.2rem,2.5vw,2rem);">2+</strong><br>2 valence e⁻ → gives 2 away → 2+ charge<br><em style="color:var(--tx2);font-style:normal;">Mg²⁺, Ca²⁺, Ba²⁺</em></div>
+  </div>
+  <div class="ibox" style="border-color:rgba(139,92,246,.25);background:rgba(139,92,246,.04);">
+    <div class="ibox-lbl" style="color:#8b5cf6;">Group 17 · Halogen</div>
+    <div class="ibox-txt"><strong style="color:#8b5cf6;font-size:clamp(1.2rem,2.5vw,2rem);">1−</strong><br>7 valence e⁻ → gains 1 → 1− charge<br><em style="color:var(--tx2);font-style:normal;">Cl⁻, F⁻, Br⁻, I⁻</em></div>
+  </div>
+  <div class="ibox" style="border-color:rgba(59,130,246,.25);background:rgba(59,130,246,.04);">
+    <div class="ibox-lbl" style="color:#3b82f6;">Group 16 · Oxygen family</div>
+    <div class="ibox-txt"><strong style="color:#3b82f6;font-size:clamp(1.2rem,2.5vw,2rem);">2−</strong><br>6 valence e⁻ → gains 2 → 2− charge<br><em style="color:var(--tx2);font-style:normal;">O²⁻, S²⁻</em></div>
+  </div>
+</div>
+</div></div>
+
+<!-- S8 · CHALLENGE 2 — ION CHARGE MATCH -->
+<div class="slide" id="s8">
+<div class="sg" style="color:var(--green);">2</div><div class="si">
+<div class="rule"></div>
+<div class="lbl">Challenge · Round 2 of 3 · Ion Charge Match</div>
+<h2>MATCH THE<br>ION CHARGE</h2>
+<div class="body" style="margin-bottom:var(--gap);"><strong>Click an element tile</strong>, then click its correct ion charge zone. Use the group number to predict the charge.</div>
+<div class="bank" id="bank2"></div>
+<div style="display:flex;gap:var(--gap);flex-wrap:wrap;">
+  <div style="flex:1;min-width:clamp(80px,14vw,130px);">
+    <div class="two-lbl" style="color:#ef4444;">1+ Cation</div>
+    <div class="zone" id="zone-1pos" data-charge="1+" style="min-height:clamp(75px,12vh,100px);" onclick="placeR2(this)"><div class="z-lbl">1+</div><div class="z-content" id="c-1pos"></div></div>
+  </div>
+  <div style="flex:1;min-width:clamp(80px,14vw,130px);">
+    <div class="two-lbl" style="color:#f97316;">2+ Cation</div>
+    <div class="zone" id="zone-2pos" data-charge="2+" style="min-height:clamp(75px,12vh,100px);" onclick="placeR2(this)"><div class="z-lbl">2+</div><div class="z-content" id="c-2pos"></div></div>
+  </div>
+  <div style="flex:1;min-width:clamp(80px,14vw,130px);">
+    <div class="two-lbl" style="color:#8b5cf6;">1− Anion</div>
+    <div class="zone" id="zone-1neg" data-charge="1-" style="min-height:clamp(75px,12vh,100px);" onclick="placeR2(this)"><div class="z-lbl">1−</div><div class="z-content" id="c-1neg"></div></div>
+  </div>
+  <div style="flex:1;min-width:clamp(80px,14vw,130px);">
+    <div class="two-lbl" style="color:#3b82f6;">2− Anion</div>
+    <div class="zone" id="zone-2neg" data-charge="2-" style="min-height:clamp(75px,12vh,100px);" onclick="placeR2(this)"><div class="z-lbl">2−</div><div class="z-content" id="c-2neg"></div></div>
+  </div>
+</div>
+<div class="g-row"><div class="g-score" id="g2-sc">Placed: 0 / 8</div><button class="reset-btn" onclick="resetR(2)">↺ Reset</button></div>
+</div></div>
+
+<!-- S9 · CHALLENGE 3 — COMPOUND BUILDER -->
+<div class="slide" id="s9">
+<div class="sg" style="color:var(--green);">3</div><div class="si">
+<div class="rule"></div>
+<div class="lbl">Challenge · Round 3 of 3 · Compound Builder</div>
+<h2>BUILD THE<br>COMPOUND</h2>
+<div class="body" style="margin-bottom:var(--gap);">Match each metal ion to the nonmetal ion it combines with to form a <strong>neutral</strong> compound. Charges must balance — total positive must equal total negative. Click a cation tile, then click the correct formula zone.</div>
+<div class="bank" id="bank3"></div>
+<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:var(--gap);flex:1;min-height:0;">
+  <div>
+    <div class="two-lbl" style="color:var(--ionic);">NaCl — Table Salt</div>
+    <div class="zone" id="zone-nacl" data-compound="NaCl" data-cation="Na" style="min-height:clamp(62px,10vh,85px);" onclick="placeR3(this)"><div class="z-lbl">Na⁺ + Cl⁻ → NaCl</div><div class="z-content" id="c-nacl"></div></div>
+  </div>
+  <div>
+    <div class="two-lbl" style="color:var(--ionic);">MgO — Magnesium Oxide</div>
+    <div class="zone" id="zone-mgo" data-compound="MgO" data-cation="Mg" style="min-height:clamp(62px,10vh,85px);" onclick="placeR3(this)"><div class="z-lbl">Mg²⁺ + O²⁻ → MgO</div><div class="z-content" id="c-mgo"></div></div>
+  </div>
+  <div>
+    <div class="two-lbl" style="color:var(--ionic);">CaO — Calcium Oxide</div>
+    <div class="zone" id="zone-cao" data-compound="CaO" data-cation="Ca" style="min-height:clamp(62px,10vh,85px);" onclick="placeR3(this)"><div class="z-lbl">Ca²⁺ + O²⁻ → CaO</div><div class="z-content" id="c-cao"></div></div>
+  </div>
+  <div>
+    <div class="two-lbl" style="color:var(--ionic);">KCl — Potassium Chloride</div>
+    <div class="zone" id="zone-kcl" data-compound="KCl" data-cation="K" style="min-height:clamp(62px,10vh,85px);" onclick="placeR3(this)"><div class="z-lbl">K⁺ + Cl⁻ → KCl</div><div class="z-content" id="c-kcl"></div></div>
+  </div>
+</div>
+<div class="g-row"><div class="g-score" id="g3-sc">Placed: 0 / 4</div><button class="reset-btn" onclick="resetR(3)">↺ Reset</button></div>
+</div></div>
+
+<!-- S10 · ESSENTIAL QUESTION -->
+<div class="slide" id="s10">
+<div class="sg" style="color:var(--green);">Σ</div><div class="si">
+<div class="rule"></div>
+<div class="lbl a">05 · Evaluate</div>
+<h1>ESSENTIAL<br>QUESTION</h1>
+<div class="eq-big">
+  <div class="eq-big-txt">Using what you know about valence electrons, explain why sodium and chlorine react to form NaCl — and why that compound is <strong>stable</strong> when neither sodium nor chlorine alone is stable.<br><br>In your response include: <strong>(1)</strong> how many valence electrons each atom starts with, <strong>(2)</strong> what happens during the bond, <strong>(3)</strong> why the resulting compound is stable.</div>
+</div>
+<div class="eq-note">Students → Stratosyn Day 3 worksheet → Essential Question → Copy → Canvas Text Entry → Submit &nbsp;|&nbsp; 12 pts: 8 MC × 1pt + EQ 4pts</div>
+</div></div>
+
+</div><!-- end slides -->
+
+<nav id="nav">
+  <button class="nb" id="btn-prev" onclick="prev()" disabled><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 6H1M6 11L1 6l5-5"/></svg>Back</button>
+  <span id="sl-ctr">1 of 11</span>
+  <button class="nb prime" id="btn-next" onclick="next()">Next<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 6h10M6 1l5 5-5 5"/></svg></button>
+</nav>
+
+<script>
+/* ════════ DATA ════════ */
+const CC={alkali:'#ef4444',alkaline:'#f97316',transition:'#eab308',post:'#22c55e',metalloid:'#14b8a6',nonmetal:'#3b82f6',halogen:'#8b5cf6',noble:'#a855f7'};
+const EL={
+  Na:{n:'Sodium',   an:11,cat:'alkali',  g:1,  charge:'1+'},
+  Mg:{n:'Magnesium',an:12,cat:'alkaline',g:2,  charge:'2+'},
+  K: {n:'Potassium',an:19,cat:'alkali',  g:1,  charge:'1+'},
+  Ca:{n:'Calcium',  an:20,cat:'alkaline',g:2,  charge:'2+'},
+  Li:{n:'Lithium',  an:3, cat:'alkali',  g:1,  charge:'1+'},
+  O: {n:'Oxygen',   an:8, cat:'nonmetal',g:16, charge:'2-'},
+  Cl:{n:'Chlorine', an:17,cat:'halogen', g:17, charge:'1-'},
+  F: {n:'Fluorine', an:9, cat:'halogen', g:17, charge:'1-'},
+  S: {n:'Sulfur',   an:16,cat:'nonmetal',g:16, charge:'2-'},
+};
+function h2r(h){return[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)].join(',');}
+function col(sym){return CC[EL[sym]?.cat]||'#888';}
+
+/* ════════ SLIDES ════════ */
+const $=id=>document.getElementById(id);
+const $$=s=>[...document.querySelectorAll(s)];
+const slideEls=$$('.slide');const N=slideEls.length;let cur=0;
+function buildDots(){const s=$('scene-strip');for(let i=0;i<N;i++){const d=document.createElement('button');d.className='sdot'+(i===0?' act':'');d.setAttribute('aria-label',`Slide ${i+1}`);d.onclick=()=>goTo(i);s.appendChild(d);}}
+function goTo(n,dir){
+  if(n<0||n>=N)return;const d=dir??(n>cur?1:-1);
+  slideEls[cur].classList.remove('active');slideEls[cur].classList.add(d>0?'exit-l':'exit-r');
+  const lv=slideEls[cur];setTimeout(()=>lv.classList.remove('exit-l','exit-r'),360);
+  slideEls[cur].scrollTop=0;cur=n;slideEls[cur].classList.add('active');
+  $$('.sdot').forEach((d,i)=>d.classList.toggle('act',i===cur));
+  $('hud-sl').textContent=String(cur+1).padStart(2,'0')+' / '+String(N).padStart(2,'0');
+  $('prog-fill').style.width=`${(cur/(N-1))*100}%`;
+  $('sl-ctr').textContent=`${cur+1} of ${N}`;
+  $('btn-prev').disabled=cur===0;$('btn-next').disabled=cur===N-1;
+  $('btn-next').className=cur===N-2?'nb prime':'nb';
+}
+function next(){goTo(cur+1,1);}function prev(){goTo(cur-1,-1);}
+document.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName))return;if(e.key==='ArrowRight'||e.key===' '||e.key==='ArrowDown'){e.preventDefault();next();}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();prev();}});
+let tx0=0,ty0=0;
+document.addEventListener('touchstart',e=>{tx0=e.touches[0].clientX;ty0=e.touches[0].clientY;},{passive:true});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx0,dy=e.changedTouches[0].clientY-ty0;if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>55)dx<0?next():prev();},{passive:true});
+
+/* ════════ RECAP ════════ */
+const RECAP=[
+  {q:'What is ATOMIC NUMBER?',a:'The number of protons in an element\'s nucleus — its unique identifier.'},
+  {q:'What does PERIOD number tell you?',a:'The number of electron shells. Period 3 = 3 shells.'},
+  {q:'What does GROUP number tell you?',a:'The number of valence electrons and similar chemical behavior.'},
+  {q:'What are VALENCE ELECTRONS?',a:'Electrons in the outermost shell — the ones that participate in bonding.'},
+  {q:'Why are GROUP 18 (noble gases) unreactive?',a:'Their outer shell is completely full — nothing to give, no room to take.'},
+  {q:'Why does reactivity INCREASE going down Group 1?',a:'Outer electron is farther from nucleus → easier to remove → more reactive.'},
+];
+function buildRecap(){
+  const g=$('review-grid');if(!g)return;
+  RECAP.forEach((rc,i)=>{
+    const card=document.createElement('div');card.className='review-card';
+    card.innerHTML=`<div class="rc-q">${rc.q}</div><div class="rc-a">${rc.a}</div><div class="rc-hint">Click to reveal</div>`;
+    card.onclick=()=>card.classList.toggle('revealed');g.appendChild(card);
+  });
+}
+
+/* ════════ BOND BUILDER ════════ */
+const BONDS=[
+  {id:'nacl',label:'Na + Cl',type:'ionic',
+   left:{sym:'Na',an:11,ve:1,col:'#ef4444',lose:1},
+   right:{sym:'Cl',an:17,ve:7,col:'#8b5cf6',gain:1},
+   formula:'NaCl',name:'Sodium Chloride',
+   fact:'Table salt. Na gives its 1 outer electron to Cl. Na becomes Na⁺, Cl becomes Cl⁻. Opposite charges attract.'},
+  {id:'mgo',label:'Mg + O',type:'ionic',
+   left:{sym:'Mg',an:12,ve:2,col:'#f97316',lose:2},
+   right:{sym:'O',an:8,ve:6,col:'#3b82f6',gain:2},
+   formula:'MgO',name:'Magnesium Oxide',
+   fact:'Used in antacids. Mg gives 2 electrons to O. Mg²⁺ and O²⁻ attract strongly — very high melting point.'},
+  {id:'kf',label:'K + F',type:'ionic',
+   left:{sym:'K',an:19,ve:1,col:'#ef4444',lose:1},
+   right:{sym:'F',an:9,ve:7,col:'#8b5cf6',gain:1},
+   formula:'KF',name:'Potassium Fluoride',
+   fact:'Added to water supplies to prevent tooth decay. K gives 1 electron to F — both reach a full outer shell.'},
+  {id:'h2o',label:'H + O (×2)',type:'covalent',
+   left:{sym:'H',an:1,ve:1,col:'#3b82f6',lose:0},
+   right:{sym:'O',an:8,ve:6,col:'#3b82f6',gain:0},
+   formula:'H₂O',name:'Water',
+   fact:'Two hydrogen atoms SHARE 1 electron each with oxygen. No transfer — sharing. Covalent bond.'},
+];
+
+let activeBond=null;
+function buildBondPairs(){
+  const wrap=$('bb-pairs');if(!wrap)return;
+  BONDS.forEach(b=>{
+    const btn=document.createElement('button');btn.className='bb-pair-btn';btn.dataset.id=b.id;
+    const typeCol=b.type==='ionic'?'var(--ionic)':'var(--covalent)';
+    btn.innerHTML=`<span class="bb-sym" style="color:${typeCol};">${b.label}</span><span style="font-size:clamp(.38rem,.62vw,.5rem);color:var(--tx3);text-transform:uppercase;letter-spacing:.1em;">${b.type}</span>`;
+    btn.onclick=()=>renderBond(b.id);
+    wrap.appendChild(btn);
+  });
+}
+
+function renderBond(id){
+  const bond=BONDS.find(b=>b.id===id);if(!bond)return;
+  activeBond=id;
+  const isIonic=bond.type==='ionic';
+  const typeCol=isIonic?'var(--ionic)':'var(--covalent)';
+  $$('.bb-pair-btn').forEach(b=>{
+    b.classList.remove('active-ionic','active-covalent');
+    if(b.dataset.id===id)b.classList.add(isIonic?'active-ionic':'active-covalent');
+  });
+  const stage=$('bb-stage');
+  stage.innerHTML=`
+  <div class="bb-atom">
+    <div class="bb-atom-label">${bond.left.sym} — ${bond.left.ve} valence e⁻</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:.35rem;">
+      <div class="el-box z-${EL[bond.left.sym]?.cat||'nonmetal'}" style="min-width:clamp(60px,10vw,85px);">
+        <div class="el-an">${bond.left.an}</div>
+        <div class="el-sym">${bond.left.sym}</div>
+      </div>
+      ${isIonic&&bond.left.lose?`<div style="font-family:var(--font-m);font-size:clamp(.42rem,.72vw,.56rem);color:var(--ionic);letter-spacing:.1em;">gives ${bond.left.lose} e⁻ →</div><div style="font-family:var(--font-d);font-size:clamp(1.1rem,2.2vw,1.8rem);color:var(--ionic);">${bond.left.sym}${'⁺'.repeat(bond.left.lose)}</div>`:''}
+    </div>
+  </div>
+  <div class="bb-arrow">
+    <div class="bb-arrow-icon" style="color:${typeCol};">${isIonic?'→':'⇄'}</div>
+    <div class="bb-arrow-lbl" style="color:${typeCol};">${isIonic?'electron transfer':'electron sharing'}</div>
+  </div>
+  <div class="bb-atom">
+    <div class="bb-atom-label">${bond.right.sym} — ${bond.right.ve} valence e⁻</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:.35rem;">
+      <div class="el-box z-${EL[bond.right.sym]?.cat||'nonmetal'}" style="min-width:clamp(60px,10vw,85px);">
+        <div class="el-an">${EL[bond.right.sym]?.an||''}</div>
+        <div class="el-sym">${bond.right.sym}</div>
+      </div>
+      ${isIonic&&bond.right.gain?`<div style="font-family:var(--font-m);font-size:clamp(.42rem,.72vw,.56rem);color:var(--ionic);letter-spacing:.1em;">← receives ${bond.right.gain} e⁻</div><div style="font-family:var(--font-d);font-size:clamp(1.1rem,2.2vw,1.8rem);color:var(--ionic);">${bond.right.sym}${'⁻'.repeat(bond.right.gain)}</div>`:''}
+    </div>
+  </div>
+  <div class="bb-result">
+    <div class="bb-result-formula" style="color:${typeCol};">${bond.formula}</div>
+    <div class="bb-result-name">${bond.name}</div>
+    <div class="bb-result-type" style="color:${typeCol};">${bond.type} bond</div>
+  </div>
+  <div class="bb-info">
+    <div class="bb-info-row"><div class="bb-info-key">Bond type</div><div class="bb-info-val" style="color:${typeCol};">${bond.type.charAt(0).toUpperCase()+bond.type.slice(1)}</div></div>
+    <div class="bb-info-row"><div class="bb-info-key">What happens</div><div class="bb-info-val">${bond.fact}</div></div>
+    <div class="bb-info-row"><div class="bb-info-key">Result</div><div class="bb-info-val">Both atoms reach a <em style="color:${typeCol};">full outer shell</em></div></div>
+  </div>`;
+}
+
+/* ════════ GAME ENGINE ════════ */
+let selected=null;const scores={1:0,2:0,3:0};
+function clearSel(){$$('.tile.sel,.label-tile.sel').forEach(t=>t.classList.remove('sel'));selected=null;}
+function selTile(el){if(el.classList.contains('placed'))return;if(selected===el){clearSel();return;}clearSel();selected=el;el.classList.add('sel');}
+function wrongFlash(z){z.classList.add('bad');clearSel();setTimeout(()=>z.classList.remove('bad'),460);}
+function makeTile(sym){
+  const d=EL[sym];const c=col(sym);
+  const el=document.createElement('button');el.className='tile';el.dataset.sym=sym;
+  el.style.borderColor=c;el.style.background=`rgba(${h2r(c)},.1)`;
+  el.innerHTML=`<span class="t-an" style="color:${c};">${d.an}</span><span class="t-sym" style="color:${c};">${sym}</span><span class="t-nm">${d.n}</span>`;
+  el.onclick=()=>selTile(el);return el;
+}
+function makeLabelTile(text,type){
+  const c=type==='ionic'?'#3effa0':'#c084fc';
+  const el=document.createElement('button');el.className='label-tile';el.dataset.type=type;
+  el.style.borderColor=`rgba(${h2r(c)},.25)`;el.style.color='rgba(221,230,245,.6)';
+  el.textContent=text;el.onclick=()=>selTile(el);return el;
+}
+function miniEl(sym){
+  const d=EL[sym];const c=col(sym);
+  const el=document.createElement('div');el.className='mini-el';
+  el.style.borderColor=c;el.style.background=`rgba(${h2r(c)},.12)`;
+  el.innerHTML=`<span class="mini-sym" style="color:${c};">${sym}</span><span class="mini-nm">${d.n}</span>`;return el;
+}
+function miniLabel(text,type){
+  const c=type==='ionic'?'#3effa0':'#c084fc';
+  const el=document.createElement('div');el.className='mini-label';
+  el.style.borderColor=`rgba(${h2r(c)},.3)`;el.style.color=c;el.textContent=text;return el;
+}
+
+/* G1 — Ionic vs Covalent Sort */
+const R1_ITEMS=[
+  {id:'nacl',text:'NaCl',type:'ionic'},{id:'mgo',text:'MgO',type:'ionic'},
+  {id:'cacl2',text:'CaCl₂',type:'ionic'},{id:'kf',text:'KF',type:'ionic'},
+  {id:'h2o',text:'H₂O',type:'covalent'},{id:'co2',text:'CO₂',type:'covalent'},
+  {id:'o2',text:'O₂',type:'covalent'},{id:'hcl',text:'HCl',type:'covalent'},
+];
+function buildR1(){
+  const bank=$('bank1');bank.innerHTML='';
+  $('c-ionic').innerHTML='';$('c-covalent').innerHTML='';
+  ['bin-ionic','bin-covalent'].forEach(id=>$(id)?.classList.remove('ok'));
+  scores[1]=0;$('g1-sc').textContent='Placed: 0 / 8';$('g1-sc').className='g-score';
+  [...R1_ITEMS].sort(()=>Math.random()-.5).forEach(p=>bank.appendChild(makeLabelTile(p.text,p.type)));
+}
+function placeR1(zone){
+  if(!selected)return;
+  const type=selected.dataset.type;const zt=zone.dataset.type;
+  if(type===zt){
+    $(zt==='ionic'?'c-ionic':'c-covalent').appendChild(miniLabel(selected.textContent,zt));
+    selected.classList.add('placed');clearSel();scores[1]++;
+    $('g1-sc').textContent=`Placed: ${scores[1]} / 8`;
+    const tot=R1_ITEMS.filter(p=>p.type===zt).length;
+    const placed=$(zt==='ionic'?'c-ionic':'c-covalent').children.length;
+    if(placed>=tot)zone.classList.add('ok');
+    if(scores[1]===8)$('g1-sc').className='g-score g-done';
+  }else wrongFlash(zone);
+}
+
+/* G2 — Ion Charge Match */
+const R2_ITEMS=[
+  {sym:'Na',charge:'1+'},{sym:'K',charge:'1+'},{sym:'Mg',charge:'2+'},{sym:'Ca',charge:'2+'},
+  {sym:'Cl',charge:'1-'},{sym:'F',charge:'1-'},{sym:'O',charge:'2-'},{sym:'S',charge:'2-'},
+];
+const R2_CNT={'1+':'c-1pos','2+':'c-2pos','1-':'c-1neg','2-':'c-2neg'};
+function buildR2(){
+  const bank=$('bank2');bank.innerHTML='';
+  Object.values(R2_CNT).forEach(id=>{const el=$(id);if(el)el.innerHTML='';});
+  ['zone-1pos','zone-2pos','zone-1neg','zone-2neg'].forEach(id=>$(id)?.classList.remove('ok'));
+  scores[2]=0;$('g2-sc').textContent='Placed: 0 / 8';$('g2-sc').className='g-score';
+  [...R2_ITEMS].sort(()=>Math.random()-.5).forEach(item=>bank.appendChild(makeTile(item.sym)));
+}
+function placeR2(zone){
+  if(!selected)return;
+  const sym=selected.dataset.sym;const zc=zone.dataset.charge;
+  const correct=R2_ITEMS.find(i=>i.sym===sym)?.charge;
+  if(correct===zc){
+    $(R2_CNT[zc]).appendChild(miniEl(sym));
+    selected.classList.add('placed');clearSel();scores[2]++;
+    $('g2-sc').textContent=`Placed: ${scores[2]} / 8`;
+    const tot=R2_ITEMS.filter(i=>i.charge===zc).length;
+    const placed=$(R2_CNT[zc]).children.length;
+    if(placed>=tot)zone.classList.add('ok');
+    if(scores[2]===8)$('g2-sc').className='g-score g-done';
+  }else wrongFlash(zone);
+}
+
+/* G3 — Compound Builder */
+const R3_CATIONS=['Na','Mg','Ca','K'];
+const R3_COMPOUND={Na:'NaCl',Mg:'MgO',Ca:'CaO',K:'KCl'};
+function buildR3(){
+  const bank=$('bank3');bank.innerHTML='';
+  ['nacl','mgo','cao','kcl'].forEach(id=>{
+    const z=$(`zone-${id}`);if(!z)return;z.classList.remove('ok');
+    const cc=$(`c-${id}`);if(cc)cc.innerHTML='';
+  });
+  scores[3]=0;$('g3-sc').textContent='Placed: 0 / 4';$('g3-sc').className='g-score';
+  [...R3_CATIONS].sort(()=>Math.random()-.5).forEach(s=>bank.appendChild(makeTile(s)));
+}
+function placeR3(zone){
+  if(!selected)return;
+  const sym=selected.dataset.sym;const zc=zone.dataset.cation;
+  if(sym===zc){
+    const compound=R3_COMPOUND[sym];
+    const c=col(sym);
+    const el=document.createElement('div');el.className='mini-el';
+    el.style.borderColor='var(--ionic)';el.style.background='rgba(62,255,160,.1)';
+    el.innerHTML=`<span class="mini-sym" style="color:var(--ionic);font-size:clamp(.9rem,1.8vw,1.2rem);">${compound}</span>`;
+    $(`c-${zone.dataset.compound.toLowerCase()}`).appendChild(el);
+    zone.classList.add('ok');selected.classList.add('placed');clearSel();
+    scores[3]++;$('g3-sc').textContent=`Placed: ${scores[3]} / 4`;
+    if(scores[3]===4)$('g3-sc').className='g-score g-done';
+  }else wrongFlash(zone);
+}
+function resetR(n){clearSel();if(n===1)buildR1();if(n===2)buildR2();if(n===3)buildR3();}
+
+/* ════════ BOOT ════════ */
+buildDots();buildRecap();buildBondPairs();buildR1();buildR2();buildR3();
+setTimeout(()=>renderBond('nacl'),200);
+goTo(0);
+</script>
+</body>
+</html>
