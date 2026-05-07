@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stratosyn · Day 3 · Answer Key · Ms. Madewell</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{color-scheme:dark;scroll-behavior:smooth;}
+:root{
+  --void:#06080f;--d1:#0b0f1e;--tx:#dde6f5;--tx2:#8898b8;--tx3:#4a5570;
+  --accent:#f5c842;--accent-soft:rgba(245,200,66,.09);--accent-line:rgba(245,200,66,.22);
+  --green:#3effa0;--blue:#38bdf8;--red:#f87171;--purple:#c084fc;
+  --ionic:#3effa0;--covalent:#c084fc;
+  --hr:.0625rem;
+  --font-d:"Bebas Neue","Impact",sans-serif;
+  --font-b:"Syne",sans-serif;
+  --font-m:"DM Mono",ui-monospace,monospace;
+}
+body{background:var(--void);color:var(--tx);font-family:var(--font-m);padding-bottom:4rem;}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(60% 50% at 50% 30%,rgba(62,255,160,.04) 0%,transparent 65%);z-index:0;pointer-events:none;}
+::selection{background:var(--accent);color:var(--void);}
+
+/* ── HEADER ── */
+#hdr{position:sticky;top:0;z-index:20;background:rgba(6,8,15,.97);backdrop-filter:blur(14px);border-bottom:var(--hr) solid rgba(255,255,255,.07);padding:.9rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+.hdr-left{display:flex;align-items:center;gap:.65rem;}
+.bm{display:grid;grid-template-columns:repeat(3,8px);grid-template-rows:repeat(3,8px);gap:1.5px;transform-style:preserve-3d;animation:bfloat 14s ease-in-out infinite;}
+@keyframes bfloat{0%{transform:rotateY(0deg) rotateX(2.5deg);}33%{transform:rotateY(6deg) rotateX(-1.5deg);}66%{transform:rotateY(-5deg) rotateX(3deg);}100%{transform:rotateY(0deg) rotateX(2.5deg);}}
+.bsc{background:rgba(221,230,245,.12);}
+.bsc[data-r="2"]{background:var(--green);box-shadow:0 0 5px rgba(62,255,160,.45);animation:scidle 2.8s ease-in-out infinite;}
+@keyframes scidle{0%,100%{opacity:1;}50%{opacity:.72;}}
+.hdr-text{display:flex;flex-direction:column;gap:.08rem;}
+.hdr-name{font-family:var(--font-b);font-size:.62rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;}
+.hdr-sub{font-family:var(--font-m);font-size:.4rem;letter-spacing:.18em;text-transform:uppercase;color:var(--green);}
+.hdr-badge{font-family:var(--font-m);font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;border:var(--hr) solid rgba(248,113,113,.35);color:var(--red);padding:.22rem .55rem;}
+.print-btn{font-family:var(--font-m);font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;background:rgba(255,255,255,.05);border:var(--hr) solid rgba(255,255,255,.12);color:var(--tx2);padding:.38rem .75rem;cursor:pointer;transition:all .2s;}
+.print-btn:hover{border-color:var(--green);color:var(--green);}
+
+/* ── LAYOUT ── */
+.main{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:2.5rem 1.5rem;}
+
+/* ── SECTION HEADERS ── */
+.sec-hdr{display:flex;align-items:baseline;gap:1rem;margin-bottom:1.25rem;padding-bottom:.65rem;border-bottom:var(--hr) solid rgba(255,255,255,.07);}
+.sec-hdr h2{font-family:var(--font-d);font-size:clamp(1.6rem,3.5vw,2.8rem);letter-spacing:.04em;font-weight:400;line-height:1;}
+.sec-hdr-sub{font-family:var(--font-m);font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:var(--tx3);margin-left:auto;flex-shrink:0;}
+.section{margin-bottom:3rem;}
+.section-rule{width:3rem;height:var(--hr);background:var(--green);margin-bottom:.65rem;}
+.section-tag{font-family:var(--font-m);font-size:.5rem;letter-spacing:.24em;text-transform:uppercase;color:var(--green);margin-bottom:.55rem;display:flex;align-items:center;gap:.4rem;}
+.section-tag::before{content:"";width:4px;height:4px;background:currentColor;flex-shrink:0;}
+.section-tag.r{color:var(--accent);}
+.section-tag.p{color:var(--purple);}
+
+/* ── QUICK REFERENCE ── */
+.qr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin:1rem 0;}
+.qr-card{border:var(--hr) solid rgba(255,255,255,.08);background:rgba(255,255,255,.022);padding:.75rem .85rem;display:flex;flex-direction:column;gap:.3rem;}
+.qr-q{font-family:var(--font-m);font-size:.46rem;letter-spacing:.14em;text-transform:uppercase;color:var(--tx3);}
+.qr-a{font-family:var(--font-d);font-size:2.2rem;line-height:1;font-weight:400;color:var(--green);}
+.qr-text{font-size:.52rem;color:rgba(221,230,245,.45);line-height:1.45;}
+
+/* ── MC ANSWER ROWS ── */
+.ak-block{border:var(--hr) solid rgba(255,255,255,.07);background:rgba(255,255,255,.018);margin-bottom:.65rem;overflow:hidden;}
+.ak-block-hdr{display:flex;align-items:flex-start;gap:.85rem;padding:.85rem 1rem;border-bottom:var(--hr) solid rgba(255,255,255,.06);}
+.ak-q-num{font-family:var(--font-d);font-size:1.6rem;line-height:1;color:var(--tx3);flex-shrink:0;min-width:32px;}
+.ak-q-text{font-size:.72rem;color:var(--tx);line-height:1.6;flex:1;padding-top:.15rem;}
+.ak-opts{display:flex;flex-direction:column;gap:0;}
+.ak-opt{display:flex;align-items:flex-start;gap:.75rem;padding:.55rem 1rem;border-top:var(--hr) solid rgba(255,255,255,.04);}
+.ak-opt:first-child{border-top:none;}
+.ak-opt.correct{background:rgba(62,255,160,.05);border-top-color:rgba(62,255,160,.1);}
+.ak-letter{font-family:var(--font-d);font-size:1rem;line-height:1;width:18px;flex-shrink:0;color:var(--tx3);padding-top:.12rem;}
+.ak-opt.correct .ak-letter{color:var(--green);}
+.ak-opt-body{flex:1;}
+.ak-opt-text{font-size:.68rem;color:rgba(221,230,245,.55);line-height:1.55;}
+.ak-opt.correct .ak-opt-text{color:var(--tx);}
+.ak-correct-badge{display:inline-flex;align-items:center;gap:.3rem;font-family:var(--font-m);font-size:.44rem;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-top:.25rem;}
+.ak-correct-badge::before{content:"✓";}
+.ak-distractor{font-family:var(--font-m);font-size:.5rem;color:rgba(248,113,113,.65);margin-top:.2rem;line-height:1.5;letter-spacing:.04em;}
+
+/* ── GAME ANSWER KEYS ── */
+.game-key{border:var(--hr) solid rgba(255,255,255,.07);background:rgba(255,255,255,.018);margin-bottom:.85rem;overflow:hidden;}
+.game-key-hdr{padding:.75rem 1rem;border-bottom:var(--hr) solid rgba(255,255,255,.07);display:flex;align-items:center;gap:.75rem;}
+.gkh-num{font-family:var(--font-d);font-size:1.4rem;line-height:1;color:var(--green);}
+.gkh-title{font-family:var(--font-m);font-size:.62rem;color:var(--tx);letter-spacing:.08em;}
+.gkh-score{font-family:var(--font-m);font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;color:var(--tx3);margin-left:auto;}
+.game-key-body{padding:.75rem 1rem;display:flex;flex-direction:column;gap:.3rem;}
+.gk-row{display:flex;align-items:baseline;gap:.75rem;padding:.35rem 0;border-top:var(--hr) solid rgba(255,255,255,.04);}
+.gk-row:first-child{border-top:none;}
+.gk-item{font-family:var(--font-m);font-size:.62rem;color:var(--tx2);min-width:110px;flex-shrink:0;}
+.gk-item strong{color:var(--tx);}
+.gk-arrow{font-size:.55rem;color:var(--tx3);}
+.gk-answer{font-size:.7rem;display:flex;align-items:center;gap:.55rem;}
+.gk-answer strong{font-weight:500;}
+.gk-badge{font-family:var(--font-m);font-size:.42rem;letter-spacing:.1em;text-transform:uppercase;padding:1px 6px;border-radius:1px;flex-shrink:0;}
+.badge-ionic{background:rgba(62,255,160,.12);color:var(--ionic);border:var(--hr) solid rgba(62,255,160,.2);}
+.badge-covalent{background:rgba(192,132,252,.12);color:var(--covalent);border:var(--hr) solid rgba(192,132,252,.2);}
+.badge-pos{background:rgba(239,68,68,.12);color:#ef4444;border:var(--hr) solid rgba(239,68,68,.2);}
+.badge-neg{background:rgba(139,92,246,.12);color:#8b5cf6;border:var(--hr) solid rgba(139,92,246,.2);}
+.badge-formula{background:rgba(62,255,160,.12);color:var(--green);border:var(--hr) solid rgba(62,255,160,.2);font-family:var(--font-d);font-size:.7rem;letter-spacing:.04em;}
+.game-key-note{padding:.55rem 1rem;border-top:var(--hr) solid rgba(255,255,255,.06);font-family:var(--font-m);font-size:.52rem;color:var(--tx3);line-height:1.6;letter-spacing:.04em;}
+
+/* ── EQ RUBRIC ── */
+.rubric{display:flex;flex-direction:column;gap:0;border:var(--hr) solid rgba(255,255,255,.08);background:rgba(255,255,255,.018);overflow:hidden;}
+.rub-row{display:flex;align-items:flex-start;gap:1rem;padding:.75rem 1rem;border-top:var(--hr) solid rgba(255,255,255,.06);}
+.rub-row:first-child{border-top:none;}
+.rub-pts{font-family:var(--font-d);font-size:2rem;line-height:1;min-width:36px;flex-shrink:0;}
+.rub-body{flex:1;}
+.rub-label{font-family:var(--font-b);font-size:.72rem;font-weight:700;color:var(--tx);margin-bottom:.25rem;}
+.rub-desc{font-size:.68rem;color:rgba(221,230,245,.58);line-height:1.6;}
+.rub-desc strong{color:var(--tx);font-weight:500;}
+
+/* ── TARGET RESPONSE ── */
+.target-box{border:var(--hr) solid rgba(62,255,160,.22);background:rgba(62,255,160,.04);padding:1.1rem 1.25rem;margin:.85rem 0;}
+.tb-lbl{font-family:var(--font-m);font-size:.46rem;letter-spacing:.22em;text-transform:uppercase;color:var(--green);margin-bottom:.55rem;}
+.tb-text{font-size:.78rem;color:var(--tx);line-height:1.85;}
+.tb-text em{color:var(--green);font-style:normal;}
+
+/* ── MISCONCEPTIONS ── */
+.mc-list{display:flex;flex-direction:column;gap:.55rem;margin:.75rem 0;}
+.mis-row{border-left:2px solid rgba(248,113,113,.35);padding:.65rem .85rem;background:rgba(248,113,113,.04);}
+.mis-wrong{font-family:var(--font-m);font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:.28rem;}
+.mis-fix{font-size:.7rem;color:rgba(221,230,245,.68);line-height:1.6;}
+.mis-fix strong{color:var(--tx);font-weight:500;}
+
+/* ── ESSENTIAL CONCEPTS ── */
+.ec-grid{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin:.85rem 0;}
+.ec-card{border:var(--hr) solid rgba(255,255,255,.08);background:rgba(255,255,255,.022);padding:.85rem 1rem;}
+.ec-title{font-family:var(--font-d);font-size:1.15rem;line-height:1;font-weight:400;margin-bottom:.4rem;}
+.ec-body{font-size:.68rem;color:rgba(221,230,245,.58);line-height:1.65;}
+.ec-body strong{color:var(--tx);font-weight:500;}
+
+@media(max-width:600px){
+  .qr-grid{grid-template-columns:repeat(2,1fr);}
+  .ec-grid{grid-template-columns:1fr;}
+  .main{padding:1.5rem 1rem;}
+}
+@media print{
+  body{background:#fff;color:#000;}
+  body::before{display:none;}
+  #hdr{position:relative;background:#fff;border-color:#ddd;}
+  .hdr-badge,.print-btn{display:none;}
+  .bm,.bsc{display:none;}
+  .hdr-name,.hdr-sub{color:#000;}
+  .section-tag,.sec-hdr h2,.qr-a,.gkh-num,.rub-pts{color:#000;}
+  .ak-block,.game-key,.rubric,.target-box,.mis-row,.ec-card,.qr-card{border-color:#ccc;background:#f9f9f9;}
+  .ak-opt.correct{background:#e8f5e9;}
+  .ak-q-text,.ak-opt-text,.rub-desc,.ec-body,.mis-fix,.tb-text{color:#333;}
+  .ak-opt.correct .ak-opt-text,.ak-q-text{color:#000;}
+  .ak-correct-badge,.ak-letter,.gk-answer strong,.rub-label,.tb-lbl{color:#2a7a2a;}
+  .ak-distractor{color:#c00;}
+  .gkh-title,.gkh-score,.gk-item,.qr-q,.qr-text{color:#555;}
+  .badge-ionic{background:#e8f5e9;color:#2a7a2a;border-color:#2a7a2a;}
+  .badge-covalent{background:#ede7f6;color:#5e35b1;border-color:#5e35b1;}
+  .badge-pos{background:#ffebee;color:#c62828;border-color:#c62828;}
+  .badge-neg{background:#ede7f6;color:#4a148c;border-color:#4a148c;}
+  .badge-formula{background:#e8f5e9;color:#1b5e20;border-color:#1b5e20;}
+  .section-rule{background:#000;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="hdr">
+  <div class="hdr-left">
+    <div class="bm"><div class="bsc" data-r="1"></div><div class="bsc" data-r="1"></div><div class="bsc" data-r="1"></div><div class="bsc" data-r="2"></div><div class="bsc" data-r="2"></div><div class="bsc" data-r="2"></div><div class="bsc" data-r="3"></div><div class="bsc" data-r="3"></div><div class="bsc" data-r="3"></div></div>
+    <div class="hdr-text">
+      <div class="hdr-name">Stratosyn · Answer Key</div>
+      <div class="hdr-sub">Day 3 · Chemical Bonding · 7th Grade Science · Ms. Madewell</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:.75rem;">
+    <div class="hdr-badge">TEACHER ONLY</div>
+    <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
+  </div>
+</header>
+
+<div class="main">
+
+<!-- QUICK REFERENCE STRIP -->
+<div class="section" id="quick-ref">
+  <div class="section-rule"></div>
+  <div class="section-tag r">Quick Reference — MC Answers</div>
+  <div class="sec-hdr">
+    <h2>AT A GLANCE</h2>
+    <div class="sec-hdr-sub">8 questions · 8 pts total</div>
+  </div>
+  <div class="qr-grid">
+    <div class="qr-card"><div class="qr-q">Q1 · Why atoms bond</div><div class="qr-a" style="color:var(--green);">B</div><div class="qr-text">Reach full outer shell = stability</div></div>
+    <div class="qr-card"><div class="qr-q">Q2 · Octet rule</div><div class="qr-a" style="color:var(--green);">C</div><div class="qr-text">8 electrons in outermost shell</div></div>
+    <div class="qr-card"><div class="qr-q">Q3 · Ionic — metal e⁻</div><div class="qr-a" style="color:var(--green);">C</div><div class="qr-text">Metal transfers e⁻ to nonmetal</div></div>
+    <div class="qr-card"><div class="qr-q">Q4 · Na after bonding</div><div class="qr-a" style="color:var(--green);">B</div><div class="qr-text">Na⁺ — positively charged cation</div></div>
+    <div class="qr-card"><div class="qr-q">Q5 · Water bond type</div><div class="qr-a" style="color:var(--green);">B</div><div class="qr-text">Covalent — nonmetal + nonmetal</div></div>
+    <div class="qr-card"><div class="qr-q">Q6 · Ionic vs covalent</div><div class="qr-a" style="color:var(--green);">A</div><div class="qr-text">Ionic = crystal/salt at room temp</div></div>
+    <div class="qr-card"><div class="qr-q">Q7 · Mg ion charge</div><div class="qr-a" style="color:var(--green);">B</div><div class="qr-text">Mg²⁺ — loses 2 valence e⁻</div></div>
+    <div class="qr-card"><div class="qr-q">Q8 · Ca + O formula</div><div class="qr-a" style="color:var(--green);">B</div><div class="qr-text">CaO — charges balance to zero</div></div>
+  </div>
+</div>
+
+<!-- MC ANSWER KEY — SECTION 1 -->
+<div class="section" id="mc-s1">
+  <div class="section-rule"></div>
+  <div class="section-tag">Section 1 — Why Atoms Bond · Q1–Q2</div>
+  <div class="sec-hdr">
+    <h2>MC ANSWER<br>KEY</h2>
+    <div class="sec-hdr-sub">Full explanations + distractor notes</div>
+  </div>
+
+  <div class="ak-block">
+    <div class="ak-block-hdr">
+      <div class="ak-q-num">Q1</div>
+      <div class="ak-q-text">Why do most atoms form chemical bonds with other atoms?</div>
+    </div>
+    <div class="ak-opts">
+      <div class="ak-opt"><div class="ak-letter">A</div><div class="ak-opt-body"><div class="ak-opt-text">Atoms bond because they are attracted to atoms with a higher atomic number</div><div class="ak-distractor">Incorrect. Atomic number determines identity, not bonding attraction. An atom bonds based on electron configuration, not comparative atomic numbers.</div></div></div>
+      <div class="ak-opt correct"><div class="ak-letter">B</div><div class="ak-opt-body"><div class="ak-opt-text">Atoms bond to reach a full outer electron shell, which is a more stable configuration</div><div class="ak-correct-badge">Correct answer</div></div></div>
+      <div class="ak-opt"><div class="ak-letter">C</div><div class="ak-opt-body"><div class="ak-opt-text">Atoms bond because bonded atoms are always larger than individual atoms</div><div class="ak-distractor">Incorrect. Atomic size is not the driver of bonding. This conflates atomic size trends with bonding motivation.</div></div></div>
+      <div class="ak-opt"><div class="ak-letter">D</div><div class="ak-opt-body"><div class="ak-opt-text">Atoms bond only when they are in the same period on the periodic table</div><div class="ak-distractor">Incorrect. NaCl (Na = Period 3, Cl = Period 3) is same period — but H₂O (H = Period 1, O = Period 2) also bonds. Period has nothing to do with bonding eligibility.</div></div></div>
+    </div>
+  </div>
+
+  <div class="ak-block">
+    <div class="ak-block-hdr">
+      <div class="ak-q-num">Q2</div>
+      <div class="ak-q-text">The "octet rule" states that atoms tend to form bonds until they have ___.</div>
+    </div>
+    <div class="ak-opts">
+      <div class="ak-opt"><div class="ak-letter">A</div><div class="ak-opt-body"><div class="ak-opt-text">8 protons in their nucleus</div><div class="ak-distractor">Incorrect. Proton count = atomic number and never changes. Oxygen has 8 protons and always will — that has nothing to do with bonding.</div></div></div>
+      <div class="ak-opt"><div class="ak-letter">B</div><div class="ak-opt-body"><div class="ak-opt-text">8 total electron shells around the nucleus</div><div class="ak-distractor">Incorrect. Most atoms have only 1–7 shells. The record is 7 (Period 7 elements). Confuses shell count with electron count.</div></div></div>
+      <div class="ak-opt correct"><div class="ak-letter">C</div><div class="ak-opt-body"><div class="ak-opt-text">8 electrons in their outermost shell</div><div class="ak-correct-badge">Correct answer</div></div></div>
+      <div class="ak-opt"><div class="ak-letter">D</div><div class="ak-opt-body"><div class="ak-opt-text">8 bonds with neighboring atoms</div><div class="ak-distractor">Incorrect. The number 8 refers to electrons, not bonds. Carbon (which can form 4 bonds) follows the octet rule perfectly — it needs 4 more electrons to reach 8, so it forms 4 bonds.</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MC ANSWER KEY — SECTION 2 -->
+<div class="section" id="mc-s2">
+  <div class="section-rule"></div>
+  <div class="section-tag">Section 2 — Ionic Bonding · Q3–Q4</div>
+
+  <div class="ak-block">
+    <div class="ak-block-hdr">
+      <div class="ak-q-num">Q3</div>
+      <div class="ak-q-text">In ionic bonding, what happens to the metal atom's valence electron(s)?</div>
+    </div>
+    <div class="ak-opts">
+      <div class="ak-opt"><div class="ak-letter">A</div><div class="ak-opt-body"><div class="ak-opt-text">The metal atom shares its valence electrons equally with the nonmetal</div><div class="ak-distractor">Incorrect. Sharing = covalent bonding. Ionic bonding involves transfer, not sharing. If students choose this, revisit the ionic vs. covalent distinction directly.</div></div></div>
+      <div class="ak-opt"><div class="ak-letter">B</div><div class="ak-opt-body"><div class="ak-opt-text">The metal atom's valence electrons are destroyed during the reaction</div><div class="ak-distractor">Incorrect. Electrons are never created or destroyed in chemical reactions — conservation of matter applies. This reveals a fundamental misconception about what bonds are.</div></div></div>
+      <div class="ak-opt correct"><div class="ak-letter">C</div><div class="ak-opt-body"><div class="ak-opt-text">The metal atom transfers its valence electrons to the nonmetal atom</div><div class="ak-correct-badge">Correct answer</div></div></div>
+      <div class="ak-opt"><div class="ak-letter">D</div><div class="ak-opt-body"><div class="ak-opt-text">The metal atom gains additional valence electrons from the nonmetal</div><div class="ak-distractor">Incorrect — this reverses the direction. Metals GIVE electrons (they become positive). Nonmetals GAIN electrons (they become negative). A student choosing D likely has the direction of electron movement backwards.</div></div></div>
+    </div>
+  </div>
+
+  <div class="ak-block">
+    <div class="ak-block-hdr">
+      <div class="ak-q-num">Q4</div>
+      <div class="ak-q-text">After sodium (Na) gives its 1 valence electron to chlorine (Cl) during ionic bonding, sodium becomes ___.</div>
+    </div>
+    <div class="ak-opts">
+      <div class="ak-opt"><div class="ak-letter">A</div><div class="ak-opt-body"><div class="ak-opt-text">Na⁻ — a negatively charged ion with one extra electron</div><div class="ak-distractor">Incorrect — sign is reversed. Na loses an electron, so it has fewer electrons than protons → positive charge. Only if Na gained an electron would it be negative. If a student chooses A, they have the charge sign convention backwards.</div></div></div>
+      <div class="ak-opt correct"><div class="ak-letter">B</div><div class="ak-opt-body"><div class="ak-opt-text">Na⁺ — a positively charged ion with one fewer electron than protons</div><div class="ak-correct-badge">Correct answer</div></div></div>
+      <div class="ak-opt"><div class="ak-letter">C</div><div class="ak-opt-body"><div class="ak-opt-text">A neutral atom with a full outer shell and no charge</div><div class="ak-distractor">Incorrect. Na does reach a full outer shell after losing its electron — BUT it is no longer neutral because it now has 11 protons and only 10 electrons. The charge imbalance is the key concept here.</div></div></div>
+      <div class="ak-opt"><div class="ak-letter">D</div><div class="ak-opt-body"><div class="ak-opt-text">A different element entirely, since it lost an electron</div><div class="ak-distractor">Incorrect. Element identity is defined by proton count (atomic number), not electron count. Na still has 11 protons after losing an electron — it is still sodium, just a sodium ION (Na⁺).</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MC ANSWER KEY — SECTION 3 -->
+<div class="section" id="mc-s3">
+  <div class="section-rule"></div>
+  <div class="section-tag">Section 3 — Covalent Bonding · Q5–Q6</div>
+
+  <div class="ak-block">
+    <div class="ak-block-hdr">
+      <div class="ak-q-num">Q5</div>
+      <div class="ak-q-text">Water (H₂O) is formed from two hydrogen atoms and one oxygen atom — all nonmetals. What type of bond holds water together?</div>
+    </div>
+    <div class="ak-opts">
+      <div class="ak-opt"><div class="ak-letter">A</div><div class="ak-opt-body"><div class="ak-opt-text">Ionic — because oxygen is larger than hydrogen and takes the electrons</div><div class="ak-distractor">Incorrect. Size difference does not determine bond type. The key rule: nonmetal + nonmetal = covalent. Even though oxygen does attract electrons more strongly (electronegativity), water is still classified as a polar covalent bond — sharing, not transfer.</div></div></div>
+      <div class="ak-opt correct"><div class="ak-letter">B</div><div class="ak-opt-body"><div class="ak-opt-text">Covalent — nonmetal + nonmetal share electrons rather than transfer them</div><div class="ak-correct-badge">Correct answer</div></div></div>
+      <div class="ak-opt"><div class="ak-letter">C</div><div class="ak-opt-body"><div class="ak-opt-text">Ionic — because water conducts electricity when dissolved</div><div class="ak-distractor">Incorrect. Pure water actually conducts electricity poorly. Dissolved salts in tap water conduct, not the water molecules themselves. Water's ability to dissolve ionic compounds does not make water itself ionic.</div></div></div>
+      <div class="ak-opt"><div class="ak-letter">D</div><div class="ak-opt-body"><div class="ak-opt-text">Neither — water is a special compound that does not follow bonding rules</div><div class="ak-distractor">Incorrect. Water follows covalent bonding rules exactly. It is an excellent teaching example because students are familiar with it — it is predictable, not an exception.</div></div></div>
+    </div>
+  </div>
+
+  <div class="ak-block">
+    <div class="ak-block-hdr">
+      <div class="ak-q-num">Q6</div>
+      <div class="ak-q-text">Which of the following is the BEST way to tell an ionic compound apart from a covalent compound at room temperature?</div>
+    </div>
+    <div class="ak-opts">
+      <div class="ak-opt correct"><div class="ak-letter">A</div><div class="ak-opt-body"><div class="ak-opt-text">Ionic compounds tend to be solid crystals or salts; covalent compounds are often liquids or gases</div><div class="ak-correct-badge">Correct answer</div></div></div>
+      <div class="ak-opt"><div class="ak-letter">B</div><div class="ak-opt-body"><div class="ak-opt-text">Ionic compounds are always colorless; covalent compounds always have color</div><div class="ak-distractor">Incorrect. Many ionic compounds are deeply colored — CuSO₄ (blue), KMnO₄ (purple), FeCl₃ (orange-brown). Many covalent compounds are colorless. Color is not a reliable indicator of bond type.</div></div></div>
+      <div class="ak-opt"><div class="ak-letter">C</div><div class="ak-opt-body"><div class="ak-opt-text">Covalent compounds are always heavier than ionic compounds</div><div class="ak-distractor">Incorrect. Mass depends on the specific atoms involved, not the bond type. NaCl (ionic, 58 g/mol) is lighter than many large covalent molecules like fats or proteins.</div></div></div>
+      <div class="ak-opt"><div class="ak-letter">D</div><div class="ak-opt-body"><div class="ak-opt-text">Ionic compounds smell strongly; covalent compounds have no odor</div><div class="ak-distractor">Incorrect. Most ionic compounds (table salt, calcium oxide) have no smell at all. Many covalent compounds — acetone, vinegar, ammonia — have strong odors. This is the reverse of reality.</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MC ANSWER KEY — SECTION 4 -->
+<div class="section" id="mc-s4">
+  <div class="section-rule"></div>
+  <div class="section-tag">Section 4 — Ion Charges &amp; Formulas · Q7–Q8</div>
+
+  <div class="ak-block">
+    <div class="ak-block-hdr">
+      <div class="ak-q-num">Q7</div>
+      <div class="ak-q-text">Magnesium (Mg) is in Group 2. What ion does it form when it reacts with a nonmetal?</div>
+    </div>
+    <div class="ak-opts">
+      <div class="ak-opt"><div class="ak-letter">A</div><div class="ak-opt-body"><div class="ak-opt-text">Mg⁻ — it gains 2 electrons to fill its outer shell</div><div class="ak-distractor">Incorrect. Metals LOSE electrons, not gain them. Mg has only 2 valence electrons — it is far easier to give 2 away than gain 6 more. The charge is also wrong: losing electrons → positive charge.</div></div></div>
+      <div class="ak-opt correct"><div class="ak-letter">B</div><div class="ak-opt-body"><div class="ak-opt-text">Mg²⁺ — it loses 2 valence electrons, leaving it with a 2+ charge</div><div class="ak-correct-badge">Correct answer</div></div></div>
+      <div class="ak-opt"><div class="ak-letter">C</div><div class="ak-opt-body"><div class="ak-opt-text">Mg¹⁺ — it loses 1 electron because that is easier than losing 2</div><div class="ak-distractor">Incorrect. Mg has 2 valence electrons and both must be removed to reach a full outer shell (the noble gas configuration of neon). Losing only 1 leaves Mg with an odd electron in its outer shell — still unstable.</div></div></div>
+      <div class="ak-opt"><div class="ak-letter">D</div><div class="ak-opt-body"><div class="ak-opt-text">Mg⁰ — metals do not form ions</div><div class="ak-distractor">Incorrect. Forming ions is literally what metals do in ionic bonding. This is the core of the lesson. Mg²⁺ is one of the most common ions in biology — it is found in bones, enzymes, and chlorophyll.</div></div></div>
+    </div>
+  </div>
+
+  <div class="ak-block">
+    <div class="ak-block-hdr">
+      <div class="ak-q-num">Q8</div>
+      <div class="ak-q-text">Calcium (Ca, Group 2) forms Ca²⁺ ions. Oxygen (O, Group 16) forms O²⁻ ions. What is the correct formula for the ionic compound they form?</div>
+    </div>
+    <div class="ak-opts">
+      <div class="ak-opt"><div class="ak-letter">A</div><div class="ak-opt-body"><div class="ak-opt-text">Ca₂O — two calcium atoms are needed to balance one oxygen</div><div class="ak-distractor">Incorrect. This would give total charge of 2(2+) + 1(2−) = 4+ − 2 = 2+ total. Not balanced. The student has the logic of which ion needs two backwards — Ca already has 2+ and O already has 2−, so they balance 1:1.</div></div></div>
+      <div class="ak-opt correct"><div class="ak-letter">B</div><div class="ak-opt-body"><div class="ak-opt-text">CaO — one Ca²⁺ balances one O²⁻, charges cancel to zero</div><div class="ak-correct-badge">Correct answer — Ca²⁺ (2+) + O²⁻ (2−) = 0. Balanced.</div></div></div>
+      <div class="ak-opt"><div class="ak-letter">C</div><div class="ak-opt-body"><div class="ak-opt-text">CaO₂ — oxygen always appears twice in ionic compounds</div><div class="ak-distractor">Incorrect. There is no rule that oxygen appears twice. CaO₂ would require a 4− charge on the oxygen side (2 × 2−) against Ca's 2+ — unbalanced. O₂²⁻ (peroxide ion) exists but is a different species.</div></div></div>
+      <div class="ak-opt"><div class="ak-letter">D</div><div class="ak-opt-body"><div class="ak-opt-text">Ca₂O₂ — both subscripts must always be written even if equal</div><div class="ak-distractor">Incorrect. Ca₂O₂ simplifies to CaO (we always reduce to the lowest whole-number ratio). The student may be confusing compound formulas with molecular formulas. In ionic compounds, we always reduce.</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- GAME ANSWER KEYS -->
+<div class="section" id="games">
+  <div class="section-rule"></div>
+  <div class="section-tag">Interactive Challenges — Complete Answer Keys</div>
+  <div class="sec-hdr">
+    <h2>GAME<br>ANSWER KEYS</h2>
+    <div class="sec-hdr-sub">20 total placements · 3 challenges</div>
+  </div>
+
+  <!-- G1 -->
+  <div class="game-key">
+    <div class="game-key-hdr">
+      <div class="gkh-num">1</div>
+      <div class="gkh-title">Ionic or Covalent Sort · 8 compounds</div>
+      <div class="gkh-score">8 pts (game tracking only — not graded)</div>
+    </div>
+    <div class="game-key-body">
+      <div class="gk-row"><div class="gk-item"><strong>NaCl</strong> — Sodium Chloride</div><div class="gk-arrow">→</div><div class="gk-answer"><span class="gk-badge badge-ionic">Ionic</span><span style="font-size:.65rem;color:var(--tx2);">Na (metal) + Cl (nonmetal)</span></div></div>
+      <div class="gk-row"><div class="gk-item"><strong>MgO</strong> — Magnesium Oxide</div><div class="gk-arrow">→</div><div class="gk-answer"><span class="gk-badge badge-ionic">Ionic</span><span style="font-size:.65rem;color:var(--tx2);">Mg (metal) + O (nonmetal)</span></div></div>
+      <div class="gk-row"><div class="gk-item"><strong>CaO</strong> — Calcium Oxide</div><div class="gk-arrow">→</div><div class="gk-answer"><span class="gk-badge badge-ionic">Ionic</span><span style="font-size:.65rem;color:var(--tx2);">Ca (metal) + O (nonmetal)</span></div></div>
+      <div class="gk-row"><div class="gk-item"><strong>KF</strong> — Potassium Fluoride</div><div class="gk-arrow">→</div><div class="gk-answer"><span class="gk-badge badge-ionic">Ionic</span><span style="font-size:.65rem;color:var(--tx2);">K (metal) + F (nonmetal)</span></div></div>
+      <div class="gk-row"><div class="gk-item"><strong>H₂O</strong> — Water</div><div class="gk-arrow">→</div><div class="gk-answer"><span class="gk-badge badge-covalent">Covalent</span><span style="font-size:.65rem;color:var(--tx2);">H + O — both nonmetals</span></div></div>
+      <div class="gk-row"><div class="gk-item"><strong>CO₂</strong> — Carbon Dioxide</div><div class="gk-arrow">→</div><div class="gk-answer"><span class="gk-badge badge-covalent">Covalent</span><span style="font-size:.65rem;color:var(--tx2);">C + O — both nonmetals</span></div></div>
+      <div class="gk-row"><div class="gk-item"><strong>O₂</strong> — Oxygen Gas</div><div class="gk-arrow">→</div><div class="gk-answer"><span class="gk-badge badge-covalent">Covalent</span><span style="font-size:.65rem;color:var(--tx2);">O + O — same nonmetal sharing</span></div></div>
+      <div class="gk-row"><div class="gk-item"><strong>HCl</strong> — Hydrogen Chloride</div><div class="gk-arrow">→</div><div class="gk-answer"><span class="gk-badge badge-covalent">Covalent</span><span style="font-size:.65rem;color:var(--tx2);">H + Cl — both nonmetals</span></div></div>
+    </div>
+    <div class="game-key-note">RULE: Metal + Nonmetal → Ionic · Nonmetal + Nonmetal → Covalent · HCl is a common confusion point — hydrogen behaves as a nonmetal here. Note: when dissolved in water, HCl ionizes (hydrochloric acid), but the bond itself is polar covalent.</div>
+  </div>
+
+  <!-- G2 -->
+  <div class="game-key">
+    <div class="game-key-hdr">
+      <div class="gkh-num">2</div>
+      <div class="gkh-title">Ion Charge Match · 8 elements into 4 zones</div>
+      <div class="gkh-score">8 pts (game tracking only — not graded)</div>
+    </div>
+    <div class="game-key-body">
+      <div class="gk-row"><div class="gk-item"><strong>Na</strong> — Group 1</div><div class="gk-arrow">→</div><div class="gk-answer"><span class="gk-badge badge-pos">1+ Cation</span><span style="font-size:.65rem;color:var(--tx2);">loses 1 valence e⁻ → Na⁺</span></div></div>
+      <div class="gk-row"><div class="gk-item"><strong>K</strong> — Group 1</div><div class="gk-arrow">→</div><div class="gk-answer"><span class="gk-badge badge-pos">1+ Cation</span><span style="font-size:.65rem;color:var(--tx2);">loses 1 valence e⁻ → K⁺</span></div></div>
+      <div class="gk-row"><div class="gk-item"><strong>Mg</strong> — Group 2</div><div class="gk-arrow">→</div><div class="gk-answer"><span class="gk-badge badge-pos" style="background:rgba(249,115,22,.12);color:#f97316;border-color:rgba(249,115,22,.25);">2+ Cation</span><span style="font-size:.65rem;color:var(--tx2);">loses 2 valence e⁻ → Mg²⁺</span></div></div>
+      <div class="gk-row"><div class="gk-item"><strong>Ca</strong> — Group 2</div><div class="gk-arrow">→</div><div class="gk-answer"><span class="gk-badge badge-pos" style="background:rgba(249,115,22,.12);color:#f97316;border-color:rgba(249,115,22,.25);">2+ Cation</span><span style="font-size:.65rem;color:var(--tx2);">loses 2 valence e⁻ → Ca²⁺</span></div></div>
+      <div class="gk-row"><div class="gk-item"><strong>Cl</strong> — Group 17</div><div class="gk-arrow">→</div><div class="gk-answer"><span class="gk-badge badge-neg">1− Anion</span><span style="font-size:.65rem;color:var(--tx2);">gains 1 e⁻ (needs 1 to fill shell) → Cl⁻</span></div></div>
+      <div class="gk-row"><div class="gk-item"><strong>F</strong> — Group 17</div><div class="gk-arrow">→</div><div class="gk-answer"><span class="gk-badge badge-neg">1− Anion</span><span style="font-size:.65rem;color:var(--tx2);">gains 1 e⁻ → F⁻ (most electronegative element)</span></div></div>
+      <div class="gk-row"><div class="gk-item"><strong>O</strong> — Group 16</div><div class="gk-arrow">→</div><div class="gk-answer"><span class="gk-badge badge-neg" style="background:rgba(59,130,246,.12);color:#3b82f6;border-color:rgba(59,130,246,.25);">2− Anion</span><span style="font-size:.65rem;color:var(--tx2);">gains 2 e⁻ (needs 2 to fill shell) → O²⁻</span></div></div>
+      <div class="gk-row"><div class="gk-item"><strong>S</strong> — Group 16</div><div class="gk-arrow">→</div><div class="gk-answer"><span class="gk-badge badge-neg" style="background:rgba(59,130,246,.12);color:#3b82f6;border-color:rgba(59,130,246,.25);">2− Anion</span><span style="font-size:.65rem;color:var(--tx2);">gains 2 e⁻ → S²⁻</span></div></div>
+    </div>
+    <div class="game-key-note">RULE: Group number → valence electrons → charge. Group 1 has 1 VE → loses 1 → 1+ charge. Group 17 has 7 VE → gains 1 → 1− charge. Group 16 has 6 VE → gains 2 → 2− charge. Metals lose (positive). Nonmetals gain (negative).</div>
+  </div>
+
+  <!-- G3 -->
+  <div class="game-key">
+    <div class="game-key-hdr">
+      <div class="gkh-num">3</div>
+      <div class="gkh-title">Compound Builder · 4 cation → formula matches</div>
+      <div class="gkh-score">4 pts (game tracking only — not graded)</div>
+    </div>
+    <div class="game-key-body">
+      <div class="gk-row"><div class="gk-item"><strong>Na⁺</strong> (1+) + Cl⁻ (1−)</div><div class="gk-arrow">→</div><div class="gk-answer"><span class="gk-badge badge-formula">NaCl</span><span style="font-size:.65rem;color:var(--tx2);">Charges: 1+ + 1− = 0 ✓ · Table salt</span></div></div>
+      <div class="gk-row"><div class="gk-item"><strong>Mg²⁺</strong> (2+) + O²⁻ (2−)</div><div class="gk-arrow">→</div><div class="gk-answer"><span class="gk-badge badge-formula">MgO</span><span style="font-size:.65rem;color:var(--tx2);">Charges: 2+ + 2− = 0 ✓ · Magnesium oxide</span></div></div>
+      <div class="gk-row"><div class="gk-item"><strong>Ca²⁺</strong> (2+) + O²⁻ (2−)</div><div class="gk-arrow">→</div><div class="gk-answer"><span class="gk-badge badge-formula">CaO</span><span style="font-size:.65rem;color:var(--tx2);">Charges: 2+ + 2− = 0 ✓ · Calcium oxide (antacids)</span></div></div>
+      <div class="gk-row"><div class="gk-item"><strong>K⁺</strong> (1+) + Cl⁻ (1−)</div><div class="gk-arrow">→</div><div class="gk-answer"><span class="gk-badge badge-formula">KCl</span><span style="font-size:.65rem;color:var(--tx2);">Charges: 1+ + 1− = 0 ✓ · Potassium chloride (salt substitute)</span></div></div>
+    </div>
+    <div class="game-key-note">KEY CONCEPT: Ionic compound formulas are always written so total positive charges = total negative charges (net charge = 0). When charges don't match 1:1, subscripts are used to balance — e.g. Na⁺ + O²⁻ → Na₂O (need 2 Na⁺ to balance one O²⁻).</div>
+  </div>
+</div>
+
+<!-- ESSENTIAL QUESTION RUBRIC -->
+<div class="section" id="eq">
+  <div class="section-rule"></div>
+  <div class="section-tag p">Essential Question · 4 points</div>
+  <div class="sec-hdr">
+    <h2>ESSENTIAL<br>QUESTION</h2>
+  </div>
+
+  <div style="border:var(--hr) solid rgba(245,200,66,.2);background:rgba(245,200,66,.04);padding:.85rem 1rem;margin-bottom:1.25rem;">
+    <div style="font-family:var(--font-m);font-size:.44rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,200,66,.6);margin-bottom:.4rem;">The Question</div>
+    <div style="font-size:.78rem;color:var(--tx);line-height:1.65;">Using what you know about valence electrons, explain why sodium (Na) and chlorine (Cl) react to form NaCl — and why that compound is stable when neither sodium nor chlorine alone is stable. Include how many valence electrons each starts with and what happens during the bond.</div>
+  </div>
+
+  <div class="rubric">
+    <div class="rub-row">
+      <div class="rub-pts" style="color:var(--green);">4</div>
+      <div class="rub-body">
+        <div class="rub-label">Full Credit</div>
+        <div class="rub-desc">Correctly states Na has <strong>1 valence electron</strong> and Cl has <strong>7 valence electrons</strong>. Accurately describes electron transfer (Na gives 1 electron to Cl). Identifies the resulting ions (Na⁺ and Cl⁻) by name or charge. Explains why NaCl is stable — both ions now have full outer shells (8 electrons). Uses at least 3 complete sentences. Specific element names used throughout.</div>
+      </div>
+    </div>
+    <div class="rub-row">
+      <div class="rub-pts" style="color:var(--accent);">3</div>
+      <div class="rub-body">
+        <div class="rub-label">Strong Partial Credit</div>
+        <div class="rub-desc">Correct valence electron counts AND accurate description of the bond process, BUT missing explanation of WHY NaCl is stable (doesn't connect to full outer shells). OR: Correct valence counts + stability explanation, but bond process is vague (says "they combine" without describing the electron transfer).</div>
+      </div>
+    </div>
+    <div class="rub-row">
+      <div class="rub-pts" style="color:var(--orange);">2</div>
+      <div class="rub-body">
+        <div class="rub-label">Partial Credit</div>
+        <div class="rub-desc">Correct definition of ionic bonding in general terms (metal gives electron to nonmetal) but does NOT apply it specifically to Na and Cl. OR: Correctly identifies valence counts but confuses the direction of electron movement (says Cl gives to Na, or says they share). OR: Response is only 1–2 sentences with incomplete reasoning.</div>
+      </div>
+    </div>
+    <div class="rub-row">
+      <div class="rub-pts" style="color:var(--red);">1</div>
+      <div class="rub-body">
+        <div class="rub-label">Minimal Credit</div>
+        <div class="rub-desc">Attempted response using some relevant vocabulary (ions, bonding, electrons) but reasoning is incorrect, circular, or does not connect to valence electrons. Example: "Na and Cl bond because they are opposite elements and need each other." No specific electron counts or bond mechanics.</div>
+      </div>
+    </div>
+    <div class="rub-row">
+      <div class="rub-pts" style="color:var(--tx3);">0</div>
+      <div class="rub-body">
+        <div class="rub-label">No Credit</div>
+        <div class="rub-desc">No response, completely off-topic, or response only restates the question without any explanation.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Target Response — 4-Point Example</h3>
+  <div class="target-box">
+    <div class="tb-lbl">What a full-credit response sounds like</div>
+    <div class="tb-text">Sodium (Na) has <em>1 valence electron</em> and chlorine (Cl) has <em>7 valence electrons</em>. During ionic bonding, sodium gives its 1 outer electron to chlorine. This makes sodium a positively charged ion (Na⁺) because it now has more protons than electrons, and it makes chlorine a negatively charged ion (Cl⁻) because it gained an extra electron. The opposite charges attract and hold the compound NaCl together. NaCl is stable because after the transfer, both Na⁺ and Cl⁻ have full outer shells — Na⁺ has the electron configuration of neon and Cl⁻ has the configuration of argon. Neither Na nor Cl alone is stable because Na has 1 unpaired electron it wants to give away, and Cl has 7 outer electrons with 1 empty spot it wants to fill.</div>
+  </div>
+
+  <h3>Key Phrases to Look For</h3>
+  <div class="check-list" style="display:flex;flex-direction:column;gap:.35rem;margin:.75rem 0;">
+    <div style="display:flex;align-items:baseline;gap:.75rem;font-size:.72rem;color:rgba(221,230,245,.65);line-height:1.5;"><span style="color:var(--green);flex-shrink:0;">✓</span>"1 valence electron" / "one outer electron" for Na</div>
+    <div style="display:flex;align-items:baseline;gap:.75rem;font-size:.72rem;color:rgba(221,230,245,.65);line-height:1.5;"><span style="color:var(--green);flex-shrink:0;">✓</span>"7 valence electrons" / "seven outer electrons" for Cl</div>
+    <div style="display:flex;align-items:baseline;gap:.75rem;font-size:.72rem;color:rgba(221,230,245,.65);line-height:1.5;"><span style="color:var(--green);flex-shrink:0;">✓</span>"gives" / "transfers" / "loses" its electron (Na → active giver)</div>
+    <div style="display:flex;align-items:baseline;gap:.75rem;font-size:.72rem;color:rgba(221,230,245,.65);line-height:1.5;"><span style="color:var(--green);flex-shrink:0;">✓</span>"receives" / "gains" / "accepts" (Cl → active receiver)</div>
+    <div style="display:flex;align-items:baseline;gap:.75rem;font-size:.72rem;color:rgba(221,230,245,.65);line-height:1.5;"><span style="color:var(--green);flex-shrink:0;">✓</span>"Na⁺" and "Cl⁻" or "positive ion" and "negative ion" / "cation" and "anion"</div>
+    <div style="display:flex;align-items:baseline;gap:.75rem;font-size:.72rem;color:rgba(221,230,245,.65);line-height:1.5;"><span style="color:var(--green);flex-shrink:0;">✓</span>"full outer shell" / "8 electrons" / "stable configuration" as reason NaCl is stable</div>
+    <div style="display:flex;align-items:baseline;gap:.75rem;font-size:.72rem;color:rgba(221,230,245,.65);line-height:1.5;"><span style="color:var(--red);flex-shrink:0;">✗</span>Penalize if student says they "share" electrons — that describes covalent bonding</div>
+    <div style="display:flex;align-items:baseline;gap:.75rem;font-size:.72rem;color:rgba(221,230,245,.65);line-height:1.5;"><span style="color:var(--red);flex-shrink:0;">✗</span>Penalize if student reverses direction (Cl gives to Na) — electron goes from Na to Cl</div>
+  </div>
+</div>
+
+<!-- KEY MISCONCEPTIONS -->
+<div class="section" id="misconceptions">
+  <div class="section-rule"></div>
+  <div class="section-tag" style="color:var(--red);">Watch For · Common Misconceptions</div>
+  <div class="sec-hdr">
+    <h2>KEY<br>MISCONCEPTIONS</h2>
+  </div>
+
+  <div class="mc-list">
+    <div class="mis-row">
+      <div class="mis-wrong">Misconception 1 · Sharing vs Transfer</div>
+      <div class="mis-fix">Students frequently say ionic bonds involve "sharing" electrons. <strong>Fix:</strong> "In ionic bonding, the metal electron is completely transferred — it goes to live with the nonmetal permanently. Sharing is covalent. Think of it like giving away your lunch versus eating it together."</div>
+    </div>
+    <div class="mis-row">
+      <div class="mis-wrong">Misconception 2 · Charge Direction</div>
+      <div class="mis-fix">Students reverse the charges — thinking the atom that gives electrons becomes negative. <strong>Fix:</strong> "If you have 11 protons and give away 1 electron, you now have 11 protons and 10 electrons. More positive charges than negative → positive ion. Giving = losing negative things = becoming more positive."</div>
+    </div>
+    <div class="mis-row">
+      <div class="mis-wrong">Misconception 3 · Element identity changes</div>
+      <div class="mis-fix">Students think Na⁺ is a different element. <strong>Fix:</strong> "Element identity is defined by the number of PROTONS — the atomic number. Na⁺ still has 11 protons. It is still sodium. It is just a sodium ION — a sodium atom with a charge. Compare it to yourself wearing a hat: you are still you, just slightly different."</div>
+    </div>
+    <div class="mis-row">
+      <div class="mis-wrong">Misconception 4 · HCl must be ionic (it has H)</div>
+      <div class="mis-fix">Students assume HCl is ionic because it "conducts electricity when dissolved." <strong>Fix:</strong> "H is a nonmetal. Cl is a nonmetal. Nonmetal + nonmetal = covalent. When HCl dissolves in water, it ionizes — the ions come from the dissolution, not from the original bond type."</div>
+    </div>
+    <div class="mis-row">
+      <div class="mis-wrong">Misconception 5 · Subscripts always needed in formulas</div>
+      <div class="mis-fix">Students write Ca₂O₂ instead of CaO. <strong>Fix:</strong> "We always reduce to the lowest whole-number ratio, just like simplifying fractions. Ca₂O₂ reduces to CaO because the ratio is 1:1. The subscripts only appear when the ratio isn't 1:1 — like Na₂O, where we need 2 Na⁺ to balance one O²⁻."</div>
+    </div>
+  </div>
+</div>
+
+<!-- ESSENTIAL CONCEPTS SUMMARY -->
+<div class="section" id="concepts">
+  <div class="section-rule"></div>
+  <div class="section-tag">Lesson Summary · Core Concepts</div>
+  <div class="sec-hdr">
+    <h2>CORE<br>CONCEPTS</h2>
+    <div class="sec-hdr-sub">Day 3 · Chemical Bonding</div>
+  </div>
+  <div class="ec-grid">
+    <div class="ec-card">
+      <div class="ec-title" style="color:var(--accent);">Why Atoms Bond</div>
+      <div class="ec-body">Atoms bond to reach a <strong>full outer shell</strong> (octet rule — 8 valence electrons). Noble gases already have full shells → unreactive. All other elements bond to achieve that stability.</div>
+    </div>
+    <div class="ec-card">
+      <div class="ec-title" style="color:var(--ionic);">Ionic Bonding</div>
+      <div class="ec-body"><strong>Metal + Nonmetal</strong>. Metal transfers valence electrons to nonmetal. Both become ions. Opposite charges attract. Forms crystals/salts. Conducts when dissolved.</div>
+    </div>
+    <div class="ec-card">
+      <div class="ec-title" style="color:var(--covalent);">Covalent Bonding</div>
+      <div class="ec-body"><strong>Nonmetal + Nonmetal</strong>. Electrons are shared between atoms. Forms molecules. Often liquid or gas at room temperature. Does not conduct electricity.</div>
+    </div>
+    <div class="ec-card">
+      <div class="ec-title" style="color:var(--red);">Ion Charges</div>
+      <div class="ec-body">Group 1 → 1+ · Group 2 → 2+ · Group 16 → 2− · Group 17 → 1− · Formulas must balance to zero total charge.</div>
+    </div>
+    <div class="ec-card">
+      <div class="ec-title" style="color:var(--blue);">NaCl Explained</div>
+      <div class="ec-body">Na (1 VE) gives its electron to Cl (7 VE). Na → Na⁺ (10 e⁻, 11 p⁺). Cl → Cl⁻ (18 e⁻, 17 p⁺). Both now have full outer shells. Opposite charges attract → stable compound.</div>
+    </div>
+    <div class="ec-card">
+      <div class="ec-title" style="color:var(--purple);">Connecting to Day 2</div>
+      <div class="ec-body">Valence electrons (Day 2) are exactly what drives bonding (Day 3). Group number → valence electrons → ion charge → compound formula. The chain is direct.</div>
+    </div>
+  </div>
+
+  <div style="margin-top:2rem;border-top:var(--hr) solid rgba(255,255,255,.06);padding-top:1.1rem;">
+    <div style="font-family:var(--font-m);font-size:.44rem;letter-spacing:.18em;text-transform:uppercase;color:var(--tx3);margin-bottom:.35rem;">Document Info</div>
+    <div style="font-family:var(--font-m);font-size:.58rem;color:var(--tx3);line-height:1.75;">Stratosyn · Day 3 Answer Key · Chemical Bonding · 7th Grade Science<br>ALA Room 501 · Ms. Madewell · 2026 · Teacher Use Only</div>
+  </div>
+</div>
+
+</div><!-- end main -->
+
+<script>
+/* Smooth scroll for nav — no sidebar here so just anchor behavior */
+</script>
+</body>
+</html>
