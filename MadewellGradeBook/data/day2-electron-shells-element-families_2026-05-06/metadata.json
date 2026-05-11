@@ -1,0 +1,50 @@
+{
+  "assignment_id": "day2-electron-shells-element-families_2026-05-06",
+  "lesson": "7th Grade Science \u00b7 Day 2 \u2014 Electron Shells & Element Families",
+  "title": "Electron Shells & Element Families",
+  "date": "2026-05-06",
+  "teacher": "Ms. Madewell",
+  "total_students": 118,
+  "sections": {
+    "honors": {
+      "periods": {
+        "period-1": 23
+      },
+      "total": 23
+    },
+    "regular": {
+      "periods": {
+        "period-3": 22,
+        "period-4": 13,
+        "period-6": 19,
+        "period-5": 13,
+        "period-2": 18
+      },
+      "total": 85
+    }
+  },
+  "organized_at": "2026-05-10T19:37:24",
+  "period_counts": {
+    "p1-honors": 25,
+    "p2-regular": 19,
+    "p3-regular": 23,
+    "p4-regular": 13,
+    "p5-regular": 18,
+    "p6-regular": 20
+  },
+  "merged_from": [
+    "day2-electron-shells-element-families_2026-05-07"
+  ],
+  "merged_at": "2026-05-10T20:26:49",
+  "answer_key": null,
+  "question_prompts": {
+    "Q1": "Sodium (Na) has atomic number 11 and is in Period 3. What does Period 3 tell you about sodium's electron structure?",
+    "Q2": "Shell 1 holds max 2 electrons and Shell 2 holds max 8. How many total electrons before needing a 3rd shell?",
+    "Q3": "Chlorine (Cl) is in Group 17. How many valence electrons does chlorine have?",
+    "Q4": "Li, Na, and K are all in Group 1 and behave similarly. What is the electron-based reason?",
+    "Q5": "Which BEST explains why alkali metals (Group 1) are so highly reactive?",
+    "Q6": "Noble gases (Group 18) rarely react. What is the electron-based explanation?",
+    "Q7": "Moving DOWN Group 1 (Li to Cs), what happens to reactivity and why?",
+    "Q8": "Why do atoms get LARGER as you move DOWN a group?"
+  }
+}

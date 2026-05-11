@@ -1,0 +1,61 @@
+{
+  "assignment_id": "day1-periodic-table_2026-05-04",
+  "lesson": "7th Grade Science \u00b7 Day 1 \u2014 What Is The Periodic Table?",
+  "title": "What Is The Periodic Table?",
+  "date": "2026-05-04",
+  "teacher": "Ms. Madewell",
+  "total_students": 123,
+  "sections": {
+    "honors": {
+      "periods": {
+        "period-1": 25
+      },
+      "total": 25
+    },
+    "regular": {
+      "periods": {
+        "period-3": 23,
+        "period-2": 22,
+        "period-4": 15,
+        "period-6": 20,
+        "period-5": 16,
+        "period-7": 1
+      },
+      "total": 97
+    }
+  },
+  "organized_at": "2026-05-10T18:58:47",
+  "period_counts": {
+    "p1-honors": 25,
+    "p2-regular": 22,
+    "p3-regular": 23,
+    "p4-regular": 15,
+    "p5-regular": 16,
+    "p6-regular": 21,
+    "p7-regular": 1
+  },
+  "merged_from": [
+    "day1-periodic-table_2026-05-06"
+  ],
+  "merged_at": "2026-05-10T20:26:49",
+  "answer_key": {
+    "Q1": "A",
+    "Q2": "C",
+    "Q3": "B",
+    "Q4": "C",
+    "Q5": "C",
+    "Q6": "B",
+    "Q7": "C",
+    "Q8": "D"
+  },
+  "question_prompts": {
+    "Q1": "Before Mendeleev, some scientists organized elements alphabetically. What is the main problem with an alphabetical system?",
+    "Q2": "Mendeleev's repeating pattern gave us the word that names the table today \u2014 the _____ table.",
+    "Q3": "The number 11 in sodium's element box tells you that sodium has ___.",
+    "Q4": "Why is atomic number a BETTER organizing tool than atomic mass?",
+    "Q5": "Sodium (Na) is in Period 3. What does this tell you about its electrons?",
+    "Q6": "Li, Na, and K are all in Group 1. What does this predict about their behavior?",
+    "Q7": "Iron (Fe) is found in the large center-left block of the periodic table. Iron belongs to the ___.",
+    "Q8": "Silicon conducts electricity better than a nonmetal but worse than a true metal. Silicon is most likely a ___."
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "assignment_id": "day3-chemical-bonding_2026-05-07",
+  "lesson": "7th Grade Science \u00b7 Day 3 \u2014 Chemical Bonding",
+  "title": "Chemical Bonding",
+  "date": "2026-05-07",
+  "teacher": "Ms. Madewell",
+  "total_students": 109,
+  "sections": {
+    "honors": {
+      "periods": {
+        "period-1": 26
+      },
+      "total": 26
+    },
+    "regular": {
+      "periods": {
+        "period-3": 23,
+        "period-4": 13,
+        "period-6": 10,
+        "period-5": 19,
+        "period-2": 16
+      },
+      "total": 81
+    }
+  },
+  "organized_at": "2026-05-10T19:44:30",
+  "period_counts": {
+    "p1-honors": 27,
+    "p2-regular": 16,
+    "p3-regular": 23,
+    "p4-regular": 13,
+    "p5-regular": 20,
+    "p6-regular": 10
+  },
+  "merged_from": [
+    "day3-chemical-bonding_2026-05-08"
+  ],
+  "merged_at": "2026-05-10T20:26:49",
+  "answer_key": null,
+  "question_prompts": {
+    "Q1": "Why do most atoms form chemical bonds with other atoms?",
+    "Q2": "The \"octet rule\" states that atoms tend to form bonds until they have ___.",
+    "Q3": "In ionic bonding, what happens to the metal atom's valence electron(s)?",
+    "Q4": "After sodium (Na) gives its 1 valence electron to chlorine during ionic bonding, sodium becomes ___.",
+    "Q5": "Water (H\u2082O) is formed from two hydrogen atoms and one oxygen atom \u2014 all nonmetals. What type of bond holds water together?",
+    "Q6": "Which BEST describes how to tell an ionic compound apart from a covalent compound at room temperature?",
+    "Q7": "Magnesium (Mg) is in Group 2. What ion does it form when it reacts with a nonmetal?",
+    "Q8": "Calcium (Ca\u00b2\u207a) and oxygen (O\u00b2\u207b) combine. What is the correct formula?"
+  }
+}
