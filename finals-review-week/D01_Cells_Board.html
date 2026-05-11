@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STRATOSYN · Day 1 · Cells &amp; Cell Processes — Board</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="stratosyn-finals.css">
+</head>
+<body class="board">
+
+<nav class="topnav" style="position:fixed;left:0;right:0;top:0;">
+  <div class="brand">
+    <div class="bm" data-fill="0">
+      <div class="bsc r1"></div><div class="bsc r1"></div><div class="bsc r1"></div>
+      <div class="bsc r2"></div><div class="bsc r2"></div><div class="bsc r2"></div>
+      <div class="bsc r3"></div><div class="bsc r3"></div><div class="bsc r3"></div>
+    </div>
+    <span>STRATOSYN <span class="sub">/ Life Science</span></span>
+  </div>
+  <span class="nav-title">Finals Review · Day 1 · Cells</span>
+  <span class="nav-badge gold">Classroom Board</span>
+</nav>
+
+<div class="hud">
+  <span id="slideCtr">1 / 12</span>
+  <div class="pb"><div class="pf" id="hudFill"></div></div>
+</div>
+
+<div class="board-nav">
+  <button class="nb" id="btnPrev">‹ Back</button>
+  <button class="nb prime" id="btnNext">Next ›</button>
+</div>
+
+<div class="board-stage">
+
+  <!-- Slide 1 — Agenda -->
+  <div class="slide">
+    <div class="rule"></div>
+    <div class="lbl">7th Grade Life Science · Day 1 of 5</div>
+    <h1>TODAY'S<br><span class="accent">AGENDA</span></h1>
+    <div class="ag-grid">
+      <div>
+        <div class="ag-row"><div class="ag-t">0–05m</div><div class="ag-c"><strong>Bell Ringer</strong>What three statements make up the cell theory? Write them down.</div></div>
+        <div class="ag-row"><div class="ag-t">05–15m</div><div class="ag-c"><strong>Cell Theory + Hooke</strong>Quick recap of the three parts of cell theory and Robert Hooke's role.</div></div>
+        <div class="ag-row"><div class="ag-t">15–25m</div><div class="ag-c"><strong>Prokaryote vs Eukaryote</strong>Side-by-side comparison. Why doesn't bacteria have a nucleus?</div></div>
+      </div>
+      <div>
+        <div class="ag-row"><div class="ag-t">25–35m</div><div class="ag-c"><strong>Organelle Tour</strong>Walk through an animal cell, then a plant cell. Identify what's unique to each.</div></div>
+        <div class="ag-row"><div class="ag-t">35–45m</div><div class="ag-c"><strong>Photosynthesis &amp; Respiration</strong>How energy flows: sun → glucose → ATP. Compare the two equations.</div></div>
+        <div class="ag-row"><div class="ag-t">45–50m</div><div class="ag-c"><strong>Worksheet Launch</strong>Students complete D01 worksheet. Submit via Copy → Canvas.</div></div>
+      </div>
+    </div>
+    <div class="eq-banner">
+      <div class="eq-tag">Essential Question — returns on final slide</div>
+      <div class="eq-q">If a cell is the basic unit of life, how do plant and animal cells <em>cooperate as a planet-wide energy system</em> through photosynthesis and cellular respiration?</div>
+    </div>
+  </div>
+
+  <!-- Slide 2 — CLO -->
+  <div class="slide">
+    <div class="rule"></div>
+    <div class="lbl">Learning Target</div>
+    <h2>WHAT YOU SHOULD<br><span class="accent">KNOW BY 50:00</span></h2>
+    <div class="clo-box">
+      <div class="clo-lbl">Course Learning Objective · NGSS MS-LS1-1, MS-LS1-2, MS-LS1-6</div>
+      <div class="clo-txt">Students will identify cells as the basic unit of all living things, distinguish prokaryotic from eukaryotic cells, name and describe the function of major organelles, and explain how photosynthesis and cellular respiration cycle matter and energy through living systems.</div>
+    </div>
+    <div class="clo-box b">
+      <div class="clo-lbl b">I Can Statement · Student Friendly</div>
+      <div class="clo-txt">I can name the parts of a cell, tell the difference between a plant and an animal cell, and explain how plants make food and how all cells use that food for energy.</div>
+    </div>
+    <div style="font-family:var(--font-m);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--tx3);margin:14px 0 8px;">Success Criteria — measurable</div>
+    <div class="sc-row"><span class="sc-n">SC1</span>State the three parts of the cell theory <em>— Q1, Q2</em></div>
+    <div class="sc-row"><span class="sc-n">SC2</span>Identify the function of nucleus, mitochondria, ribosomes, cell membrane, chloroplast, cell wall, lysosome <em>— Q4–Q9, Q15–Q18</em></div>
+    <div class="sc-row"><span class="sc-n">SC3</span>Compare a plant cell and an animal cell, listing at least 3 shared and 2 plant-only structures <em>— Q7, Q14, Q19</em></div>
+    <div class="sc-row"><span class="sc-n">SC4</span>Write or interpret the equations for photosynthesis and cellular respiration <em>— Q6, Q10, Q11, Q20</em></div>
+  </div>
+
+  <!-- Slide 3 — Cell Theory -->
+  <div class="slide">
+    <div class="rule"></div>
+    <div class="lbl">01 · Engage</div>
+    <h2>THE THREE PARTS<br><span class="accent">OF CELL THEORY</span></h2>
+    <div class="three-col">
+      <div class="ibox" style="border-color:rgba(129,230,217,.25);background:rgba(129,230,217,.05);">
+        <div class="ibox-lbl" style="color:var(--mint);">Part 1</div>
+        <div class="ibox-txt"><strong>All living things are made of one or more cells.</strong> From a single bacterium to a 30-meter blue whale — every organism is built of cells.</div>
+      </div>
+      <div class="ibox" style="border-color:rgba(0,212,255,.25);background:rgba(0,212,255,.05);">
+        <div class="ibox-lbl" style="color:var(--cyan);">Part 2</div>
+        <div class="ibox-txt"><strong>The cell is the basic unit of structure and function.</strong> Cells are the smallest things that can carry out the activities of life — eat, grow, respond, reproduce.</div>
+      </div>
+      <div class="ibox" style="border-color:rgba(245,200,66,.25);background:rgba(245,200,66,.05);">
+        <div class="ibox-lbl" style="color:var(--gold);">Part 3</div>
+        <div class="ibox-txt"><strong>All cells come from other cells.</strong> Cells reproduce by dividing — life never appears spontaneously from non-living matter.</div>
+      </div>
+    </div>
+    <div style="margin-top:18px;font-size:13px;color:var(--tx2);">
+      <strong style="color:var(--tx);">Key history:</strong> <span class="m">Robert Hooke</span> coined the word "cell" in 1665 looking at cork through an early microscope. The boxes he saw reminded him of small monks' rooms — <em>cellulae</em>.
+    </div>
+  </div>
+
+  <!-- Slide 4 — Prokaryote vs Eukaryote -->
+  <div class="slide">
+    <div class="rule"></div>
+    <div class="lbl">02 · Explore</div>
+    <h2>PROKARYOTE<br>vs <span class="accent">EUKARYOTE</span></h2>
+    <table class="compare-table">
+      <thead>
+        <tr><th>Feature</th><th style="color:var(--orange);">Prokaryotic Cell</th><th style="color:var(--mint);">Eukaryotic Cell</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Nucleus</td><td>No membrane-bound nucleus — DNA floats free in cytoplasm</td><td>Membrane-bound nucleus stores the DNA</td></tr>
+        <tr><td>Size</td><td>Small (1–10 µm)</td><td>Larger (10–100 µm)</td></tr>
+        <tr><td>Organelles</td><td>Few — basically just ribosomes</td><td>Many membrane-bound organelles (mitochondria, ER, Golgi…)</td></tr>
+        <tr><td>Examples</td><td>Bacteria, archaea</td><td>Plants, animals, fungi, protists (you!)</td></tr>
+        <tr><td>Cell wall</td><td>Yes (most have one, made of peptidoglycan)</td><td>Only in plant and fungal cells</td></tr>
+      </tbody>
+    </table>
+    <div class="tag-list" style="margin-top:18px;">
+      <span class="tag">memory tip</span>
+      <span class="tag mint">PRO = "before nucleus"</span>
+      <span class="tag mint">EU = "true nucleus"</span>
+    </div>
+  </div>
+
+  <!-- Slide 5 — Animal Cell Tour -->
+  <div class="slide">
+    <div class="rule"></div>
+    <div class="lbl">03 · Explain · Part 1</div>
+    <h2>ANIMAL CELL<br><span class="accent">TOUR</span></h2>
+    <div class="diagram-row">
+      <svg viewBox="0 0 300 240" style="width:300px;max-width:40%;">
+        <ellipse cx="150" cy="120" rx="140" ry="105" fill="rgba(251,146,60,0.04)" stroke="var(--orange)" stroke-width="1.5" stroke-dasharray="6 3"/>
+        <ellipse cx="125" cy="100" rx="42" ry="36" fill="rgba(0,212,255,0.07)" stroke="var(--cyan)" stroke-width="1.4"/>
+        <ellipse cx="125" cy="98" rx="14" ry="12" fill="rgba(0,212,255,0.18)"/>
+        <text x="125" y="102" text-anchor="middle" fill="var(--cyan)" font-family="DM Mono, monospace" font-size="8">nucleolus</text>
+        <ellipse cx="220" cy="140" rx="28" ry="14" fill="rgba(245,200,66,0.1)" stroke="var(--gold)" stroke-width="1.2"/>
+        <text x="220" y="143" text-anchor="middle" fill="var(--gold)" font-family="DM Mono, monospace" font-size="8">mitochondrion</text>
+        <ellipse cx="80" cy="170" rx="22" ry="18" fill="rgba(192,132,252,0.08)" stroke="var(--purple)" stroke-width="1.2"/>
+        <text x="80" y="173" text-anchor="middle" fill="var(--purple)" font-family="DM Mono, monospace" font-size="8">vacuole</text>
+        <circle cx="180" cy="80" r="4" fill="var(--red)" opacity=".7"/>
+        <circle cx="195" cy="75" r="4" fill="var(--red)" opacity=".7"/>
+        <circle cx="190" cy="90" r="4" fill="var(--red)" opacity=".7"/>
+        <text x="210" y="85" fill="var(--red)" font-family="DM Mono, monospace" font-size="9">ribosomes</text>
+        <path d="M60,90 Q75,80 90,90 Q105,100 120,90" fill="none" stroke="var(--leaf)" stroke-width="1.5" opacity=".7"/>
+        <text x="55" y="80" fill="var(--leaf)" font-family="DM Mono, monospace" font-size="8">ER</text>
+        <text x="190" y="200" fill="var(--orange)" font-family="DM Mono, monospace" font-size="9">cell membrane</text>
+      </svg>
+      <div class="diagram-callouts">
+        <div class="callout-row"><div class="callout-num">1</div><div><strong style="color:var(--cyan);">Nucleus</strong> — control center; stores DNA and gives instructions for everything the cell does.</div></div>
+        <div class="callout-row"><div class="callout-num">2</div><div><strong style="color:var(--gold);">Mitochondrion</strong> — powerhouse; runs cellular respiration to make ATP from glucose.</div></div>
+        <div class="callout-row"><div class="callout-num">3</div><div><strong style="color:var(--red);">Ribosome</strong> — protein factory; reads mRNA from the nucleus and builds proteins.</div></div>
+        <div class="callout-row"><div class="callout-num">4</div><div><strong style="color:var(--leaf);">Endoplasmic Reticulum</strong> — packaging and transport network for proteins and lipids.</div></div>
+        <div class="callout-row"><div class="callout-num">5</div><div><strong style="color:var(--purple);">Vacuole</strong> — storage sac; small in animal cells, holds water and waste.</div></div>
+        <div class="callout-row"><div class="callout-num">6</div><div><strong style="color:var(--orange);">Cell Membrane</strong> — selectively permeable boundary; controls what comes in and out.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 6 — Plant Cell Tour -->
+  <div class="slide">
+    <div class="rule"></div>
+    <div class="lbl">03 · Explain · Part 2</div>
+    <h2>PLANT CELL<br><span class="accent">TOUR</span></h2>
+    <div class="diagram-row">
+      <svg viewBox="0 0 300 240" style="width:300px;max-width:40%;">
+        <rect x="14" y="14" width="272" height="212" rx="6" fill="rgba(129,230,217,0.04)" stroke="var(--mint)" stroke-width="2.5"/>
+        <rect x="22" y="22" width="256" height="196" rx="3" fill="rgba(251,146,60,0.03)" stroke="var(--orange)" stroke-width="1" stroke-dasharray="4 2"/>
+        <ellipse cx="150" cy="125" rx="100" ry="70" fill="rgba(0,212,255,0.06)" stroke="var(--cyan)" stroke-width="1.2" stroke-dasharray="4 2"/>
+        <text x="150" y="128" text-anchor="middle" fill="rgba(0,212,255,.6)" font-family="DM Mono, monospace" font-size="9">central vacuole</text>
+        <ellipse cx="80" cy="60" rx="30" ry="24" fill="rgba(245,200,66,0.08)" stroke="var(--gold)" stroke-width="1.4"/>
+        <ellipse cx="80" cy="58" rx="10" ry="8" fill="rgba(245,200,66,.2)"/>
+        <text x="80" y="62" text-anchor="middle" fill="var(--gold)" font-family="DM Mono, monospace" font-size="7">nucleus</text>
+        <ellipse cx="240" cy="60" rx="22" ry="11" fill="rgba(62,255,160,0.18)" stroke="var(--green)" stroke-width="1.2"/>
+        <text x="240" y="80" text-anchor="middle" fill="var(--green)" font-family="DM Mono, monospace" font-size="8">chloroplast</text>
+        <ellipse cx="60" cy="180" rx="22" ry="11" fill="rgba(62,255,160,0.18)" stroke="var(--green)" stroke-width="1.2"/>
+        <ellipse cx="220" cy="190" rx="22" ry="11" fill="rgba(62,255,160,0.18)" stroke="var(--green)" stroke-width="1.2"/>
+        <text x="22" y="42" fill="var(--mint)" font-family="DM Mono, monospace" font-size="9">cell wall</text>
+        <text x="120" y="38" fill="var(--orange)" font-family="DM Mono, monospace" font-size="8">cell membrane (inside wall)</text>
+      </svg>
+      <div class="diagram-callouts">
+        <div class="callout-row"><div class="callout-num">1</div><div><strong style="color:var(--mint);">Cell Wall</strong> <em>(plant only)</em> — rigid layer of cellulose outside the membrane; gives the plant its shape and lets it stand without bones.</div></div>
+        <div class="callout-row"><div class="callout-num">2</div><div><strong style="color:var(--green);">Chloroplast</strong> <em>(plant only)</em> — contains chlorophyll; runs photosynthesis: CO₂ + H₂O + light → glucose + O₂.</div></div>
+        <div class="callout-row"><div class="callout-num">3</div><div><strong style="color:var(--cyan);">Large Central Vacuole</strong> <em>(plant only)</em> — stores water; pushes out against the wall to keep the plant firm. Wilting = vacuoles emptied.</div></div>
+        <div class="callout-row"><div class="callout-num">4</div><div><strong style="color:var(--gold);">Nucleus, mitochondria, ribosomes, ER, cell membrane</strong> — all present in plants too. Plants <em>also</em> do cellular respiration to use the glucose they make.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 7 — Photosynthesis -->
+  <div class="slide">
+    <div class="rule"></div>
+    <div class="lbl">04 · Explain · Energy In</div>
+    <h2>PHOTOSYNTHESIS<br><span class="accent">CO₂ + H₂O + LIGHT → GLUCOSE + O₂</span></h2>
+    <div class="two-col">
+      <div class="ibox" style="border-color:rgba(62,255,160,.25);background:rgba(62,255,160,.05);">
+        <div class="ibox-lbl" style="color:var(--green);">What's happening</div>
+        <div class="ibox-txt">
+          Plants <strong>capture sunlight</strong> with <strong>chlorophyll</strong> in their <strong>chloroplasts</strong>. They pull <strong>CO₂</strong> from the air through tiny leaf pores (stomata) and <strong>H₂O</strong> from their roots, then use the light energy to assemble these atoms into <strong>glucose (C₆H₁₂O₆)</strong>, releasing <strong>oxygen</strong> as a byproduct.
+        </div>
+      </div>
+      <div class="ibox" style="border-color:rgba(245,200,66,.25);background:rgba(245,200,66,.05);">
+        <div class="ibox-lbl" style="color:var(--gold);">Why it matters</div>
+        <div class="ibox-txt">
+          Photosynthesis is the entry point for almost all energy in Earth's food webs. Animals can't do it — they get glucose by eating plants (or eating things that ate plants). The <strong>O₂ in our atmosphere</strong> is essentially exhaust from billions of years of plants and algae photosynthesizing.
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:18px;padding:14px 18px;background:rgba(62,255,160,.05);border:1px solid rgba(62,255,160,.2);border-radius:10px;">
+      <div style="font-family:var(--font-m);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--green);margin-bottom:6px;">Equation to memorize</div>
+      <div style="font-family:var(--font-d);font-size:18px;color:var(--tx);letter-spacing:.02em;">
+        <span style="color:var(--cyan);">6 CO₂</span> + <span style="color:var(--blue);">6 H₂O</span> + <span style="color:var(--gold);">light energy</span> → <span style="color:var(--green);">C₆H₁₂O₆</span> + <span style="color:var(--mint);">6 O₂</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 8 — Cellular Respiration -->
+  <div class="slide">
+    <div class="rule"></div>
+    <div class="lbl">04 · Explain · Energy Out</div>
+    <h2>CELLULAR RESPIRATION<br><span class="accent">GLUCOSE + O₂ → CO₂ + H₂O + ATP</span></h2>
+    <div class="two-col">
+      <div class="ibox" style="border-color:rgba(245,200,66,.25);background:rgba(245,200,66,.05);">
+        <div class="ibox-lbl" style="color:var(--gold);">What's happening</div>
+        <div class="ibox-txt">
+          In the <strong>mitochondria</strong>, the cell breaks <strong>glucose</strong> apart and combines its atoms with <strong>oxygen</strong>. This releases stored chemical energy, which the cell captures in molecules called <strong>ATP</strong>. The leftover atoms come out as <strong>CO₂</strong> and <strong>water</strong> — the same things you exhale.
+        </div>
+      </div>
+      <div class="ibox" style="border-color:rgba(192,132,252,.25);background:rgba(192,132,252,.05);">
+        <div class="ibox-lbl" style="color:var(--purple);">Where it happens</div>
+        <div class="ibox-txt">
+          Inside <strong>every cell</strong>, both plant and animal. Plants run photosynthesis AND respiration; animals only run respiration (we just eat the glucose). Mitochondria are densely packed in cells that need lots of energy: <em>muscle, heart, neurons</em>.
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:18px;padding:14px 18px;background:rgba(245,200,66,.05);border:1px solid rgba(245,200,66,.2);border-radius:10px;">
+      <div style="font-family:var(--font-m);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;">Equation to memorize</div>
+      <div style="font-family:var(--font-d);font-size:18px;color:var(--tx);letter-spacing:.02em;">
+        <span style="color:var(--green);">C₆H₁₂O₆</span> + <span style="color:var(--mint);">6 O₂</span> → <span style="color:var(--cyan);">6 CO₂</span> + <span style="color:var(--blue);">6 H₂O</span> + <span style="color:var(--gold);">ATP</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 9 — Photo + Resp side by side -->
+  <div class="slide">
+    <div class="rule"></div>
+    <div class="lbl">05 · The Big Picture</div>
+    <h2>EXACT<br><span class="accent">OPPOSITES</span></h2>
+    <div class="body">Notice how the two equations are mirror images. The reactants of one are the products of the other. This is why plants and animals depend on each other: we breathe out the CO₂ they need; they release the O₂ we need.</div>
+    <table class="compare-table">
+      <thead>
+        <tr><th>&nbsp;</th><th style="color:var(--green);">Photosynthesis</th><th style="color:var(--gold);">Cellular Respiration</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Where</td><td>Chloroplast (plants only)</td><td>Mitochondria (all cells)</td></tr>
+        <tr><td>Inputs (Reactants)</td><td>CO₂ + H₂O + light</td><td>Glucose + O₂</td></tr>
+        <tr><td>Outputs (Products)</td><td>Glucose + O₂</td><td>CO₂ + H₂O + ATP</td></tr>
+        <tr><td>Energy</td><td>Stores energy in glucose</td><td>Releases energy from glucose</td></tr>
+        <tr><td>When</td><td>Only when there's light</td><td>All the time, in all cells</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Slide 10 — Levels of Organization -->
+  <div class="slide">
+    <div class="rule"></div>
+    <div class="lbl">06 · Zoom Out</div>
+    <h2>LEVELS OF<br><span class="accent">ORGANIZATION</span></h2>
+    <div class="body">Cells don't work alone. They group up into bigger and bigger systems that together make a whole organism.</div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;margin:14px 0 22px;">
+      <div style="text-align:center;padding:14px 18px;background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.3);border-radius:12px;min-width:120px;">
+        <div style="font-family:var(--font-d);font-size:14px;color:var(--cyan);">CELL</div>
+        <div style="font-family:var(--font-m);font-size:9px;color:var(--tx3);letter-spacing:.1em;margin-top:3px;">red blood cell</div>
+      </div>
+      <div style="font-family:var(--font-d);font-size:24px;color:var(--tx3);padding:0 8px;">→</div>
+      <div style="text-align:center;padding:14px 18px;background:rgba(129,230,217,.08);border:1px solid rgba(129,230,217,.3);border-radius:12px;min-width:120px;">
+        <div style="font-family:var(--font-d);font-size:14px;color:var(--mint);">TISSUE</div>
+        <div style="font-family:var(--font-m);font-size:9px;color:var(--tx3);letter-spacing:.1em;margin-top:3px;">blood</div>
+      </div>
+      <div style="font-family:var(--font-d);font-size:24px;color:var(--tx3);padding:0 8px;">→</div>
+      <div style="text-align:center;padding:14px 18px;background:rgba(62,255,160,.08);border:1px solid rgba(62,255,160,.3);border-radius:12px;min-width:120px;">
+        <div style="font-family:var(--font-d);font-size:14px;color:var(--green);">ORGAN</div>
+        <div style="font-family:var(--font-m);font-size:9px;color:var(--tx3);letter-spacing:.1em;margin-top:3px;">heart</div>
+      </div>
+      <div style="font-family:var(--font-d);font-size:24px;color:var(--tx3);padding:0 8px;">→</div>
+      <div style="text-align:center;padding:14px 18px;background:rgba(245,200,66,.08);border:1px solid rgba(245,200,66,.3);border-radius:12px;min-width:120px;">
+        <div style="font-family:var(--font-d);font-size:14px;color:var(--gold);">SYSTEM</div>
+        <div style="font-family:var(--font-m);font-size:9px;color:var(--tx3);letter-spacing:.1em;margin-top:3px;">circulatory</div>
+      </div>
+      <div style="font-family:var(--font-d);font-size:24px;color:var(--tx3);padding:0 8px;">→</div>
+      <div style="text-align:center;padding:14px 18px;background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.3);border-radius:12px;min-width:120px;">
+        <div style="font-family:var(--font-d);font-size:14px;color:var(--purple);">ORGANISM</div>
+        <div style="font-family:var(--font-m);font-size:9px;color:var(--tx3);letter-spacing:.1em;margin-top:3px;">you</div>
+      </div>
+    </div>
+    <div class="ibox" style="border-color:var(--b);">
+      <div class="ibox-lbl">Tomorrow's preview</div>
+      <div class="ibox-txt">Day 2 zooms in on how these <strong>organ systems</strong> work together inside your body — circulatory, respiratory, digestive, nervous, and the rest.</div>
+    </div>
+  </div>
+
+  <!-- Slide 11 — Quick Check -->
+  <div class="slide">
+    <div class="rule" style="background:var(--cyan);"></div>
+    <div class="lbl" style="color:var(--cyan);">07 · Quick Check</div>
+    <h2>BEFORE WE<br><span class="accent">MOVE ON</span></h2>
+    <div class="body">Cold-call check. If you can answer all four out loud, you're ready to start the worksheet.</div>
+    <div class="three-col" style="grid-template-columns:1fr 1fr;">
+      <div class="ibox" style="border-color:rgba(0,212,255,.25);background:rgba(0,212,255,.04);">
+        <div class="ibox-lbl" style="color:var(--cyan);">Check 1</div>
+        <div class="ibox-txt">A bacterium has DNA but no membrane-bound nucleus. Is it a prokaryote or a eukaryote? <em style="color:var(--mint);">Answer: prokaryote</em></div>
+      </div>
+      <div class="ibox" style="border-color:rgba(129,230,217,.25);background:rgba(129,230,217,.04);">
+        <div class="ibox-lbl" style="color:var(--mint);">Check 2</div>
+        <div class="ibox-txt">Name two structures a plant cell has that an animal cell does NOT. <em style="color:var(--mint);">Answer: cell wall, chloroplast (also: large central vacuole)</em></div>
+      </div>
+      <div class="ibox" style="border-color:rgba(62,255,160,.25);background:rgba(62,255,160,.04);">
+        <div class="ibox-lbl" style="color:var(--green);">Check 3</div>
+        <div class="ibox-txt">Where does photosynthesis happen, and where does cellular respiration happen? <em style="color:var(--mint);">Answer: chloroplast / mitochondria</em></div>
+      </div>
+      <div class="ibox" style="border-color:rgba(245,200,66,.25);background:rgba(245,200,66,.04);">
+        <div class="ibox-lbl" style="color:var(--gold);">Check 4</div>
+        <div class="ibox-txt">List the levels of organization from smallest to largest. <em style="color:var(--mint);">Answer: cell → tissue → organ → organ system → organism</em></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 12 — Essential Question / Wrap -->
+  <div class="slide">
+    <div class="rule"></div>
+    <div class="lbl">08 · Evaluate</div>
+    <h1>ESSENTIAL<br><span class="accent">QUESTION</span></h1>
+    <div class="eq-banner" style="margin-top:0;padding:24px 28px;">
+      <div class="eq-tag">Day 1 wrap</div>
+      <div class="eq-q" style="font-size:clamp(18px,1.7vw,22px);line-height:1.5;">
+        How do plant cells and animal cells <em>cooperate as one planetary energy system</em> — one set of cells running photosynthesis, the other running cellular respiration?
+        <br><br>
+        Use at least <strong>three</strong> of the following terms in your answer: <span class="m">chloroplast, mitochondria, glucose, ATP, oxygen, carbon dioxide, sunlight</span>.
+      </div>
+    </div>
+    <div style="margin-top:auto;padding-top:18px;font-family:var(--font-m);font-size:11px;color:var(--tx3);letter-spacing:.1em;">
+      Students → open <strong style="color:var(--mint);">D01_Cells_Worksheet.html</strong> → complete 20 questions → click <strong style="color:var(--mint);">Copy My Answers</strong> → paste into Canvas Text Entry → <strong style="color:var(--mint);">Submit</strong>.
+    </div>
+  </div>
+
+</div>
+
+<div class="scene-strip" id="sceneStrip"></div>
+<div class="kbd-hint">Use <kbd>←</kbd> <kbd>→</kbd> · <kbd>Space</kbd> · <kbd>Home</kbd>/<kbd>End</kbd></div>
+
+<script src="stratosyn-finals.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => Stratosyn.Board.init());
+</script>
+</body>
+</html>

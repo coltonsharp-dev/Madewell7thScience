@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STRATOSYN · Day 5 · Periodic Table + Forces — Board</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="stratosyn-finals.css">
+</head>
+<body class="board">
+
+<nav class="topnav" style="position:fixed;left:0;right:0;top:0;">
+  <div class="brand">
+    <div class="bm" data-fill="0">
+      <div class="bsc r1"></div><div class="bsc r1"></div><div class="bsc r1"></div>
+      <div class="bsc r2"></div><div class="bsc r2"></div><div class="bsc r2"></div>
+      <div class="bsc r3"></div><div class="bsc r3"></div><div class="bsc r3"></div>
+    </div>
+    <span>STRATOSYN <span class="sub">/ Life Science</span></span>
+  </div>
+  <span class="nav-title">Finals Review · Day 5 · Periodic Table + Forces</span>
+  <span class="nav-badge gold">Classroom Board · Final Day</span>
+</nav>
+
+<div class="hud"><span id="slideCtr">1 / 12</span><div class="pb"><div class="pf" id="hudFill"></div></div></div>
+<div class="board-nav"><button class="nb" id="btnPrev">‹ Back</button><button class="nb prime" id="btnNext">Next ›</button></div>
+
+<div class="board-stage">
+
+  <div class="slide">
+    <div class="rule"></div>
+    <div class="lbl">7th Grade Life Science · Day 5 of 5 · Last day!</div>
+    <h1>TODAY'S<br><span class="accent">AGENDA</span></h1>
+    <div class="ag-grid">
+      <div>
+        <div class="ag-row"><div class="ag-t">0–05m</div><div class="ag-c"><strong>Bell Ringer</strong>How many elements can you name from memory in 60 seconds?</div></div>
+        <div class="ag-row"><div class="ag-t">05–15m</div><div class="ag-c"><strong>Inside the Atom</strong>Protons, neutrons, electrons. Atomic number vs mass number.</div></div>
+        <div class="ag-row"><div class="ag-t">15–25m</div><div class="ag-c"><strong>Reading the Table</strong>Periods, groups, families. Metals/nonmetals/metalloids.</div></div>
+      </div>
+      <div>
+        <div class="ag-row"><div class="ag-t">25–35m</div><div class="ag-c"><strong>3 Non-Contact Forces</strong>Gravity, electric, magnetic — fields, distance, attract/repel.</div></div>
+        <div class="ag-row"><div class="ag-t">35–45m</div><div class="ag-c"><strong>Atoms Meet Forces</strong>Why charged particles + forces explain everything from static cling to lightning.</div></div>
+        <div class="ag-row"><div class="ag-t">45–50m</div><div class="ag-c"><strong>Worksheet Launch</strong>D05 worksheet · 20 Qs · Submit via Copy → Canvas. Last one!</div></div>
+      </div>
+    </div>
+    <div class="eq-banner">
+      <div class="eq-tag">Essential Question</div>
+      <div class="eq-q">If atoms are mostly empty space, what holds your hand together when you press it on the desk — and what's the same force that lets a balloon stick to a wall?</div>
+    </div>
+  </div>
+
+  <div class="slide">
+    <div class="rule"></div>
+    <div class="lbl">Learning Target</div>
+    <h2>WHAT YOU SHOULD<br><span class="accent">KNOW BY 50:00</span></h2>
+    <div class="clo-box">
+      <div class="clo-lbl">Course Learning Objective · NGSS MS-PS1-1, MS-PS2-3, MS-PS2-5</div>
+      <div class="clo-txt">Students will identify the parts of an atom and read information from the periodic table; classify elements as metals, nonmetals, or metalloids; identify the major non-contact forces (gravity, electric, magnetic); and predict whether two charged or magnetized objects will attract or repel.</div>
+    </div>
+    <div class="clo-box b">
+      <div class="clo-lbl b">I Can Statement · Student Friendly</div>
+      <div class="clo-txt">I can read an element's atomic number, group, period, and family from the periodic table, count protons/neutrons/electrons in any atom, and explain what causes gravity, magnetism, and static electricity.</div>
+    </div>
+    <div style="font-family:var(--font-m);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--tx3);margin:14px 0 8px;">Success Criteria — measurable</div>
+    <div class="sc-row"><span class="sc-n">SC1</span>Identify protons/neutrons/electrons of an atom from atomic + mass numbers <em>— Q1, Q2, Q8, Q11, Q19a</em></div>
+    <div class="sc-row"><span class="sc-n">SC2</span>Read groups, periods, symbols, and categories from the periodic table <em>— Q3–Q7, Q9, Q10, Q19b–c</em></div>
+    <div class="sc-row"><span class="sc-n">SC3</span>Identify the three main non-contact forces and predict attract/repel <em>— Q12–Q14, Q19d, Q20</em></div>
+    <div class="sc-row"><span class="sc-n">SC4</span>Connect charged particles (electrons) to static electricity in everyday life <em>— Q14, Q18</em></div>
+  </div>
+
+  <div class="slide">
+    <div class="rule"></div>
+    <div class="lbl">01 · Engage</div>
+    <h2>INSIDE<br><span class="accent">THE ATOM</span></h2>
+    <div class="diagram-row">
+      <svg viewBox="0 0 280 240" style="width:280px;max-width:42%;">
+        <!-- Nucleus -->
+        <circle cx="140" cy="120" r="20" fill="rgba(245,200,66,.3)" stroke="var(--gold)" stroke-width="1.5"/>
+        <text x="140" y="124" text-anchor="middle" fill="var(--gold)" font-family="DM Mono,monospace" font-size="9">nucleus</text>
+        <!-- Electron orbits -->
+        <ellipse cx="140" cy="120" rx="60" ry="60" fill="none" stroke="rgba(0,212,255,.3)" stroke-dasharray="3 3"/>
+        <ellipse cx="140" cy="120" rx="100" ry="100" fill="none" stroke="rgba(0,212,255,.2)" stroke-dasharray="3 3"/>
+        <!-- Electrons -->
+        <circle cx="200" cy="120" r="5" fill="var(--cyan)"/>
+        <circle cx="80" cy="120" r="5" fill="var(--cyan)"/>
+        <circle cx="140" cy="20" r="5" fill="var(--cyan)"/>
+        <circle cx="140" cy="220" r="5" fill="var(--cyan)"/>
+        <text x="210" y="122" fill="var(--cyan)" font-family="DM Mono,monospace" font-size="8">e⁻</text>
+        <text x="60" y="122" text-anchor="end" fill="var(--cyan)" font-family="DM Mono,monospace" font-size="8">e⁻</text>
+        <text x="148" y="14" fill="var(--cyan)" font-family="DM Mono,monospace" font-size="8">e⁻</text>
+      </svg>
+      <div class="diagram-callouts">
+        <div class="callout-row"><div class="callout-num">1</div><div><strong style="color:var(--red);">Proton</strong> · positive charge (+1) · in the <strong>nucleus</strong> · its count = <em>atomic number</em> · defines what element it is.</div></div>
+        <div class="callout-row"><div class="callout-num">2</div><div><strong style="color:var(--mint);">Neutron</strong> · no charge (0) · also in the nucleus · proton count + neutron count = <em>mass number</em>.</div></div>
+        <div class="callout-row"><div class="callout-num">3</div><div><strong style="color:var(--cyan);">Electron</strong> · negative charge (−1) · in shells (orbits) around the nucleus · in a <em>neutral</em> atom, electron count = proton count.</div></div>
+        <div class="callout-row"><div class="callout-num">4</div><div><strong style="color:var(--gold);">Nucleus</strong> · the dense center of the atom · contains protons + neutrons · is where ~99.9% of the atom's mass is.</div></div>
+      </div>
+    </div>
+    <div class="ibox" style="margin-top:14px;border-color:rgba(245,200,66,.25);background:rgba(245,200,66,.04);">
+      <div class="ibox-lbl" style="color:var(--gold);">Worked example · Carbon-12</div>
+      <div class="ibox-txt">Atomic # = 6 → <strong>6 protons.</strong> Mass # = 12 → 12 − 6 = <strong>6 neutrons.</strong> Neutral atom → <strong>6 electrons.</strong></div>
+    </div>
+  </div>
+
+  <div class="slide">
+    <div class="rule"></div>
+    <div class="lbl">02 · Reading the Table</div>
+    <h2>PERIODS,<br><span class="accent">GROUPS, FAMILIES</span></h2>
+    <div class="two-col">
+      <div class="ibox" style="border-color:rgba(0,212,255,.25);background:rgba(0,212,255,.05);">
+        <div class="ibox-lbl" style="color:var(--cyan);">Periods · Rows (1–7)</div>
+        <div class="ibox-txt">Tell you how many <strong>electron shells</strong> the atom has. Hydrogen (Period 1) has 1 shell. Sodium (Period 3) has 3 shells. Going down a group = adding shells = bigger atom.</div>
+      </div>
+      <div class="ibox" style="border-color:rgba(129,230,217,.25);background:rgba(129,230,217,.05);">
+        <div class="ibox-lbl" style="color:var(--mint);">Groups · Columns (1–18)</div>
+        <div class="ibox-txt">Tell you how many <strong>valence electrons</strong> (outer-shell electrons) the atom has. Same group = same valence count = similar chemical behavior. That's why Group 1 elements all react like sodium does.</div>
+      </div>
+    </div>
+    <div class="ibox" style="margin-top:14px;border-color:var(--b);">
+      <div class="ibox-lbl">Memory tricks</div>
+      <div class="ibox-txt"><strong>PERIOD = ROW</strong> (think of a sentence ending — period at the end of a horizontal line). <strong>GROUP = COLUMN</strong> (think of a "group" lining up in a single file vertical column).</div>
+    </div>
+    <div class="tag-list" style="margin-top:14px;">
+      <span class="tag">famous families</span>
+      <span class="tag" style="color:#ef4444;border-color:rgba(239,68,68,.4);">Group 1 · Alkali Metals</span>
+      <span class="tag" style="color:#f97316;border-color:rgba(251,146,60,.4);">Group 2 · Alkaline Earth</span>
+      <span class="tag mint">Group 17 · Halogens</span>
+      <span class="tag purple">Group 18 · Noble Gases</span>
+    </div>
+  </div>
+
+  <div class="slide">
+    <div class="rule"></div>
+    <div class="lbl">03 · Categories</div>
+    <h2>METALS, NONMETALS,<br><span class="accent">METALLOIDS</span></h2>
+    <div class="three-col">
+      <div class="ibox" style="border-color:rgba(245,200,66,.25);background:rgba(245,200,66,.05);">
+        <div class="ibox-lbl" style="color:var(--gold);">Metals · ~75% of all elements</div>
+        <div class="ibox-txt"><strong>Left of staircase line.</strong><br>Shiny, conductive, malleable (bend), ductile (stretch into wire), usually solid at room temp (mercury is the exception).<br><br><em>Examples:</em> Fe, Cu, Au, Na, Mg.</div>
+      </div>
+      <div class="ibox" style="border-color:rgba(56,189,248,.25);background:rgba(56,189,248,.05);">
+        <div class="ibox-lbl" style="color:var(--blue);">Nonmetals · ~17 elements</div>
+        <div class="ibox-txt"><strong>Right of staircase line + hydrogen.</strong><br>Dull, brittle if solid, poor conductors. Often gases at room temp.<br><br><em>Examples:</em> O, N, C, Cl, S, plus all noble gases (He, Ne, Ar...).</div>
+      </div>
+      <div class="ibox" style="border-color:rgba(20,184,166,.25);background:rgba(20,184,166,.05);">
+        <div class="ibox-lbl" style="color:var(--teal);">Metalloids · The Staircase</div>
+        <div class="ibox-txt"><strong>On the staircase line.</strong><br>Half metal, half nonmetal. Often <em>semiconductors</em> — useful for electronics.<br><br><em>Examples:</em> B, Si, Ge, As, Sb, Te.</div>
+      </div>
+    </div>
+    <div class="ibox" style="margin-top:14px;border-color:rgba(20,184,166,.2);background:rgba(20,184,166,.04);">
+      <div class="ibox-lbl" style="color:var(--teal);">Why silicon matters</div>
+      <div class="ibox-txt">Silicon (Si) is the most famous metalloid — every computer chip, phone, and solar panel runs on its semiconductor properties. The "Silicon Valley" is named after this element.</div>
+    </div>
+  </div>
+
+  <div class="slide">
+    <div class="rule"></div>
+    <div class="lbl">04 · The Three Non-Contact Forces</div>
+    <h2>FORCES THAT<br><span class="accent">REACH ACROSS SPACE</span></h2>
+    <div class="three-col">
+      <div class="ibox" style="border-color:rgba(56,189,248,.25);background:rgba(56,189,248,.05);">
+        <div class="ibox-lbl" style="color:var(--blue);">Gravity</div>
+        <div class="ibox-txt"><strong>Always attractive.</strong> Acts between any two objects with mass.<br><br>Strength depends on: mass (more mass = stronger pull) and distance (further = weaker, by a lot).<br><br><em>Examples:</em> what holds you to Earth, the Moon to Earth, planets to the Sun.</div>
+      </div>
+      <div class="ibox" style="border-color:rgba(245,200,66,.25);background:rgba(245,200,66,.05);">
+        <div class="ibox-lbl" style="color:var(--gold);">Electric Force</div>
+        <div class="ibox-txt"><strong>Attract OR repel.</strong> Opposite charges (+ / −) attract; like charges (+/+ or −/−) repel.<br><br>Strength depends on: charge magnitude and distance.<br><br><em>Examples:</em> static cling, lightning, balloon on hair.</div>
+      </div>
+      <div class="ibox" style="border-color:rgba(192,132,252,.25);background:rgba(192,132,252,.05);">
+        <div class="ibox-lbl" style="color:var(--purple);">Magnetic Force</div>
+        <div class="ibox-txt"><strong>Attract OR repel.</strong> Opposite poles (N–S) attract; like poles (N–N or S–S) repel.<br><br>Strength depends on: magnet strength and distance.<br><br><em>Examples:</em> fridge magnets, Earth's magnetic field, MRI machines, electric motors.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide">
+    <div class="rule"></div>
+    <div class="lbl">05 · How Static Works</div>
+    <h2>STATIC<br><span class="accent">ELECTRICITY</span></h2>
+    <div class="body">"Static" just means <strong>charge that isn't flowing</strong>. When two materials rub together, electrons can hop from one to the other — leaving one positive (lost electrons) and one negative (gained electrons).</div>
+    <div style="display:flex;justify-content:center;margin:14px 0;">
+      <svg viewBox="0 0 460 160" style="width:460px;max-width:100%;">
+        <!-- Balloon -->
+        <ellipse cx="100" cy="80" rx="50" ry="60" fill="rgba(248,113,113,0.2)" stroke="var(--red)" stroke-width="1.5"/>
+        <text x="100" y="84" text-anchor="middle" fill="var(--red)" font-family="DM Mono,monospace" font-size="10">balloon</text>
+        <text x="100" y="98" text-anchor="middle" fill="var(--red)" font-family="DM Mono,monospace" font-size="14">−−−−</text>
+        <!-- Hair -->
+        <text x="240" y="40" text-anchor="middle" fill="var(--gold)" font-family="DM Mono,monospace" font-size="10">hair</text>
+        <text x="240" y="58" text-anchor="middle" fill="var(--gold)" font-family="DM Mono,monospace" font-size="14">+ + + +</text>
+        <path d="M 220 65 Q 240 45 260 65 Q 280 45 300 65" fill="none" stroke="var(--gold)" stroke-width="2"/>
+        <!-- Wall -->
+        <rect x="370" y="20" width="80" height="120" fill="rgba(255,255,255,0.05)" stroke="var(--tx3)" stroke-width="1"/>
+        <text x="410" y="80" text-anchor="middle" fill="var(--tx2)" font-family="DM Mono,monospace" font-size="10">wall</text>
+        <text x="410" y="100" text-anchor="middle" fill="var(--gold)" font-family="DM Mono,monospace" font-size="11">+ + + +</text>
+        <!-- Arrow electrons -->
+        <path d="M 230 80 L 150 80" fill="none" stroke="var(--red)" stroke-width="2" marker-end="url(#se)"/>
+        <text x="190" y="74" text-anchor="middle" fill="var(--red)" font-family="DM Mono,monospace" font-size="9">e⁻ jump</text>
+        <defs><marker id="se" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M 0,0 L 7,3.5 L 0,7 Z" fill="var(--red)"/></marker></defs>
+        <!-- Attraction -->
+        <path d="M 152 105 L 367 105" fill="none" stroke="var(--mint)" stroke-width="2" stroke-dasharray="4 3"/>
+        <text x="260" y="125" text-anchor="middle" fill="var(--mint)" font-family="DM Mono,monospace" font-size="10">opposite charges attract</text>
+      </svg>
+    </div>
+    <div class="ibox" style="border-color:var(--b);">
+      <div class="ibox-lbl">Why does the balloon stick to the wall?</div>
+      <div class="ibox-txt">The negative balloon pushes electrons away from the surface of the wall, leaving the wall's surface positive. Opposite charges attract → balloon sticks. Same physics is behind <strong>lightning</strong> — clouds build up huge separations of charge, then a giant spark equalizes everything.</div>
+    </div>
+  </div>
+
+  <div class="slide">
+    <div class="rule"></div>
+    <div class="lbl">06 · Distance Rules</div>
+    <h2>FORCES GET<br><span class="accent">WEAKER FAST</span></h2>
+    <div class="body">All three non-contact forces share an important rule: <strong>they get weaker as objects get farther apart</strong>. They don't have a sharp "stop" distance — they keep going forever — but they fade quickly.</div>
+    <div style="display:flex;justify-content:center;margin:14px 0;">
+      <svg viewBox="0 0 460 140" style="width:460px;max-width:100%;">
+        <line x1="20" y1="100" x2="440" y2="100" stroke="var(--tx3)" stroke-width="1"/>
+        <text x="20" y="118" fill="var(--tx3)" font-family="DM Mono,monospace" font-size="9">close</text>
+        <text x="440" y="118" text-anchor="end" fill="var(--tx3)" font-family="DM Mono,monospace" font-size="9">far</text>
+        <text x="230" y="118" text-anchor="middle" fill="var(--tx3)" font-family="DM Mono,monospace" font-size="9">distance →</text>
+        <!-- decay curve -->
+        <path d="M 20 30 Q 80 60 230 85 Q 350 95 440 99" fill="none" stroke="var(--mint)" stroke-width="2.5"/>
+        <text x="20" y="20" fill="var(--mint)" font-family="DM Mono,monospace" font-size="9">strong</text>
+        <text x="50" y="50" fill="var(--mint)" font-family="DM Mono,monospace" font-size="9">force</text>
+      </svg>
+    </div>
+    <div class="ibox" style="border-color:rgba(245,200,66,.25);background:rgba(245,200,66,.04);">
+      <div class="ibox-lbl" style="color:var(--gold);">Real example</div>
+      <div class="ibox-txt">A magnet on your fridge: pull it 1 cm away — barely holds. 5 cm away — no effect. The force shrinks much faster than you'd expect. Same with gravity: that's why you don't feel a pull from Mars even though Mars has gravity (Mars is just very far).</div>
+    </div>
+  </div>
+
+  <div class="slide">
+    <div class="rule"></div>
+    <div class="lbl">07 · Big Connection</div>
+    <h2>ATOMS &amp;<br><span class="accent">FORCES</span></h2>
+    <div class="body">Both topics this week are <strong>actually connected</strong>. The reason atoms behave the way they do — bonding, sharing electrons, forming everything from water to your DNA — is because of the <strong>electric force</strong> between the protons in the nucleus and the electrons around them.</div>
+    <div class="three-col">
+      <div class="ibox"><div class="ibox-lbl" style="color:var(--mint);">Static cling</div><div class="ibox-txt">Electrons jump between materials → opposite charges attract.</div></div>
+      <div class="ibox"><div class="ibox-lbl" style="color:var(--mint);">Lightning</div><div class="ibox-txt">Massive electron buildup → gigantic spark balances the charge.</div></div>
+      <div class="ibox"><div class="ibox-lbl" style="color:var(--mint);">Why solids feel solid</div><div class="ibox-txt">Negative electron clouds of atoms repel each other → you can't push your hand through wood.</div></div>
+    </div>
+  </div>
+
+  <div class="slide">
+    <div class="rule" style="background:var(--cyan);"></div>
+    <div class="lbl" style="color:var(--cyan);">08 · Quick Check</div>
+    <h2>BEFORE THE<br><span class="accent">WORKSHEET</span></h2>
+    <div class="three-col" style="grid-template-columns:1fr 1fr;">
+      <div class="ibox" style="border-color:rgba(0,212,255,.25);background:rgba(0,212,255,.04);"><div class="ibox-lbl" style="color:var(--cyan);">Check 1</div><div class="ibox-txt">Atomic number = ___? <em style="color:var(--mint);">Number of protons</em></div></div>
+      <div class="ibox" style="border-color:rgba(129,230,217,.25);background:rgba(129,230,217,.04);"><div class="ibox-lbl" style="color:var(--mint);">Check 2</div><div class="ibox-txt">Group 18 = noble gases — what's their reactivity? <em style="color:var(--mint);">Inert (very unreactive)</em></div></div>
+      <div class="ibox" style="border-color:rgba(62,255,160,.25);background:rgba(62,255,160,.04);"><div class="ibox-lbl" style="color:var(--green);">Check 3</div><div class="ibox-txt">Two like magnetic poles → ___? <em style="color:var(--mint);">Repel</em></div></div>
+      <div class="ibox" style="border-color:rgba(245,200,66,.25);background:rgba(245,200,66,.04);"><div class="ibox-lbl" style="color:var(--gold);">Check 4</div><div class="ibox-txt">Negatively charged object has gained ___? <em style="color:var(--mint);">Electrons</em></div></div>
+    </div>
+  </div>
+
+  <div class="slide">
+    <div class="rule"></div>
+    <div class="lbl">09 · Cumulative</div>
+    <h2>FINALS WEEK<br><span class="accent">RECAP</span></h2>
+    <div class="body">You made it through Finals Review Week. Here's everything you reviewed:</div>
+    <table class="compare-table">
+      <thead><tr><th>Day</th><th>Unit</th><th>Big Idea</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td style="color:var(--green);">Cells</td><td>Cell theory + organelles + photo &amp; respiration cycle</td></tr>
+        <tr><td>2</td><td style="color:var(--red);">Body Systems</td><td>11 systems cooperate to keep you alive</td></tr>
+        <tr><td>3</td><td style="color:var(--orange);">Plate Tectonics</td><td>Convection drives plates → mountains, volcanoes, quakes</td></tr>
+        <tr><td>4</td><td style="color:var(--cyan);">Weather &amp; Biomes</td><td>Latitude → climate → biomes; extreme weather formation</td></tr>
+        <tr><td>5</td><td style="color:var(--gold);">Periodic Table + Forces</td><td>Atoms + non-contact forces explain how everything is built</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="slide">
+    <div class="rule"></div>
+    <div class="lbl">10 · Evaluate</div>
+    <h1>ESSENTIAL<br><span class="accent">QUESTION</span></h1>
+    <div class="eq-banner" style="margin-top:0;padding:24px 28px;">
+      <div class="eq-tag">Day 5 wrap · Year wrap</div>
+      <div class="eq-q" style="font-size:clamp(18px,1.7vw,22px);line-height:1.5;">
+        If atoms are mostly empty space, what holds your hand together when you press it on the desk — and what's the same force that lets a balloon stick to a wall? <br>
+        Use at least <strong>three</strong> of the following: <span class="m">electron, proton, electric force, charge, repulsion, attraction</span>.
+      </div>
+    </div>
+    <div style="margin-top:auto;padding-top:18px;font-family:var(--font-m);font-size:11px;color:var(--tx3);letter-spacing:.1em;">
+      Students → open <strong style="color:var(--mint);">D05_PeriodicForces_Worksheet.html</strong> → 20 questions → <strong style="color:var(--mint);">Copy My Answers</strong> → Canvas → <strong style="color:var(--mint);">Submit</strong>. <em style="color:var(--mint);">Last day of finals review!</em>
+    </div>
+  </div>
+
+</div>
+
+<div class="scene-strip" id="sceneStrip"></div>
+<div class="kbd-hint">Use <kbd>←</kbd> <kbd>→</kbd> · <kbd>Space</kbd> · <kbd>Home</kbd>/<kbd>End</kbd></div>
+
+<script src="stratosyn-finals.js"></script>
+<script>document.addEventListener('DOMContentLoaded', () => Stratosyn.Board.init());</script>
+</body>
+</html>
